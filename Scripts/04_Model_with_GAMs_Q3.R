@@ -125,19 +125,33 @@ m3.0c_pred_grid <- expand_grid(depth = seq(from = 0, to = 500, by = 10),
                                BestTaxon = as.factor(c("Lagenorhynchus obliquidens",
                                                         "Megaptera novaeangliae",
                                                         "Berardius bairdii")))
-
+# response predictions
 m3.0cpreds <- predict.bam(m3.0c, m3.0c_pred_grid, 
                           type = "response",
                           se.fit = TRUE)
 
-m3.0c_sePreds <- data.frame(m3.0c_pred_grid,
+m3.0c_sePreds_response <- data.frame(m3.0c_pred_grid,
                             mu   = exp(m3.0cpreds$fit),
                             low  = exp(m3.0cpreds$fit - 1.96 * m3.0cpreds$se.fit),
-                            high = exp(m3.0cpreds$fit + 1.96 * m3.0cpreds$se.fit))
+                            high = exp(m3.0cpreds$fit + 1.96 * m3.0cpreds$se.fit),
+                            low50  = exp(m3.0cpreds$fit - 0.674 * m3.0cpreds$se.fit),
+                            high50 = exp(m3.0cpreds$fit + 0.674 * m3.0cpreds$se.fit))
+
+# link predictions
+m3.0cpredsL <- predict.bam(m3.0c, m3.0c_pred_grid, 
+                          se.fit = TRUE)
+
+m3.0c_sePreds_link <- data.frame(m3.0c_pred_grid,
+                                     mu   = exp(m3.0cpredsL$fit),
+                                     low  = exp(m3.0cpredsL$fit - 1.96 * m3.0cpredsL$se.fit),
+                                     high = exp(m3.0cpredsL$fit + 1.96 * m3.0cpredsL$se.fit),
+                                     low50  = exp(m3.0cpredsL$fit - 0.674 * m3.0cpredsL$se.fit),
+                                     high50 = exp(m3.0cpredsL$fit + 0.674 * m3.0cpredsL$se.fit))
 
 ### Save -----------------------------------------------------------------------
 
-save(m3.0a, m3.0b, m3.0c, m3.0b_sePreds, m3.0c_sePreds, 
+save(m3.0a, m3.0b, m3.0c, m3.0b_sePreds, m3.0c_sePreds_response, 
+     m3.0c_sePreds_link, m3.0cpredsL, m3.0cpreds,
      file = "./ProcessedData/m3.0models_preds_0.05degree.Rdata")
 
 ### DLM explanation of ti vs. te -----------------------------------------------

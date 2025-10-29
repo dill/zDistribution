@@ -83,7 +83,7 @@ Depths of highest POD for humpback whales had two peaks around `r min(maxPOD_dep
 
 ```{r}
 #| label: fig-H3PODxy
-#| fig-cap: "Depth of maximum probability of detection (POD; top) and width of 95% confidence itervals at max POD depth (bottom) for three species: Bbai = Baird's beaked whale (*B. bairdii*), Lobl = Pacific white-sided dolphin (*L. obliquidens*), Mnov = humpback whale (*M. novaegliae*)."
+#| fig-cap: "Depth of maximum probability of detection (POD; top) and range of depths falling within 50% CI of the depth of maximum detection (bottom) for three species: Bbai = Baird's beaked whale (*B. bairdii*), Lobl = Pacific white-sided dolphin (*L. obliquidens*), Mnov = humpback whale (*M. novaegliae*)."
 #| fig-width: 7
 #| fig-height: 15
 

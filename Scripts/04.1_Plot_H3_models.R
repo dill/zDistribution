@@ -23,19 +23,23 @@ metadata <- read.csv("./Data/Hake_2019_metadata.csv")
 ### m3.0c max POD depth map for three species ----------------------------------
 
 # pull depth of max POD
-maxPOD_depth <- m3.0c_sePreds %>% 
+maxPOD_depth <- m3.0c_sePreds_link %>% 
   group_by(BestTaxon, lat,lon) %>% #3816 groups
   arrange(desc(mu), .by_group = TRUE) %>% 
+  mutate(max_mu = first(mu), max_low50 = first(low50), 
+         max_high50 = first(high50), max_depth = first(depth)) %>%
+  filter(mu > max_low50 & mu < max_high50) %>%
+  mutate(depth_min = min(depth), depth_max = max(depth)) %>% 
   slice_head() %>% 
   ungroup() %>% 
-  mutate(ci95 = high-low)  
-  #filter(!(BestTaxon == "Megaptera novaeangliae" & depth == 0)) %>% 
-  #filter(!(BestTaxon == "Megaptera novaeangliae" & depth == 50))
-
+  mutate(depthWidth = depth_max - depth_min) %>% 
+  mutate(ci95 = high-low) %>% 
+  ungroup()
+  
 # create convex hull study area
 study_area <- st_as_sf(metadata, coords = c("lon", "lat"), crs = 4326) %>%
   summarise(geometry = st_union(geometry)) %>%
-  st_convex_hull()
+  st_convex_hull() 
 
 # convert POD to sf
 maxPOD_depth_sf <- maxPOD_depth %>% 
@@ -169,13 +173,14 @@ ci95_plot_list[[i]] <- ggplot(westcoast_land) +
   geom_tile(data = maxPOD_depth_clipped %>% 
               filter(BestTaxon == species[i]), 
             aes(x = lon_plain, y = lat_plain, 
-                                          fill = ci95)) +
+                                          fill = depthWidth)) +
   theme_classic() +
   #ggtitle(names(species)[i]) +
   geom_sf(fill = "grey50", colour = NA) +
-  scale_fill_viridis_c(name = "POD CI",
+  scale_fill_viridis_c(name = "50% CI \n depth range",
                        option = "magma",
-                       trans = "reverse") +
+                       trans = "reverse",
+                       begin = 0.15, end = 1) +
   theme(axis.text = element_blank(),
         axis.ticks = element_blank(),
         axis.title = element_blank(),
@@ -209,7 +214,7 @@ depthPODmax <- plot_grid(
   ncol = 1,
   rel_heights = c(1, 0.08, 1))
 
-pdf(height = 15, file = "./Figures/testplot.pdf")
+pdf(height = 15, file = "./Figures/maxPODdepthmap.pdf")
 depthPODmax
 dev.off()
 
@@ -218,76 +223,76 @@ save(maxPOD_depth, pos_detect, maxPOD_depth_clipped, file = "./ProcessedData/H3.
 
 ### m3.0c dept-lat variability figure ------------------------------------------
 
-m3.0c_predictions <- expand_grid(depth = 0:500, 
-                                 lat = c(34.39501,41.47946,48.5639),
-                                 lon = (min(metadata$lon) + max(metadata$lon))/2,
-                                 BestTaxon = as.factor(c("Lagenorhynchus obliquidens",
-                                                         "Megaptera novaeangliae",
-                                                         "Berardius bairdii")))
-
-m3.0cpreds <- predict(m3.0c, m3.0c_predictions, type = "response", se.fit = TRUE)
-m3.0c_sePreds <- data.frame(m3.0c_predictions,
-                           mu   = exp(m3.0cpreds$fit),
-                           low  = exp(m3.0cpreds$fit - 0.674 * m3.0cpreds$se.fit), #50% CI
-                           high = exp(m3.0cpreds$fit + 0.674 * m3.0cpreds$se.fit)) %>% 
-  left_join(mmEcoEvo, by = c("BestTaxon" = "Species"))
-
-###Try this 
-
-#--- 1. Compute tighter facet-specific limits (based on central 90% of mu)
-facet_lims <- m3.0c_sePreds %>%
-  group_by(lat, abbrev) %>%
-  summarise(
-    y_min = quantile(mu, 0.05, na.rm = TRUE),
-    y_max = quantile(mu, 0.95, na.rm = TRUE),
-    .groups = "drop"
-  )
-
-#--- 2. Define a vector of colors (one per plot)
-facet_colors <- c("#88A2B9", "#88A2B9", "#88A2B9", 
-                  "#41476B", "#41476B", "#41476B",
-                  "#2D4030", "#2D4030", "#2D4030")
-
-#--- 3. Split data by facet and plot each subset with its own zoom window and color
-split_data <- m3.0c_sePreds %>%
-  split(list(.$lat, .$abbrev), drop = TRUE)
-
-plots <- vector("list", length(split_data))
-
-for (i in seq_along(split_data)) {
-  df <- split_data[[i]]
-  lims <- facet_lims %>%
-    filter(lat == unique(df$lat), abbrev == unique(df$abbrev))
-  
-  color_i <- facet_colors[(i - 1) %% length(facet_colors) + 1]  # cycle through 3 colors
-  
-  plots[[i]] <- ggplot(df, aes(x = depth)) +
-    geom_smooth(
-      aes(ymin = low, ymax = high, y = mu),
-      stat = "identity", linewidth = 1,
-      color = color_i, fill = scales::alpha(color_i, 0.3)
-    ) +
-    coord_cartesian(ylim = c(lims$y_min, lims$y_max), expand = FALSE) +
-    labs(
-      title = paste(unique(df$abbrev), unique(df$lat), sep = "  |  "),
-      x = "Depth (m)",
-      y = "POD"
-    ) +
-    theme_minimal() +
-    theme(
-      plot.title = element_text(size = 10, hjust = 0.5),
-      axis.title.x = element_text(margin = margin(t = 8)),
-      axis.title.y = element_text(margin = margin(r = 8)),
-      legend.position = "none"
-    )
-}
-
-#--- 4. Combine all facets into a single layout
-m3.0clat_POD <- wrap_plots(plots, axis_titles = "collect") &
-  theme(legend.position = "none")
-
-save(m3.0clat_POD, file = "./Figures/H3.0c_plot.Rdata")
-
-png(file = "./Figures/H3.0c_plot.png")
-m3.0clat_POD
-dev.off()
+# m3.0c_predictions <- expand_grid(depth = 0:500, 
+#                                  lat = c(34.39501,41.47946,48.5639),
+#                                  lon = (min(metadata$lon) + max(metadata$lon))/2,
+#                                  BestTaxon = as.factor(c("Lagenorhynchus obliquidens",
+#                                                          "Megaptera novaeangliae",
+#                                                          "Berardius bairdii")))
+# 
+# m3.0cpreds <- predict(m3.0c, m3.0c_predictions, type = "response", se.fit = TRUE)
+# m3.0c_sePreds <- data.frame(m3.0c_predictions,
+#                            mu   = exp(m3.0cpreds$fit),
+#                            low  = exp(m3.0cpreds$fit - 0.674 * m3.0cpreds$se.fit), #50% CI
+#                            high = exp(m3.0cpreds$fit + 0.674 * m3.0cpreds$se.fit)) %>% 
+#   left_join(mmEcoEvo, by = c("BestTaxon" = "Species"))
+# 
+# ###Try this 
+# 
+# #--- 1. Compute tighter facet-specific limits (based on central 90% of mu)
+# facet_lims <- m3.0c_sePreds %>%
+#   group_by(lat, abbrev) %>%
+#   summarise(
+#     y_min = quantile(mu, 0.05, na.rm = TRUE),
+#     y_max = quantile(mu, 0.95, na.rm = TRUE),
+#     .groups = "drop"
+#   )
+# 
+# #--- 2. Define a vector of colors (one per plot)
+# facet_colors <- c("#88A2B9", "#88A2B9", "#88A2B9", 
+#                   "#41476B", "#41476B", "#41476B",
+#                   "#2D4030", "#2D4030", "#2D4030")
+# 
+# #--- 3. Split data by facet and plot each subset with its own zoom window and color
+# split_data <- m3.0c_sePreds %>%
+#   split(list(.$lat, .$abbrev), drop = TRUE)
+# 
+# plots <- vector("list", length(split_data))
+# 
+# for (i in seq_along(split_data)) {
+#   df <- split_data[[i]]
+#   lims <- facet_lims %>%
+#     filter(lat == unique(df$lat), abbrev == unique(df$abbrev))
+#   
+#   color_i <- facet_colors[(i - 1) %% length(facet_colors) + 1]  # cycle through 3 colors
+#   
+#   plots[[i]] <- ggplot(df, aes(x = depth)) +
+#     geom_smooth(
+#       aes(ymin = low, ymax = high, y = mu),
+#       stat = "identity", linewidth = 1,
+#       color = color_i, fill = scales::alpha(color_i, 0.3)
+#     ) +
+#     coord_cartesian(ylim = c(lims$y_min, lims$y_max), expand = FALSE) +
+#     labs(
+#       title = paste(unique(df$abbrev), unique(df$lat), sep = "  |  "),
+#       x = "Depth (m)",
+#       y = "POD"
+#     ) +
+#     theme_minimal() +
+#     theme(
+#       plot.title = element_text(size = 10, hjust = 0.5),
+#       axis.title.x = element_text(margin = margin(t = 8)),
+#       axis.title.y = element_text(margin = margin(r = 8)),
+#       legend.position = "none"
+#     )
+# }
+# 
+# #--- 4. Combine all facets into a single layout
+# m3.0clat_POD <- wrap_plots(plots, axis_titles = "collect") &
+#   theme(legend.position = "none")
+# 
+# save(m3.0clat_POD, file = "./Figures/H3.0c_plot.Rdata")
+# 
+# png(file = "./Figures/H3.0c_plot.png")
+# m3.0clat_POD
+# dev.off()

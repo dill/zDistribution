@@ -10,10 +10,9 @@ library(tidyverse)
 metadata <- read.csv("./Data/Hake_2019_metadata.csv")
 timeAtDepth <- read.csv("./Data/MM_dive_time_expand.csv")
 mmEcoEvo <- read.csv("./Data/MM_metadata.csv")
-
-freezethaw <- read.csv("./Data/HAKE2019_miseq_runs_thaw.csv")
-#sample_locs <- read.csv("./Data/HAKE2019_sample_locations.csv")
-sampleinfo <- read.csv("./Data/MURIsampleInfo_2025-03-05_MRS_v2.csv")
+freezethaw <- read.csv("./Data/HAKE2019_miseq_runs_thaw_v2.csv") # MRS: note I updated this
+sample_locs <- read.csv("./Data/HAKE2019_sample_locations_v2.csv") # MRS: note I updated this
+# sampleinfo <- read.csv("./Data/MURIsampleInfo_2025-03-05_MRS_v2.csv")
 
 detect_data_raw <- read.csv("./Data/M3_compiled_taxon_table_wide.csv") %>% 
   pivot_longer(-c(BestTaxon, Class), names_to = "SampleUID", values_to = "nReads") %>% 
@@ -41,42 +40,67 @@ detect_data_filt <- detect_data_raw %>%
 
 ## Add freeze/thaw info --------------------------------------------------------
 
-# take sample info and change names to match other data streams
-sampleinfo_mod <- sampleinfo %>%
-  mutate(plate = paste0("MURI", Plate)) %>%
-  rename("run" = plate) %>% 
-  select("NWFSCsampleID", "run", "primer", "dilution", "techRep", "PlateNo") %>% 
-  filter(!(run %in% c("MURI342", "MURI344"))) %>% # remove for now because these have weird plate numbers, we need to add them back in later
-  distinct()
+# # take sample info and change names to match other data streams
+# sampleinfo_mod <- sampleinfo %>%
+#   mutate(plate = paste0("MURI", Plate)) %>%
+#   rename("run" = plate) %>% 
+#   select("NWFSCsampleID", "run", "primer", "dilution", "techRep", "PlateNo") %>% 
+#   filter(!(run %in% c("MURI342", "MURI344"))) %>% # remove for now because these have weird plate numbers, we need to add them back in later
+#   distinct()
 
-# join raw detection data with sample info
-detect_data_plate <- detect_data_filt %>%
-  left_join(sampleinfo_mod, by = c("NWFSCsampleID", "primer", "run", "dilution", "techRep"))
+# MRS: the re-aliquoted plate (2A) is causing problems, so doing separately and then joining
+
+# remove plate 2A
+sampleinfo2 <- sample_locs %>%
+  filter(Plate != "2.0A")
+
+detect_data_plate2 <- detect_data_filt %>%
+  filter(!run %in% c("MURI342", "MURI343", "MURI344")) %>% # plate 2.0A run on MURI342-MURI344
+  left_join(sampleinfo2, by = "NWFSCsampleID") 
+
+# now include plate 2A
+sampleinfo2A <- sample_locs %>%
+  filter(Plate != "2")
+
+detect_data_plate2A <- detect_data_filt %>%
+  filter(run %in% c("MURI342", "MURI343", "MURI344")) %>%
+  left_join(sampleinfo2A, by = "NWFSCsampleID") 
+
+# join
+detect_data_plate <- rbind(detect_data_plate2, detect_data_plate2A) %>%
+  mutate(Plate = as.character(Plate)) %>%
+  mutate(Plate = case_when(Plate == "2" ~ "2.0", TRUE ~ Plate))
+
+# # join raw detection data with sample info
+# detect_data_plate <- detect_data_filt %>%
+#   left_join(sampleinfo_mod, by = c("NWFSCsampleID", "primer", "run", "dilution", "techRep"))
 
 freezethaw_mod <- freezethaw %>%
+  mutate(Plate = as.character(Plate)) %>%
+  mutate(Plate = case_when(Plate == "2" ~ "2.0", TRUE ~ Plate)) %>%
   mutate("run" = paste0("MURI", RunNo)) %>%
-  mutate("PlateNo" = as.numeric(Plate)) %>% #Plate 2.0A is a special case and is becoming an NA
-  rename("primer" = Markers) %>%
-  mutate(run = as.character(run)) %>% 
-  select(-Plate)
+  # mutate("PlateNo" = as.numeric(Plate)) %>% #Plate 2.0A is a special case and is becoming an NA
+  # rename("primer" = Markers) %>%
+  # mutate(run = as.character(run)) %>% 
+  select(primer, Plate, Thaw, run)
 
 detect_data_thaw <- detect_data_plate %>%
-  left_join(freezethaw_mod, by = c("run", "PlateNo", "primer")) %>% 
-  mutate(Thaw = case_when(run == "MURI310" & primer == "DL"~1,
-                          TRUE~Thaw))
+  left_join(freezethaw_mod, by = c("run", "Plate", "primer")) #%>% 
+  # mutate(Thaw = case_when(run == "MURI310" & primer == "DL"~1,
+  #                         TRUE~Thaw))
 
-forMegan <- detect_data_thaw %>% 
-  filter(is.na(Thaw)) %>% 
-  distinct(NWFSCsampleID, primer, dilution, run, .keep_all = TRUE) %>% 
-  mutate(run = as.numeric(gsub("MURI","", run))) %>% 
-  filter(run < 332)
+# check <- detect_data_thaw %>%
+#   select(run, primer, NWFSCsampleID, Plate, Thaw) %>%
+#   unique()
+# 
+# write.csv(check, "check.csv")
 
-write.csv(forMegan, file = "noThawSamps.csv", row.names = FALSE)
-
+# MRS: I stopped here! And did multiple checks along the way and I think we are in good shape! 
+  
 ## Reduce sequencing reps ------------------------------------------------------
 
-detect_data_1seq <- detect_data_filt %>% 
-  group_by(plate, primer, NWFSCsampleID, dilution, techRep, seqRep) %>% 
+detect_data_1seq <- detect_data_thaw %>% 
+  group_by(run, primer, NWFSCsampleID, dilution, techRep, seqRep) %>% 
   mutate(totReads = sum(nReads)) %>% 
   ungroup() %>% 
   group_by(primer, NWFSCsampleID, dilution, techRep) %>% 
@@ -90,7 +114,7 @@ detect_data_1seq <- detect_data_filt %>%
 ## Reduce dilutions ------------------------------------------------------------
 
 detect_data_1dil <- detect_data_1seq %>% 
-  group_by(plate, primer, NWFSCsampleID, dilution, techRep) %>% 
+  group_by(run, primer, NWFSCsampleID, dilution, techRep) %>% 
   mutate(totReads = sum(nReads)) %>% 
   ungroup() %>% 
   group_by(primer, NWFSCsampleID, techRep) %>% 
