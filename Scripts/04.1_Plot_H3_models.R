@@ -120,7 +120,7 @@ depth_max_detect[[i]] <- ggplot(westcoast_land) +
         axis.ticks = element_blank(),
         axis.title = element_blank(),
         plot.margin = margin(0, 0, 0, 0),
-        legend.position = c(0.6, 0.45),    # <<-- Adjust to place legend over land
+        legend.position = c(0.54, 0.45),    # <<-- Adjust to place legend over land
         legend.justification = c("left"),
         legend.background = element_blank(),
         legend.box.background = element_blank(),
@@ -146,8 +146,8 @@ dummy_plot <- ggplot(dummy_df, aes(x = x, y = y, color = depth)) +
   theme_minimal() +
   theme(legend.position = "bottom",
     plot.margin = margin(0, 0, 0, 0),
-    legend.title = element_text(size = 9),
-    legend.text = element_text(size = 8))
+    legend.title = element_text(size = 11),
+    legend.text = element_text(size = 10))
 
 # Extract legend 
 g <- ggplotGrob(dummy_plot)
@@ -177,7 +177,7 @@ ci95_plot_list[[i]] <- ggplot(westcoast_land) +
   theme_classic() +
   #ggtitle(names(species)[i]) +
   geom_sf(fill = "grey50", colour = NA) +
-  scale_fill_viridis_c(name = "50% CI \n depth range",
+  scale_fill_viridis_c(name = "50% CI\ndepth range",
                        option = "magma",
                        trans = "reverse",
                        begin = 0.15, end = 1) +
@@ -185,7 +185,7 @@ ci95_plot_list[[i]] <- ggplot(westcoast_land) +
         axis.ticks = element_blank(),
         axis.title = element_blank(),
         plot.margin = margin(0, 0, 0, 0),
-        legend.position = c(0.6, 0.45),    # <<-- Adjust to place legend over land
+        legend.position = c(0.54, 0.45),    # <<-- Adjust to place legend over land
         legend.justification = c("left"),
         legend.background = element_blank(),
         legend.box.background = element_blank(),
