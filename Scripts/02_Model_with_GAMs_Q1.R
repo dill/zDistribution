@@ -46,12 +46,13 @@ m1.2 <- gam(Detected ~
               ti(depth, k=5, bs="ts")+
               ti(BestTaxon, k=16, bs="re")+
               ti(depth, BestTaxon, k=c(5, 16), bs=c("ts","re")),
-            family = "binomial", data = detect_data)
+            family = "binomial", data = detect_data,
+            method = "REML")
 
 summary(m1.2)
 
 AIC(m1.2)
-# AIC 5410
+# AIC 5322
 
 ### H2a: POD by depth across taxonomic family ----------------------------------
 detect_data$Family <- as.factor(detect_data$Family)

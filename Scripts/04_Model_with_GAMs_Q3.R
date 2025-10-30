@@ -55,12 +55,12 @@ m3.0b_pred_grid <- expand_grid(depth = seq(0,500, by = 100),
                                          by = 0.1))
 
 
-m3.0bpreds <- predict.gam(m3.0b, m3.0b_pred_grid, se.fit = TRUE)
+m3.0bpreds <- predict.gam(m3.0b, m3.0b_pred_grid, type = "response", se.fit = TRUE)
 
 m3.0b_sePreds <- data.frame(m3.0b_pred_grid,
-                            mu   = exp(m3.0bpreds$fit),
-                            low  = exp(m3.0bpreds$fit - 1.96 * m3.0bpreds$se.fit),
-                            high = exp(m3.0bpreds$fit + 1.96 * m3.0bpreds$se.fit))
+                            mu   = m3.0bpreds$fit,
+                            low  = m3.0bpreds$fit - 1.96 * m3.0bpreds$se.fit,
+                            high = m3.0bpreds$fit + 1.96 * m3.0bpreds$se.fit)
 
 ### H3.0c: Depth smoothed over xy with shape and intercept variable by species -
 
@@ -131,27 +131,15 @@ m3.0cpreds <- predict.bam(m3.0c, m3.0c_pred_grid,
                           se.fit = TRUE)
 
 m3.0c_sePreds_response <- data.frame(m3.0c_pred_grid,
-                            mu   = exp(m3.0cpreds$fit),
-                            low  = exp(m3.0cpreds$fit - 1.96 * m3.0cpreds$se.fit),
-                            high = exp(m3.0cpreds$fit + 1.96 * m3.0cpreds$se.fit),
-                            low50  = exp(m3.0cpreds$fit - 0.674 * m3.0cpreds$se.fit),
-                            high50 = exp(m3.0cpreds$fit + 0.674 * m3.0cpreds$se.fit))
-
-# link predictions
-m3.0cpredsL <- predict.bam(m3.0c, m3.0c_pred_grid, 
-                          se.fit = TRUE)
-
-m3.0c_sePreds_link <- data.frame(m3.0c_pred_grid,
-                                     mu   = exp(m3.0cpredsL$fit),
-                                     low  = exp(m3.0cpredsL$fit - 1.96 * m3.0cpredsL$se.fit),
-                                     high = exp(m3.0cpredsL$fit + 1.96 * m3.0cpredsL$se.fit),
-                                     low50  = exp(m3.0cpredsL$fit - 0.674 * m3.0cpredsL$se.fit),
-                                     high50 = exp(m3.0cpredsL$fit + 0.674 * m3.0cpredsL$se.fit))
+                            mu   = m3.0cpreds$fit,
+                            low  = m3.0cpreds$fit - 1.96 * m3.0cpreds$se.fit,
+                            high = m3.0cpreds$fit + 1.96 * m3.0cpreds$se.fit,
+                            low50  = m3.0cpreds$fit - 0.674 * m3.0cpreds$se.fit,
+                            high50 = m3.0cpreds$fit + 0.674 * m3.0cpreds$se.fit)
 
 ### Save -----------------------------------------------------------------------
 
-save(m3.0a, m3.0b, m3.0c, m3.0b_sePreds, m3.0c_sePreds_response, 
-     m3.0c_sePreds_link, m3.0cpredsL, m3.0cpreds,
+save(m3.0a, m3.0b, m3.0c, m3.0b_sePreds, m3.0cpreds,
      file = "./ProcessedData/m3.0models_preds_0.05degree.Rdata")
 
 ### DLM explanation of ti vs. te -----------------------------------------------
