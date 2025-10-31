@@ -16,6 +16,15 @@ source("./Scripts/attach.nimble_v2.R")
 # Import the data
 load("./ProcessedData/detect_data_allcet.RData")
 mm.data <- detect_data_allcet
+mm.data$EKJPrimer <- mm.data$primer
+for (i in 1:nrow(mm.data)){
+mm.data$EKJPrimer[i] <- ifelse(mm.data$primer[i] == "DL" & mm.data$Thaw[i] > 1, "DL2", mm.data$primer[i])
+}
+
+# collapse data so it's the probability of detecting *any* cetacean
+
+mm.data.collapse <- mm.data %>%
+  group_by()
 
 # because I've removed some of the unique biosample reference numbers with the above 
 # methods removal, I need to renumber the unique biosamples so that they are consecutive
@@ -26,7 +35,7 @@ mm.data$unique_biorep_numeric <- as.numeric(as.factor(mm.data$NWFSCsampleID))
 mm.data$site.numeric <- as.numeric(factor(paste0(mm.data$utm.lat, mm.data$utm.lon)))
 
 # create a primer variable
-mm.data$primer.numeric <- as.numeric(factor(mm.data$primer))
+mm.data$primer.numeric <- as.numeric(factor(mm.data$EKJPrimer))
 
 # pull unique info for each bio sample (can add to these for enviro covariates)
 biosamp_dat <- mm.data %>%
@@ -41,7 +50,7 @@ Y_biosamp_index <- mm.data$unique_biorep_numeric
 biosamp_Volume_filt_mL <- as.numeric(biosamp_dat$volume) - mean(as.numeric(biosamp_dat$volume)) #centered water volumes
 biosamp_depth_Depth_m <- as.numeric(biosamp_dat$depth) - mean(as.numeric(biosamp_dat$depth)) #centered sample depths
 Y_primer_index <- mm.data$primer.numeric
-# these are alphabetical, so DL = 1, MFU = 2, MV = 3
+
 N <- dim(mm.data)[1]
 n_sites <- length(unique(mm.data$site.numeric))
 n_biosamples <- length(unique(mm.data$unique_biorep_numeric))
@@ -122,6 +131,7 @@ edna_code_site_depth_occupancy <- nimbleCode({
   prob_detection[1] ~ dbeta(1, 1)
   prob_detection[2] ~ dbeta(1, 1)
   prob_detection[3] ~ dbeta(1, 1)
+  prob_detection[4] ~ dbeta(1, 1)
 
 })
 
@@ -239,8 +249,8 @@ plot_data_capture_vol <- data.frame(
 # Detection comparison
 df_detection_new <- data.frame(
   Probability = c(prob_detection[, 1], prob_detection[, 2],
-                  prob_detection[, 3]),
-  Method = rep(levels(factor(mm.data$primer)), each = nrow(prob_detection))
+                  prob_detection[, 3], prob_detection[, 4]),
+  Method = rep(levels(factor(mm.data$EKJPrimer)), each = nrow(prob_detection))
 )
 
 # Create 4-panel plot for site x depth model
@@ -251,7 +261,7 @@ p1_new <- ggplot(plot_data_occupancy_depth,
   labs(x = "Depth (m)", y = "Probability of Occupancy") +
   theme_minimal()
 
-ggsave(plot = p1_new, file = "./Figures/PatinEtAl_OccupancyByDepth.png",
+ggsave(plot = p1_new, file = "./Figures/PatinEtAl_OccupancyByDepth_wThaw.png",
        width = 5, height = 3, units = "in")
 
 p2_new <- ggplot(plot_data_capture_vol, 
@@ -261,7 +271,7 @@ p2_new <- ggplot(plot_data_capture_vol,
   labs(x = "Volume Filtered (mL)", y = "Probability of Capture") +
   theme_minimal()
 
-ggsave(plot = p2_new, file = "./Figures/PatinEtAl_CaptureByVolume.png",
+ggsave(plot = p2_new, file = "./Figures/PatinEtAl_CaptureByVolume_wThaw.png",
        width = 5, height = 3, units = "in")
 
 p4_new <- ggplot(df_detection_new, 
@@ -274,7 +284,7 @@ p4_new <- ggplot(df_detection_new,
   labs(x = "Detection Probability", y = "Density") +
   theme_bw() + theme(panel.grid = element_blank(), legend.position = "bottom")
 
-ggsave(plot = p4_new, file = "./Figures/PatinEtAl_DetectionByPrimer.png",
+ggsave(plot = p4_new, file = "./Figures/PatinEtAl_DetectionByPrimer_wThaw.png",
        width = 5, height = 3, units = "in")
 
 
