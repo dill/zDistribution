@@ -31,13 +31,15 @@ detectDepth_bubble <- ggplot(detect_by_station, aes(y = common_name, x = depth,
   scale_size_area(max_size = 11) +
   facet_wrap(~Broad_taxa, scales = "free_x", ncol = 1) +
   theme_minimal() + 
-  coord_flip() +
+  coord_flip(clip = "off") +
   scale_x_reverse() +
   xlab("Sample Depth (m)")+
   ylab("")+
   theme(axis.text.x = element_text(angle = 15, vjust = 1, hjust=0.6)) +
-  scale_fill_manual(values = c(pnw_palette("Cascades",5, type = "continuous")[3:5])) +
-  scale_color_manual(values = c(pnw_palette("Cascades",5, type = "continuous")[3:5])) +
+  scale_fill_manual(values = c(pnw_palette("Cascades",5, type = "continuous")[4:5],
+                               pnw_palette("Sunset",1, type = "continuous"))) +
+  scale_color_manual(values = c(pnw_palette("Cascades",5, type = "continuous")[4:5],
+                                pnw_palette("Sunset",1, type = "continuous"))) +
   theme(legend.position = "none",
         strip.text = element_text(size = 12),
         axis.title = element_text(size = 12))
