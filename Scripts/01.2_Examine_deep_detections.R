@@ -5,7 +5,7 @@ library(tidyverse)
 library(PNWColors)
 library(ggOceanMaps)
 
-load("ProcessedData/detect_species_meta.RData")
+load("ProcessedData/detect_data.RData")
 metadata <- read.csv("./Data/Hake_2019_metadata.csv")
 mmEcoEvo <- read.csv("./Data/MM_metadata.csv")
 all_detect_data <- read.csv("Data/M3_compiled_taxon_table_wide.csv")
@@ -15,13 +15,17 @@ tax_data <- read.csv("Data/MFU_database.csv") %>%
 
 #### Look @ bottom depth of deep detections ------------------------------------
 
-detect_data_deep <- detect_data_meta %>% 
+detect_data_deep <- detect_data %>% 
   filter(depth > 250) %>% 
   filter(Detected == 1) %>% 
   mutate(distToBottom = bottom.depth.consensus - depth) %>% 
   group_by(station, depth, BestTaxon) %>% 
   slice_head() %>% 
-  filter(Broad_taxa != "Beaked whale") 
+  filter(Broad_taxa != "Beaked whale")
+
+deep_summary <- detect_data_deep %>% 
+  group_by(Broad_taxa) %>% 
+  summarise(nObs = n())
 
 ggplot(detect_data_deep, aes(x= distToBottom, fill = Broad_taxa)) +
   geom_histogram(binwidth = 50) +
@@ -34,6 +38,10 @@ ggplot(detect_data_deep, aes(x= distToBottom, fill = Broad_taxa)) +
 # Plot the location of likely whalefall (dist to bottom < 100m)
 potential_whalefall <- detect_data_deep %>% 
   filter(distToBottom < 100 & distToBottom > 0)
+
+whalefall_summary <- potential_whalefall %>% 
+  group_by(Broad_taxa) %>% 
+  summarize(nObs = n())
 
 basemap(limits = c(min(potential_whalefall$lon)-0.9,
                    max(potential_whalefall$lon)+0.25,
@@ -52,7 +60,7 @@ basemap(limits = c(min(potential_whalefall$lon)-0.9,
 
 # Look for killer whale prey
 
-detect_data_deep_detect_stations <- detect_data_meta %>% 
+detect_data_deep_detect_stations <- detect_data %>% 
   filter(station %in% detect_data_deep$station) %>% 
   group_by(station) %>% 
   filter(any(BestTaxon == "Orcinus orca")) %>% 
@@ -61,7 +69,8 @@ detect_data_deep_detect_stations <- detect_data_meta %>%
 deepDetect_noFall <- detect_data_deep %>% 
   filter(distToBottom > 100) 
 
-detectKW <- detect_data_meta %>% 
+detectKW <- detect_data %>% 
+  ungroup() %>% 
   filter(Detected == 1) %>% 
   filter(BestTaxon == "Orcinus orca") %>% 
   distinct(BestTaxon, station) %>% 
@@ -134,15 +143,15 @@ basemap(limits = c(min(deepDetect_noFall$lon)-0.25,
 
 #### Filter out likely whalefalls from full species x station df ---------------
 
-sum(detect_species_meta$Detected)
-
-detect_species_meta <- detect_species_meta %>% 
-  mutate(distToBottom = bottom.depth.consensus - depth) %>% 
-  mutate(Detected = ifelse(distToBottom < 100 & depth > 400, 0, Detected))
-
-sum(detect_species_meta$Detected)
+# sum(detect_species_meta$Detected)
+# 
+# detect_species_meta <- detect_species_meta %>% 
+#   mutate(distToBottom = bottom.depth.consensus - depth) %>% 
+#   mutate(Detected = ifelse(distToBottom < 100 & depth > 400, 0, Detected))
+# 
+# sum(detect_species_meta$Detected)
 
 #### Resave data with whalefall filtered out -----------------------------------
 
-save(detect_data, detect_species_meta, detect_species_divetime, samples_info_onedil,
+save(potential_whalefall,
      file = "./ProcessedData/detect_species_meta.RData")

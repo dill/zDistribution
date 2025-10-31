@@ -1,6 +1,6 @@
 ---
 title: "Species-specific behavior and ecology drive depth distribution of rare species eDNA in pelagic marine environments"
-author: "Amy M. Van Cise^1\\*^, Eiren K. Jacobson^2^, Megan Shaffer^3^, Pedro Brandao^3^, David Miller^4^, Ryan Kelly^3^, Brice Semmens^5^,  Kim M. Parsons^6^"
+author: "Amy M. Van Cise^1\\*^, Eiren K. Jacobson^2^, Megan Shaffer^3^, Pedro Brandao^3^, David Miller^4^, Brice Semmens^5^, Ryan Kelly^3^, Ole Shelton^6^, Krista Nichols^6^,  Kim M. Parsons^6^"
 format: html
 editor: visual
 execute:
@@ -66,7 +66,7 @@ Here, we aim improve our understanding of the depth distribution of rare species
 2.  Do common sources of observational bias, e.g. technical replication, choice of primers, or sampling volume, interact with sampling depth to affect probability of detection?
 3.  Does x-y variability in eDNA distribution interact with depth variability to affect probability of detection?
 
-To answer these questions, we utilize eDNA samples collected in the California Current from the northern extent of the United States' EEZ to the latitude of XXX in southern California, and between XXX and XXX miles offshore. By collapsing eDNA detections across x and y dimensions and focusing only on the z-distribution of sampling effort (0-500 m), we aim to determine (1) whether species- or taxon-specific detection probability varies with depth and (2) how depth-dependent detection probability varies with increasing sample volume, primer specificity, and technical replication. Finally, we explicitly re-introduce x-y dimensions in order to determine (3) whether depth-dependent detection probability varies with latitude or longitude.
+To answer these questions, we utilize eDNA (water) samples collected in the California Current in 2019 in order to assess the abundance of North Pacific hake* (*Merluccius productus*). We leverage this opportunistic dataset to examine marine mammal detections generated via genetic metabarcoding of three mitochondrial target regions. By collapsing eDNA detections from these three primers across x and y dimensions and focusing only on the z-distribution of sampling effort (0-500 m), we aim to determine (1) whether species- or taxon-specific detection probability varies with depth and (2) how depth-dependent detection probability varies with primer specificity, technical replication, or DNA degradation caused by freeze/thaw cycles. Finally, we explicitly re-introduce x-y dimensions in order to determine (3) whether depth-dependent detection probability varies with latitude or longitude.
 
 ## Methods
 
@@ -80,13 +80,19 @@ To answer these questions, we utilize eDNA samples collected in the California C
 
 #### Question 1:
 
-1.  Sampling depth matters. To target rare species, optimizing sampling depth could increase detection rates and improve xy distributional models while minimizing cost.
+In addition to being extremely rare targets, marine mammals are highly mobile in xy space, and their vertical ranges span 100s to 1,000s of meters. Mapping the vertical distribution of their eDNA can provide new insight regarding their 3D spatial use, including seasonal or geographic variability in depth distribution. Additionally, eDNA monitoring has the potential to improve our understanding of xy spatial distribution, especially for visually or acoustically elusive species, when used in joint species distribution models. In these cases, optimizing the sampling depth to target the species of interest could increase detection rates and improve xy distributional models while minimizing cost.
 
-2.  Sampling depth varies by species, and roughly according to some basic ecological principles, e.g. generally eDNA was found where the animals spend most of their time, and prey type was indicative of POD across depth.
+POD varied significantly with sampling depth (Supplemental Figure S1), and was best described at a species-specific level, and broadly reflected our current understanding of species-specific variability in use of the water column (@fig-H1POD-species). This was especially true among the delphinids and porpoises; on the other hand, we observed some noticeable deviations from expected trends in both the baleen whales and the beaked whales. These trends could be inherent to the behavior of the animals themselves, or more likely may reflect the "behavior" of eDNA. 
 
-3.  Notable caveats are: whalefall and poop (the latter mostly noticeable for baleen whales). *Include some figures of potential whalefall here or in supplement? Or add this as an explicit method/result? Include poop sinking equations here or in a supplement?*
+For example, baleen whales are generally thought to be shallow divers, and while some dives up to approximately 500 m have been recorded in a few species [e.g. fin whales, @panigada_etal99], recent reports of time-at-depth for cetacean species indicates that baleen whales spend the vast majority of their time within the top 100-200 m of the ocean. However, we observe a sharp spike in detection probability at 500 m for two of the three baleen whale species included in our model predictions. Gray whales were not likely to be observed at 500 m; this is most likely because they are a nearshore coastal species that is rarely observed in deep water. Humpback and fin whales both have pelagic distributions, and were both as likely to be observed at 500 m as they were at the surface, with low POD at intermediate depths. 
 
-4.  Beaked whale distributions are poorly understood and could be improved the most by eDNA sampling/monitoring. Talk here about how eDNA depth distributions compare to what we know about beaked whale distributions, e.g. two of the detected species are found most often around 300m, where they are thought to take resting dives. (Is this where they spend most of their time according to Navy reports?) Stejnegers was found deeper. Sampling deeper than 500m may increase detection for deeper diving beaked whales, e.g. some of the ones that are almost never detected at the surface. *EKJ note: do we think this is because beaked whales are rare rare targets, so their eDNA has a better chance of being detected at depth, where there are fewer competing bits of other cetacean eDNA?)*
+This observed pattern has several possible explanations. We considered the possibility that the large spike in deep detections was driven by whalefall or predation (i.e. whole or parts of animals sinking in the water column). In total, baleen whales were detected below 250 m at 28 locations; of those, 8 detections (28.5%) were within 100 m of the ocean floor and could be potential detections of whalefall. A map of potential whalefall locations is included in Supplemental Figure S2. In addition to this, a single baleen whale detection coincided with the detection of killer whale eDNA, and therefore could be attributed to predation. The remaining 19 detections (68%) may be attributed to whale poop; while sinking rates and depths of baleen whale poop are generally unknown, we know from expert observations that fecal material from baleen whales is quite large and can sink rapidly from the surface (WHO CAN I PERS COMM FOR THIS?!?). Larger clumps of eDNA can be detectable for up to 2-4 days at the surface (CITE Pedro's paper here? and/or a Mod 1 paper?), and likely longer at depth where it is colder, darker, and there are fewer microbes digesting cellular material. Research on oceanic particle sinking rate indicates that smaller particles (up to 6 mm) can sink at rates of ~50-300 m day, and that sinking rates increase rapidly with particle size while degradation rates decrease with particle size, with maximum sinking depths in the range of ~800-5,000 m [@giering_etal20; @mcdonnell_etal15; @iversen_ploug10]. It is also possible that some of these deeper eDNA detections, especially those of deeper-diving fin whales, are detections of deep dives made by animals foraging for krill at depth.
+
+Beaked whales were also generally detected deeper than where they are thought to spend most of their time (@fig-H1POD-species). Beaked whales spend less of their time near the surface than either baleen whales or delphinids; time-at-depth models estimate that they spend approximately 70% of their time below 100 m, with depth ranges spanning down as far as 3,000 m (CITE Greg paper). While below the surface, beaked whales generally make deep (500+ m) foraging dives interspersed with several shallow (200-300 m) "resting" dives. We found that goose-beaked whales, considered the most common beaked whale in the Pacific Ocean, were most likely to be detected between 200 and 300 m, in the range of their resting dives. Baird's beaked whales were most likely to be detected at 400-500 m; as 500 m was the extent of our sampling range, it is possible that this species or other beaked whales have higher detection probabilities at depths greater than 500 m. While we did not make predictions of POD by depth for the saber-toothed whale, all three detections of this species were at 300 m (n = 1) and 500 m (n =2).
+
+Finally, for both baleen whales and beaked whales, it is possible that the increase in detections at depth is related to the decreased abundance of competing organisms in the sample. Within each water sample that is collected, cetacean DNA is rare compared to that of microbes, plankton, fishes, etc (CITE from Nastassia's intro) and may be easily outcompeted for sequencing space in the lab. Deeper in the water column, where microbes, plankton, and fish DNA are likely to be less dense, their masking effect may be lessened enough to decrease the rate of false negatives. **We may be able to see this if detections at depth show up in more of the technical replicates than near the surface.**
+
+In general, sampling near the surface will increase detection rates of delphinids (and likely porpoises), and sampling at 300-500 m or deeper will increase detection rates of baleen whales and beaked whales. While we found that POD varies by species, we also observed significant trends in POD with depth when species were group by phylogenetic Family or by broad prey category. This indicates some degree of similarity in habitat use across the z-axis within these groups, such that researchers wanting to design an eDNA monitoring study targeting a species for which there is little informaton could use Family or preferred prey to guide their decisions regarding sampling depth.
 
 #### Question 2:
 
@@ -94,11 +100,11 @@ To answer these questions, we utilize eDNA samples collected in the California C
 
 #### Question 3:
 
-6.  Effect of depth varies across x and y dimensions. EKJ note: if we find this, it would be indicative of oceanographic stuff (upwelling etc) affecting probability of detection
+Trends in POD by depth varied geographically by species, as illustrated by the three example species for which we made predictions of depth of maximum POD (@fig-H3PODxy). At the broad scale of this study, we expect that this at least partially reflects geographic variability in species-specific use of the water column. That may reflect geographic shifts in the depth distribution of prey or preferred prey items of a given predator, which may in turn reflect geographic variability in oceanographic conditions.
 
-7.  Over the large geographic range covered by this study and the large range of mobile rare species, we expect that this at least partially reflects true distribution of the animals.
+Alternatively, it is likely that at least a portion of this observed variability is directly linked to oceanographic variability, and its effect on the fate and transport of eDNA once deposited in the water column. eDNA degradation and residence time will be affected by water temperature, pH, and microbial density. During that time, horizontal transport will be affected by currents, eddies, etc. Vertical transport will be affected by upwelling, mixed layer depth, etc. This study is relatively insensitive to horizontal transport of eDNA, which is expected to travel up to XX km on average before it is no longer detectable (CITE Mod 1 paper here?), our samples were collected at 10 km intervals throughout the study area. Our understanding of the vertical distribution of eDNA is more likely to be affected by these oceanographic processes, which can change sinking rates or residence time. 
 
-8.  It could also reflect, e.g. shorter residence time of eDNA in warmer water to the south, or higher probability of eDNA sinking below 500 meters in deeper offshore water. *What else could be causing this?*
+In both cases, oceanography is an important driver of the 3D distribution of marine mammal eDNA; therefore our next study will focus on the development of 3D spatial distribution models using eDNA and using these models to determine the important oceanographic drivers of marine mammal eDNA in 3D space. 
 
 #### Marine Mammal monitoring: lessons for eDNA experimental design
 
@@ -106,11 +112,15 @@ To answer these questions, we utilize eDNA samples collected in the California C
 
 2. In laboratory processing, sequence longer fragments first, using as few freeze/thaw cycles as possible.
 
+#### Conclusions section?
+
 ## Data availability
 
 All raw sequence data have been uploaded to GenBank (Accessions: XXXX). Detection data, sample metadata, and all code used to generate this manuscript are available at https://github.com/MMARINeDNA/zDistribution.
 
 ## Acknowledgements
+
+We are grateful to the many people who supported eDNA sample collection and processing, including XXXX, and the crew of the R/V XXXX. Funding for this research came from ONR Grant XXXX. 
 
 ## References
 
@@ -121,4 +131,6 @@ Table S1. Sample metadata.
 
 Table S2. Q1 model AIC and diagnostics
 
-Figure S1. Q1 and Q3 Null hypothesis plots?
+Supplemental Figure S1. Q1 and Q3 Null hypothesis plots?
+
+Supplemental Figure S2. Locations of eDNA detections within 100 m of the ocean floor, which may represent nearby whalefall.
