@@ -75,6 +75,8 @@ nimbleOut_m1.0 <- nimbleMCMC(code = m1.0_nimble,
                              samplesAsCodaMCMC = TRUE,
                              WAIC = TRUE)
 
+save(nimbleOut_m1.0, file = "./ProcessedData/nimbleOut_m1.0.RData")
+
 # Gelman-Rubin diagnostic
 MCMCsummary(nimbleOut_m1.0$samples)
 
