@@ -27,10 +27,6 @@ q1Model_m1.0 <- jagam(DetectAny ~ s(depth, k = 5, bs = "bs"),
 
 save(q1Model_m1.0, file = "ProcessedData/jagam_m1.0.RData")
 
-# depth by species
-# q1Model_m1.2 <- jagam(Detected ~ s(depth, by = as.factor(BestTaxon)), 
-#                            family = "binomial", data = detect_species_meta,
-#                            file = "./ProcessedData/m1.2.jag")
 
 ### Run jags model -------------------------------------------------------------
 
@@ -49,15 +45,31 @@ plot(jam)  # this is just the spline on depth
 pd <- data.frame(depth = 0:500)
 fv <- predict(jam,newdata=pd, scale = "response")
 plot(pd$depth, exp(fv), type = "l", ylim = c(0,1))
-# 
-# # m1.2 (not run yet as it seriously takes ages)
-# jm <-jags.model("./ProcessedData/m1.2.jag",
-#                 data=q1Model_m1.2$jags.data,
-#                 inits=q1Model_m1.2$jags.ini,
-#                 n.chains=4, n.adapt = 2500) # changed to 4 so we can assess convergence
-# 
-# list.samplers(jm)
-# # simplest model has b and lambda
-# sam <- jags.samples(jm,c("b","lambda"), n.iter=25000, thin=10) # takes aaages
-# jam <- sim2jam(sam, q1Model_m1.0$pregam)
-# plot(jam)  # this is just the spline on depth
+
+# m1.2 depth by species
+
+load("./ProcessedData/detect_data.RData")
+detect_data$BestTaxon <- as.factor(detect_data$BestTaxon)
+
+q1Model_m1.2 <- jagam(Detected ~ 
+                        ti(depth, k=5, bs="ts")+
+                        ti(BestTaxon, k=16, bs="re")+
+                        ti(depth, BestTaxon, k=c(5, 16), bs=c("ts","re")),
+                      diagonalize = TRUE,
+                      family = "binomial", data = detect_data,
+                      file = "./ProcessedData/m1.2.jag")
+
+save(q1Model_m1.2, file = "ProcessedData/jagam_m1.2.RData")
+
+
+# m1.2 
+jm <-jags.model("./ProcessedData/m1.2.jag",
+                data=q1Model_m1.2$jags.data,
+                inits=q1Model_m1.2$jags.ini,
+                n.chains=4, n.adapt = 2500) # changed to 4 so we can assess convergence
+
+list.samplers(jm)
+# simplest model has b and lambda
+sam <- jags.samples(jm,c("b","lambda"), n.iter=25000, thin=10) # takes aaages
+jam <- sim2jam(sam, q1Model_m1.0$pregam)
+plot(jam)  # this is just the spline on depth
