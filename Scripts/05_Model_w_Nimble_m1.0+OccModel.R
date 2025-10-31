@@ -17,15 +17,16 @@ library(mgcv)
 # Import the jagam object we created previously
 load("ProcessedData/jagam_m1.0.RData")
 
-m1.0 <- gam(Detected ~ s(depth, k = 5, bs = "bs"),  
-            family = "binomial", data = detect_data, method="REML", 
-            select = TRUE) # to create two lambdas
 
 
 # Import the data
-load("./ProcessedData/detect_data.RData")
-mm.data <- detect_data
+load("./ProcessedData/detect_data_allcet.RData")
+mm.data <- detect_data_allcet
 
+m1.0 <- gam(DetectAny ~ s(depth, k = 5, bs = "bs"),  
+            diagonalize = TRUE, 
+            family = "binomial", data = detect_data_allcet, method="REML", 
+            select = TRUE) # to create two lambdas
 
 # because I've removed some of the unique biosample reference numbers with the above 
 # methods removal, I need to renumber the unique biosamples so that they are consecutive
@@ -34,6 +35,7 @@ mm.data$unique_biorep_numeric <- as.numeric(as.factor(mm.data$NWFSCsampleID))
 
 # create a site variable that can hold multiple depths
 mm.data$site.numeric <- as.numeric(factor(paste0(mm.data$utm.lat, mm.data$utm.lon)))
+# there are 182 stations
 
 # create a primer variable
 mm.data$primer.numeric <- as.numeric(factor(mm.data$primer))
@@ -43,6 +45,7 @@ biosamp_dat <- mm.data %>%
   group_by(unique_biorep_numeric) %>%
   slice(1) %>%
   ungroup()
+# there are 572 station-depth combos
 
 # make data, index vectors and constants for nimble work
 biosamp_station_index <- biosamp_dat$site.numeric
@@ -58,7 +61,7 @@ n_biosamples <- length(unique(mm.data$unique_biorep_numeric))
 #n_methods <- length(unique(mm.data$Collection_method_numeric ))
 n_primers <- length(unique(mm.data$primer.numeric))
 
-Y <- mm.data$Detected 
+Y <- mm.data$DetectAny
 
 #############
 # SITE x DEPTH MODEL: Site-depth specific occupancy states
@@ -83,13 +86,12 @@ site_depth_lookup$site <- as.numeric(sapply(strsplit(site_depth_lookup$combo,
 site_depth_lookup$depth <- as.numeric(sapply(strsplit(site_depth_lookup$combo, 
                                                       "_"), `[`, 2))
 
+m1_newX <- predict(m1.0, newdata = site_depth_lookup, type = "lpmatrix")
+
 # Create index vector for biosamples to site-depth states
 biosamp_dat$site_depth_index <- match(biosamp_dat$site_depth_combo, 
                                       site_depth_lookup$combo)
 biosamp_site_depth_index <- biosamp_dat$site_depth_index
-
-# Center depths for site-depth states
-site_depth_depths <- site_depth_lookup$depth - mean(site_depth_lookup$depth)
 
 ### MODEL
 
@@ -117,7 +119,8 @@ m1.0_nimble <- nimbleCode({
   prob_detection[3] ~ dbeta(1, 1)
   
   # Linear predictor, effect of depth
-  eta[1:N] <- X[1:N, 1:5] %*% b_depth[1:5] 
+  # eta has dimensions of # site-depth combos
+  eta[1:n_site_depth_states] <- X[1:n_site_depth_states, 1:5] %*% b_depth[1:5] 
     
   # Depth-level occurrence
   for (i in 1:n_site_depth_states) { 
@@ -146,7 +149,7 @@ m1.0_nimble <- nimbleCode({
 }) # end model definition
 
 # Data
-data <- list(X = q1Model_m1.0$jags.data$X,
+data <- list(X = m1_newX,
              Y = Y,
              biosamp_Volume_filt_mL = biosamp_Volume_filt_mL)
 
@@ -189,8 +192,7 @@ inits_fn_sitedepth <- function(){
     prob_detection = rep(0.5, n_primers),
     lambda = m1.0$sp, # 2 vec
     #rho = log(q1Model_m1.0$jags.ini$lambda),
-    b_depth = m1.0$coefficients, # 5 vec
-    eta = rep(0, q1Model_m1.0$jags.data$n)
+    b_depth = m1.0$coefficients
   )
 }
 
@@ -200,8 +202,8 @@ nimbleOut_m1.0_Occ <- nimbleMCMC(code = m1.0_nimble,
                              inits = inits_fn_sitedepth(),
                              constants = constants,
                              niter = 250000, 
-                             nburnin = 225000, 
-                             thin = 10, 
+                             nburnin = 25000, 
+                             thin = 100, 
                              nchains = 4,
                              summary=TRUE,
                              samplesAsCodaMCMC = TRUE,
@@ -214,16 +216,16 @@ MCMCsummary(nimbleOut_m1.0_Occ$samples)
 
 # Visualize MCMC chains
 mcmcplot(nimbleOut_m1.0_Occ$samples)
-mcmc.output_coda <- as.mcmc.list(lapply(nimbleOut_m1.0_Occ, as.mcmc))
+#mcmc.output_coda <- as.mcmc.list(lapply(nimbleOut_m1.0_Occ, as.mcmc))
 
-n.post <- 10000
+n.post <- 1000
 post.samples <- rbind.data.frame(nimbleOut_m1.0_Occ$samples$chain1,
                                  nimbleOut_m1.0_Occ$samples$chain2,
                                  nimbleOut_m1.0_Occ$samples$chain3,
                                  nimbleOut_m1.0_Occ$samples$chain4)
 
-post.samples$chain <- c(rep(1, 2500), rep(2, 2500), rep(3, 2500), rep(4, 2500))
-post.samples$sample <- rep(1:2500, times = 4)
+post.samples$chain <- c(rep(1, 250), rep(2, 250), rep(3, 250), rep(4, 250))
+post.samples$sample <- rep(1:250, times = 4)
 
 ggplot(post.samples) +
   geom_line(aes(x = sample, y = log(`lambda[2]`), color = as.factor(chain))) +
@@ -242,33 +244,33 @@ View(data.frame(cbind(post.samples_spline$Parameter,
                  "MGCV" = c(m1.0$coefficients, m1.0$sp), 
                  "Nimble" = post.samples_spline$Med)))
 
-# reconstruct the model expectation
+# smooth of depth
 
-X = q1Model_m1.0$jags.data$X
+# make a new design matrix just for the depths we want
+depth_vals <- data.frame(depth=seq(0, 500, by=10))
+m1_newX_pred <- predict(m1.0, newdata = depth_vals, type = "lpmatrix")
 
-mu.post <- matrix(rep(0, nrow(X)*nrow(post.samples)), nrow = nrow(X))
+eta.post <- m1_newX_pred %*% t(as.matrix(post.samples[,1:5]))
+mu.post <- ilogit(eta.post)
 
-# create a new lp matrix
+# the mean so so smoooth
+mu.post.med <- apply(mu.post, 1, mean)
 
-#predict.gam(object = m1.0, type = "lpmatrix")
+# look at the avg only
+goblin <- depth_vals
+goblin$mp <- mu.post.med
+plot(goblin$depth, goblin$mp, type="l", ylim=c(0,1))
 
 
-for (i in 1:nrow(post.samples)){
-  eta.post <- X[1:nrow(X), 1:5] %*% as.numeric(post.samples[i,1:5])
-  mu.post[1:nrow(X), i] <- as.numeric(ilogit(eta.post))}
-
-# note mu.post is [1:44592, 1:10000] 
-
-#subsample mu.post for speediness
-
-mu.post <- mu.post[1:44592, seq(1,10000, by = 100)]
-
-mu.post.long <- as.data.frame(cbind(Depth = detect_data$depth, mu.post)) %>%
-  pivot_longer(cols = 2:(ncol(mu.post)+1), names_to = "Sample", values_to = "PDetect")
+mu.post.long <- cbind.data.frame(Depth = depth_vals$depth,
+                                 mu.post) %>%
+  pivot_longer(cols = 2:(ncol(mu.post)+1), 
+               names_to = "Sample", values_to = "PDetect")
 
 mu.post.med <- mu.post.long %>%
   group_by(Depth) %>%
-  summarize(Med = median(PDetect),
+  # mean is smoother
+  summarize(Med = mean(PDetect),
             LCI = quantile(PDetect, 0.025),
             UCI = quantile(PDetect, 0.975))
 
@@ -278,15 +280,6 @@ p <- ggplot() +
   geom_line(data = mu.post.med, aes(x=Depth, y = Med))+
   theme_bw()
 
-ggsave(plot = p, file = "./Figures/m1.0_nimbleOccModel.png", width = 4, height = 4, units = "in")
+ggsave(plot = p, file = "./Figures/m1.0_nimbleOccModel.png", 
+       width = 4, height = 4, units = "in")
 
-names(m1.0_sePreds)[1] <- "Depth"
-m1.0_compare <- left_join(m1.0_sePreds, mu.post.med, by = "Depth")
-
-ggplot(m1.0_compare) +
-  geom_line(aes(x=Depth, y = mu))+
-  geom_line(aes(x=Depth, y = mu_jags), color = "blue")+
-  geom_point(aes(x=Depth, y = Med), color = "green")+
-  ylab("P(Detection)")+
-  xlab("Depth")+
-  theme_bw()

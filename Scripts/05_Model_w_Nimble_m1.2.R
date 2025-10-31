@@ -13,77 +13,98 @@ library(viridis)
 library(patchwork)
 library(nimble)
 
-load("./ProcessedData/detect_data_allcet.RData")
-load("ProcessedData/jagam_m1.0.RData")
+load("./ProcessedData/detect_data.RData")
+detect_data$BestTaxon <- as.factor(detect_data$BestTaxon)
+load("ProcessedData/jagam_m1.2.RData")
 
 # check dimensions
-X = q1Model_m1.0$jags.data$X
+X = q1Model_m1.2$jags.data$X
 nrow(X)
 ncol(X)
 
 # define the model
-m1.0_nimble <- nimbleCode({
-    eta[1:2781] <- X[1:2781, 1:5] %*% b_depth[1:5] ## linear predictor (b is beta)
-    for (i in 1:n) { mu[i] <-  ilogit(eta[i]) } ## expected response
-    for (i in 1:n) { y[i] ~ dbin(mu[i],w[i]) } ## response 
-    ## Parametric effect priors CHECK tau=1/7.3^2 is appropriate!
-    for (i in 1:1) { b_depth[i] ~ dnorm(0,0.019) }
-    ## prior for s(depth)... 
-    for (i in c(2:4)) { b_depth[i] ~ dnorm(0, lambda[1]) }
-    for (i in c(5)) { b_depth[i] ~ dnorm(0, lambda[2]) }
-    ## smoothing parameter priors CHECK...
-    for (i in 1:2) {
-      lambda[i] ~ dgamma(.05,.005)
-      rho[i] <- log(lambda[i])
-    }
+m1.2_nimble <- nimbleCode({
+  eta[1:44496] <- X[1:44496, 1:81] %*% b[1:81] ## linear predictor (b is beta)
+  for (i in 1:n) { mu[i] <-  ilogit(eta[i]) } ## expected response
+  for (i in 1:n) { y[i] ~ dbin(mu[i],w[i]) } ## response 
+  ## Parametric effect priors CHECK tau=1/11^2 is appropriate!
+  for (i in 1:1) { b[i] ~ dnorm(0,0.0087) }
+  ## prior for ti(depth)... 
+  for (i in c(2:5)) { b[i] ~ dnorm(0, lambda[1]) }
+  ## prior for ti(BestTaxon)... 
+  for (i in c(6:21)) { b[i] ~ dnorm(0, lambda[2]) }
+  ## prior for ti(depth,BestTaxon)... 
+  K3[1:60,1:60] <- S3[1:60,1:60] * lambda[3]  + S3[1:60,61:120] * lambda[4]
+  b[22:81] ~ dmnorm(zero[22:81],K3[1:60, 1:60]) 
+  ## smoothing parameter priors CHECK...
+  for (i in 1:4) {
+    lambda[i] ~ dgamma(.05,.005)
+    rho[i] <- log(lambda[i])
+  }
+  
+  
 })
 
 # Data
-data <- list(y = q1Model_m1.0$jags.data$y,
-             X = q1Model_m1.0$jags.data$X)
+data <- list(y = q1Model_m1.2$jags.data$y,
+             X = q1Model_m1.2$jags.data$X)
 
 # Constants
-constants <- list(n = q1Model_m1.0$jags.data$n, # number of data points
-                  w = q1Model_m1.0$jags.data$w)
+constants <- list(n = q1Model_m1.2$jags.data$n, # number of data points
+                  w = q1Model_m1.2$jags.data$w,
+                #  S1 = q1Model_m1.2$jags.data$S1,
+                  S3 = q1Model_m1.2$jags.data$S3,
+                  zero = q1Model_m1.2$jags.data$zero)
 
-# use fitted values from mgcv as starting values for the betas
+# could use fitted values from mgcv as starting values for the betas
 
-m1.0 <- gam(DetectAny ~ s(depth, k = 5, bs = "bs"),  
-            diagonalize = TRUE, 
-            family = "binomial", data = detect_data_allcet, method="REML", 
-            select = TRUE) # to create two lambdas
-summary(m1.0)
-nd <- data.frame(depth = seq(0, 500, by = 10))
-newy <- predict.gam(m1.0, newdata = nd, type = "response")
-plot(nd$depth, newy, type = "l", ylim = c(0,1))
+# m1.2 <- gam(Detected ~ 
+#               ti(depth, k=5, bs="ts")+
+#               ti(BestTaxon, k=16, bs="re")+
+#               ti(depth, BestTaxon, k=c(5, 16), bs=c("ts","re")),
+#             family = "binomial", data = detect_data,
+#             method = "REML")
+# summary(m1.2)
+# 
+# m1.2_predictions <- expand_grid(depth = 0:500, BestTaxon = as.factor(unique(detect_data$BestTaxon)))
+
+# response type prediction
+#m1.2preds <- predict(m1.2, m1.2_predictions, type = "response", se.fit = TRUE)
+
+#m1.2_predictions$pred <- m1.2preds$fit
+
+#ggplot(m1.2_predictions) +
+#  geom_line(aes(x=depth, y = pred))+
+#  facet_wrap(~BestTaxon) +
+#  theme_bw()
 
 # Initial values
-inits <- list(lambda = q1Model_m1.0$jags.ini$lambda, # 2 vec
+inits <- list(lambda = q1Model_m1.2$jags.ini$lambda, # 2 vec
              # rho = log(q1Model_m1.0$jags.ini$lambda),
-              b_depth = q1Model_m1.0$jags.ini$b)
+              b = q1Model_m1.2$jags.ini$b)
 
 # Run NIMBLE model
-nimbleOut_m1.0 <- nimbleMCMC(code = m1.0_nimble, 
+nimbleOut_m1.2 <- nimbleMCMC(code = m1.2_nimble, 
                              data = data, 
                              inits = inits,
                              constants = constants,
-                             niter = 50000, 
-                             nburnin = 10000, 
+                             niter = 100000, 
+                             nburnin = 75000, 
                              thin = 100, 
                              nchains = 4,
                              summary=TRUE,
                              samplesAsCodaMCMC = TRUE,
                              WAIC = TRUE)
 
-save(nimbleOut_m1.0, file = "./ProcessedData/nimbleOut_m1.0.RData")
+save(nimbleOut_m1.2, file = "./ProcessedData/nimbleOut_m1.2.RData")
 
 # Gelman-Rubin diagnostic
-MCMCsummary(nimbleOut_m1.0$samples)
+MCMCsummary(nimbleOut_m1.2$samples)
 
 # Visualize MCMC chains
-mcmcplot(nimbleOut_m1.0$samples)
+mcmcplot(nimbleOut_m1.2$samples)
 
-n.post <- 2000
+n.post <- 250
 post.samples <- rbind.data.frame(nimbleOut_m1.0$samples$chain1,
                                  nimbleOut_m1.0$samples$chain2,
                                  nimbleOut_m1.0$samples$chain3,
@@ -99,14 +120,13 @@ mu.post <- matrix(rep(0, q1Model_m1.0$jags.data$n*nrow(post.samples)),
 #predict.gam(object = m1.0, type = "lpmatrix")
 
 # make a new design matrix just for the depths we want
+# NEED TO ADD BestTaxon here
 depth_vals <- data.frame(depth=seq(0, 500, by=10))
 m1_newX_pred <- predict(m1.0, newdata = depth_vals, type = "lpmatrix")
 
+# NEED TO MODIFY
 eta.post <- m1_newX_pred %*% t(as.matrix(post.samples[,1:5]))
 mu.post <- ilogit(eta.post)
-
-# the mean so so smoooth
-mu.post.med <- 
 
 # look at the avg only
 depth_vals$mp <- apply(mu.post, 1, mean)

@@ -7,13 +7,12 @@ library(mgcv)
 library(tidyverse)
 library(rjags)
 
-load("./ProcessedData/detect_data.RData")
+load("./ProcessedData/detect_data_allcet.RData")
 load("./ProcessedData/H1models.Rdata")
 
 ### Aggregate model AIC --------------------------------------------------------
 
 #modelAIC <- AIC(m1.0, m1.1, m1.2, m1.2a, m1.2b, m1.2c, m1.2d, m1.2e, m1.2g)
-#m1.2f has lowest AIC
 
 ### Build jags model -----------------------------------------------------------
 
@@ -21,17 +20,13 @@ load("./ProcessedData/H1models.Rdata")
 # NOTE b splines are probably better than thin plate splines
 # use eigen effect, more spread out
 # bs = bs (b-splines better in Bayesian, bc more local, sampling would be more efficient)
-q1Model_m1.0 <- jagam(Detected ~ s(depth, k = 5, bs = "bs"), 
+q1Model_m1.0 <- jagam(DetectAny ~ s(depth, k = 5, bs = "bs"), 
                       diagonalize = TRUE, 
-                      family = "binomial", data = detect_data,
+                      family = "binomial", data = detect_data_allcet,
                       file = "./ProcessedData/m1.0.jag")
 
 save(q1Model_m1.0, file = "ProcessedData/jagam_m1.0.RData")
 
-# depth by species
-q1Model_m1.2 <- jagam(Detected ~ s(depth, by = as.factor(BestTaxon)), 
-                           family = "binomial", data = detect_species_meta,
-                           file = "./ProcessedData/m1.2.jag")
 
 ### Run jags model -------------------------------------------------------------
 
@@ -49,9 +44,25 @@ plot(jam)  # this is just the spline on depth
 
 pd <- data.frame(depth = 0:500)
 fv <- predict(jam,newdata=pd, scale = "response")
-plot(pd$depth, exp(fv), type = "l")
+plot(pd$depth, exp(fv), type = "l", ylim = c(0,1))
 
-# m1.2 (not run yet as it seriously takes ages)
+# m1.2 depth by species
+
+load("./ProcessedData/detect_data.RData")
+detect_data$BestTaxon <- as.factor(detect_data$BestTaxon)
+
+q1Model_m1.2 <- jagam(Detected ~ 
+                        ti(depth, k=5, bs="ts")+
+                        ti(BestTaxon, k=16, bs="re")+
+                        ti(depth, BestTaxon, k=c(5, 16), bs=c("ts","re")),
+                      diagonalize = TRUE,
+                      family = "binomial", data = detect_data,
+                      file = "./ProcessedData/m1.2.jag")
+
+save(q1Model_m1.2, file = "ProcessedData/jagam_m1.2.RData")
+
+
+# m1.2 
 jm <-jags.model("./ProcessedData/m1.2.jag",
                 data=q1Model_m1.2$jags.data,
                 inits=q1Model_m1.2$jags.ini,

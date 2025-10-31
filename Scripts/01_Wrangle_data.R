@@ -213,3 +213,22 @@ save(detect_data, detect_species_divetime,
      detect_per_species, detect_per_family, 
      detect_per_primer_species, mmEcoEvo,
      maxDepth_species, file = "./ProcessedData/detect_data.Rdata")
+
+## collapse data to detection/non-detection across all cetaceans
+## (this is for the occupancy models where occupancy is 0/1
+## for all cetaceans)
+
+detect_data_allcet <- detect_data %>%
+  select(SampleUID, Sample_name, run, primer, NWFSCsampleID,
+         dilution, techRep, seqRep, Detected, Plate, Thaw,
+         diluti0n, PopID, sample, station, Niskin, depth, volume,
+         date, year, month, day, transect, lat, lon, water.depth,
+         bathy.bottom.depth, bottom.depth.consensus, utm.lon, utm.lat) %>%
+  group_by(SampleUID, Sample_name, run, primer, NWFSCsampleID,
+           dilution, techRep, seqRep, Plate, Thaw,
+           diluti0n, PopID, sample, station, Niskin, depth, volume,
+           date, year, month, day, transect, lat, lon, water.depth,
+           bathy.bottom.depth, bottom.depth.consensus, utm.lon, utm.lat) %>%
+  summarize(DetectAny = ifelse(sum(Detected) == 0, 0, 1))
+
+save(detect_data_allcet, file = "./ProcessedData/detect_data_allcet.RData")
