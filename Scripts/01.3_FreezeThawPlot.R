@@ -11,9 +11,9 @@ ggplot(summarize_thaw) +
   geom_col(aes(x= Thaw, y = POD, fill = n)) +
   facet_wrap(~primer, nrow = 3) +
   theme_bw()+
-  scale_fill_gradient2(low = "white",
+  scale_fill_gradient2(low = "lightgrey",
                         midpoint = 327,
-                        mid = "grey",
+                        mid = "darkgrey",
                         high = "black",
                         space="Lab")
 
