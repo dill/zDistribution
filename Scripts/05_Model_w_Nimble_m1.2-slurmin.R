@@ -1,17 +1,18 @@
 # simple nimble model with just a spline on depth
 # using the jagam object 
 
-#library(MCMCvis)
-#library(boot)
-#library(tidyverse)
-#library(mcmcplots)
-#library(ggplot2)
-#library(ggdist)
-#library(dplyr)
-#library(tidyr)
-#library(viridis)
-#library(patchwork)
+library(MCMCvis)
+library(boot)
+library(tidyverse)
+library(mcmcplots)
+library(ggplot2)
+library(ggdist)
+library(dplyr)
+library(tidyr)
+library(viridis)
+library(patchwork)
 library(nimble)
+library(mgcv)
 
 load("../ProcessedData/detect_data.Rdata")
 detect_data$BestTaxon <- as.factor(detect_data$BestTaxon)
@@ -57,13 +58,12 @@ constants <- list(n = q1Model_m1.2$jags.data$n, # number of data points
                   zero = q1Model_m1.2$jags.data$zero)
 
 # could use fitted values from mgcv as starting values for the betas
-
-# m1.2 <- gam(Detected ~ 
-#               ti(depth, k=5, bs="ts")+
-#               ti(BestTaxon, k=16, bs="re")+
-#               ti(depth, BestTaxon, k=c(5, 16), bs=c("ts","re")),
-#             family = "binomial", data = detect_data,
-#             method = "REML")
+m1.2 <- gam(Detected ~ 
+              ti(depth, k=5, bs="ts")+
+              ti(BestTaxon, k=16, bs="re")+
+              ti(depth, BestTaxon, k=c(5, 16), bs=c("ts","re")),
+            family = "binomial", data = detect_data,
+            method = "REML")
 # summary(m1.2)
 # 
 # m1.2_predictions <- expand_grid(depth = 0:500, BestTaxon = as.factor(unique(detect_data$BestTaxon)))
@@ -97,6 +97,42 @@ nimbleOut_m1.2 <- nimbleMCMC(code = m1.2_nimble,
                              WAIC = TRUE)
 
 save(nimbleOut_m1.2, file = "./ProcessedData/nimbleOut_m1.2.RData")
+load("../ProcessedData/nimbleOut_m1.2.RData")
+
+
+samps <- do.call(rbind, nimbleOut_m1.2$samples)[,1:81]
+
+bt <- unique(detect_data$BestTaxon)
+
+alldat <- c()
+
+# need to install mcmcr
+ss <- list(b=mcmcr::as.mcarray(nimbleOut_m1.2$samples[[1]][,1:81]),
+           rho=array(nimbleOut_m1.2$samples[[1]][,82:85], dim=c(250,4,1)))
+fakey_bacon <- sim2jam(ss, q1Model_m1.2$pregam)
+
+
+
+for(tax in bt){
+  pg <- data.frame(depth=seq(0, 500, by=10),
+                   BestTaxon=tax)
+  Xp <- predict(fakey_bacon, pg, type="lpmatrix")
+
+  lp <- Xp %*% t(samps)
+
+  pg$p <- ilogit(apply(lp, 1, mean))
+  pg$lci <- ilogit(apply(lp, 1, quantile, p=0.025))
+  pg$uci <- ilogit(apply(lp, 1, quantile, p=0.975))
+
+  alldat <- rbind(alldat, pg)
+}
+
+ggplot(alldat) +
+  geom_ribbon(aes(x=depth, ymin= lci, ymax = uci), fill = "lightgrey") +
+  geom_line(aes(x=depth, y = p)) +
+  facet_wrap(~BestTaxon) +
+  theme_bw()
+
 
 ## Gelman-Rubin diagnostic
 #MCMCsummary(nimbleOut_m1.2$samples)
