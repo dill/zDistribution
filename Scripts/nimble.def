@@ -1,0 +1,12 @@
+BootStrap: docker
+From: rocker/r-base
+
+%post
+   apt-get -y update
+   R -e 'install.packages("nimble")'
+
+%environment
+   export LC_ALL=C
+
+%labels
+   Author David L Miller
