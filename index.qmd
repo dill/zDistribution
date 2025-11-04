@@ -1,6 +1,6 @@
 ---
 title: "Species-specific behavior and ecology drive depth distribution of rare species eDNA in pelagic marine environments"
-author: "Amy M. Van Cise^1\\*^, Eiren K. Jacobson^2^, Megan Shaffer^3^, Pedro Brandao^3^, David Miller^4^, Brice Semmens^5^, Ryan Kelly^3^, Ole Shelton^6^, Krista Nichols^6^,  Kim M. Parsons^6^"
+author: "Amy M. Van Cise^1\\*^, Eiren K. Jacobson^2^, Megan Shaffer^3^, Pedro Brandao^3^, David Miller^4,5^, Brice Semmens^6^, Ryan Kelly^3^, Ole Shelton^7^, Krista Nichols^7^,  Kim M. Parsons^7^"
 format: html
 editor: visual
 execute:
@@ -13,11 +13,12 @@ bibliography: references.bib
 ---
 
 1.  School of Aquatic and Fishery Sciences, University of Washington, Seattle, WA, USA
-2.  Centre for Research into Ecological and Environmental Modelling, University of St Andrews, St Andrews, Scotland
+2.  Centre for Research into Ecological and Environmental Modelling, School of Mathematics and Statistics, University of St Andrews, St Andrews, Scotland
 3.  School of Environmental and Marine Affairs, University of Washington, Seattle, WA, USA
-4.  Dave's affiliation
-5.  Scripps Institution of Oceanography, University of California San Diego, San Diego, CA, USA
-6.  Northwest Fisheries Science Center, National Marine Fisheries Service, National Oceanic and Atmospheric Administration, Seattle, WA, USA
+4.  Biomathematics and Statistics Scotland, Dundee, UK
+5.  UK Centre for Ecology and Hydrology, Lancaster Environment Centre, Lancaster, UK
+6.  Scripps Institution of Oceanography, University of California San Diego, San Diego, CA, USA
+7.  Northwest Fisheries Science Center, National Marine Fisheries Service, National Oceanic and Atmospheric Administration, Seattle, WA, USA
 
 <br>
 
