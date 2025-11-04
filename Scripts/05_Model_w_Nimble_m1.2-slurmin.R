@@ -97,7 +97,7 @@ nimbleOut_m1.2 <- nimbleMCMC(code = m1.2_nimble,
                              WAIC = TRUE)
 
 save(nimbleOut_m1.2, file = "./ProcessedData/nimbleOut_m1.2.RData")
-load("../ProcessedData/nimbleOut_m1.2.RData")
+load("./ProcessedData/nimbleOut_m1.2.RData")
 
 
 samps <- do.call(rbind, nimbleOut_m1.2$samples)[,1:81]
@@ -110,8 +110,6 @@ alldat <- c()
 ss <- list(b=mcmcr::as.mcarray(nimbleOut_m1.2$samples[[1]][,1:81]),
            rho=array(nimbleOut_m1.2$samples[[1]][,82:85], dim=c(250,4,1)))
 fakey_bacon <- sim2jam(ss, q1Model_m1.2$pregam)
-
-
 
 for(tax in bt){
   pg <- data.frame(depth=seq(0, 500, by=10),
@@ -130,8 +128,11 @@ for(tax in bt){
 ggplot(alldat) +
   geom_ribbon(aes(x=depth, ymin= lci, ymax = uci), fill = "lightgrey") +
   geom_line(aes(x=depth, y = p)) +
-  facet_wrap(~BestTaxon) +
+  facet_wrap(~BestTaxon, scale = "free_y") +
   theme_bw()
+
+ggsave(filename = "./Figures/m1.2_splinesonly.png", plot = last_plot(), 
+       width = 10, height = 8, units = "in")
 
 
 ## Gelman-Rubin diagnostic

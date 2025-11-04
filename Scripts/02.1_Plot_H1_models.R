@@ -69,9 +69,9 @@ m1.2_sePreds <- data.frame(m1.2_predictions,
 # link type prediction
 m1.2predsL <- predict(m1.2, m1.2_predictions, se.fit = TRUE)
 m1.2_sePreds_link <- data.frame(m1.2_predictions,
-                           mu   = exp(m1.2predsL$fit),
-                           low  = exp(m1.2predsL$fit - 1.96 * m1.2predsL$se.fit),
-                           high = exp(m1.2predsL$fit + 1.96 * m1.2predsL$se.fit)) %>% 
+                           mu   = binomial()$linkinv((m1.2predsL$fit)),
+                           low  = binomial()$linkinv((m1.2predsL$fit - 1.96 * m1.2predsL$se.fit)),
+                           high = binomial()$linkinv(m1.2predsL$fit + 1.96 * m1.2predsL$se.fit)) %>% 
   left_join(mmEcoEvo, by = c("BestTaxon" = "Species")) %>% 
   mutate(common_name = case_when(common_name == "killer whale"~"mammal eating killer whale",
                                  TRUE~common_name)) %>% 
@@ -85,8 +85,14 @@ m1.2_sePreds_link <- data.frame(m1.2_predictions,
                            filter(nDetect >= 10) %>% 
                            pull(BestTaxon)))
 
+# check that this looks reasonable
+ggplot(m1.2_sePreds_link) + 
+  geom_ribbon(aes(x=depth, ymin = low, ymax = high), fill = "grey")+
+  geom_line(aes(x=depth, y=mu))+
+  facet_wrap(~BestTaxon, scales = "free_y")
+
 # transform time_10m to plot with POD by depth
-m1.2_scaled <- m1.2_sePreds %>% 
+m1.2_scaled <- m1.2_sePreds_link %>% 
   group_by(abbrev) %>%
   mutate(time_scaled = time_10m/545) %>% 
   mutate(

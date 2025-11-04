@@ -17,8 +17,6 @@ library(mgcv)
 # Import the jagam object we created previously
 load("ProcessedData/jagam_m1.0.RData")
 
-
-
 # Import the data
 load("./ProcessedData/detect_data_allcet.RData")
 mm.data <- detect_data_allcet
@@ -204,14 +202,14 @@ MCMCsummary(nimbleOut_m1.0_Occ$samples)
 mcmcplot(nimbleOut_m1.0_Occ$samples)
 #mcmc.output_coda <- as.mcmc.list(lapply(nimbleOut_m1.0_Occ, as.mcmc))
 
-n.post <- 9000
+n.post <- 10000
 post.samples <- rbind.data.frame(nimbleOut_m1.0_Occ$samples$chain1,
                                  nimbleOut_m1.0_Occ$samples$chain2,
                                  nimbleOut_m1.0_Occ$samples$chain3,
                                  nimbleOut_m1.0_Occ$samples$chain4)
 
-post.samples$chain <- c(rep(1, 2250), rep(2, 2250), rep(3, 2250), rep(4, 2250))
-post.samples$sample <- rep(1:2250, times = 4)
+post.samples$chain <- c(rep(1, 2500), rep(2, 2500), rep(3, 2500), rep(4, 2500))
+post.samples$sample <- rep(1:2500, times = 4)
 
 ggplot(post.samples) +
   geom_line(aes(x = sample, y = log(`lambda[2]`), color = as.factor(chain))) +
