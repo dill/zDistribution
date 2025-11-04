@@ -123,8 +123,7 @@ m1.2POD <- ggplot(m1.2_scaled, aes(x = depth, color = Broad_taxa, fill = Broad_t
   theme_minimal() +
   theme(legend.position = "bottom", legend.title = element_blank()) +
   ylab("POD") +
-  xlab("Depth")+
-  ylim(c(0,1))
+  xlab("Depth")
 
 png(file = "./Figures/m1.2POD.png")
 m1.2POD
