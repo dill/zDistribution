@@ -1,21 +1,21 @@
 # simple nimble model with just a spline on depth
 # using the jagam object 
 
-library(MCMCvis)
-library(boot)
-library(tidyverse)
-library(mcmcplots)
-library(ggplot2)
-library(ggdist)
+#library(MCMCvis)
+#library(boot)
+#library(tidyverse)
+#library(mcmcplots)
+#library(ggplot2)
+#library(ggdist)
 library(dplyr)
-library(tidyr)
-library(viridis)
-library(patchwork)
+#library(tidyr)
+#library(viridis)
+#library(patchwork)
 library(nimble)
 library(mgcv)
-load("../ProcessedData/detect_data.Rdata")
+load("./ProcessedData/detect_data.Rdata")
 detect_data$BestTaxon <- as.factor(detect_data$BestTaxon)
-load("../ProcessedData/jagam_m1.2.RData")
+load("./ProcessedData/jagam_m1.2.RData")
 
 m1.2 <- gam(Detected ~ 
               ti(depth, k=5, bs="ts")+
@@ -199,7 +199,7 @@ nimbleOut_m1.2 <- nimbleMCMC(code = m1.2_nimble,
                              samplesAsCodaMCMC = TRUE,
                              WAIC = TRUE)
 
-save(nimbleOut_m1.2, file = "../ProcessedData/nimbleOut_m1.2+2LevOcc.RData")
+save(nimbleOut_m1.2, file = "./ProcessedData/nimbleOut_m1.2+2LevOcc.RData")
 # load("../ProcessedData/nimbleOut_m1.2.RData")
 # 
 # 
