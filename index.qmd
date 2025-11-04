@@ -1,6 +1,6 @@
 ---
 title: "Species-specific behavior and ecology drive depth distribution of rare species eDNA in pelagic marine environments"
-author: "Amy M. Van Cise^1\\*^, Eiren K. Jacobson^2^, Megan Shaffer^3^, Pedro Brandao^3^, David Miller^4,5^, Brice Semmens^6^, Ryan Kelly^3^, Ole Shelton^7^, Krista Nichols^7^,  Kim M. Parsons^7^"
+author: "Amy M. Van Cise^1\\*^, Eiren K. Jacobson^2^, Megan Shaffer^3^, Pedro F.P. Brandão Dias^3^, David L. Miller^4,5^, Brice X. Semmens^6^, Ryan P. Kelly^3^, A. Ole Shelton^7^, Krista M. Nichols^7^,  Kim M. Parsons^7^"
 format: html
 editor: visual
 execute:
