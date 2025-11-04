@@ -12,6 +12,8 @@ A full description of field sampling and DNA isolation are provided in Shelton e
 
 In total, we selected 572 samples from the dataset described above. The samples selected were collected from 182 stations, spanning south-north from latitudes 37.89499°N to 48.39881°N and west-east 126.4298°W to 122.8638°W. In terms of depth, we selected 186 were from the surface (0 m), 163 from 50 m, 74 from 150 m, 75 from 300 m, and 74 from 500 m. Samples were randomized across working plates, and were stored in the freezer when not in use. We selected the dilution for the sample that was determined from the qPCR data (described above) to be not inhibited, which was either 1x or 0.2x.
 
+** note: where should freeze/thaw information go? **
+
 ### Sample Processing
 
 DNA was extracted using a phase-lock phenol chloroform method as described in Ramón-Laca et al. (2021). All samples were tested for inhibition by spiking an internal positive control (IPC) of known concentration into each sample and quantifying it using a probe assay with quantitative PCR (qPCR). Samples were deemed inhibited if the IPC concentration was lower than expected (e.g., a Ct cycle value of 0.5 or higher than the expected Ct) - as described in Shelton et al. (2022).
@@ -60,9 +62,9 @@ We assessed model fit using AIC, and model performance using standard metrics in
 
 In Q1, we did not account for the primers used when processing each sample. Since primers were applied consistently across samples, as described in section X.X, this is not likely to affect our results. However, we were interested in leveraging the information contained in multiple technical replicates from individual biological samples to better understand the occupancy, capture, and detection processes for cetacean eDNA. We used a Bayesian hierarchical occupancy model to separately estimate the probability of occupancy/capture by depth and detectability by primer.
 
-GAMs can also be used in a Bayesian context [@miller2025]. To incorporate smooth terms in our Bayesian hierarchical model we exported the design, penalty, and covariance matrices created in model Q1.3 using mgcv::jagam [@Wood2016].
+GAMs can also be used in a Bayesian context [@miller2025]. To incorporate smooth terms in our Bayesian hierarchical model we exported the design, penalty, and covariance matrices created in model Q1.3 using mgcv::jagam [@Wood2016]. 
 
-Our Bayesian hierarchical occupancy model was modified from Patin et al. (submitted) and consisted of two levels: occupancy/capture and detection.
+Our occupancy model was modified from Patin et al. (submitted) and consisted of two levels: occupancy/capture (eDNA presence) and detection.
 
 We modelled the presence of cetacean eDNA in a given biological replicate at site $s$ and depth $d$, $z_{s,d}$, as a Bernoulli random variable with occurrence probability $\Psi_d$:
 
