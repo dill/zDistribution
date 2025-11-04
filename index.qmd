@@ -96,9 +96,13 @@ In general, sampling near the surface will increase detection rates of delphinid
 
 #### Question 2:
 
-5.  Increasing primer specificity increases POD. *and this covaries with depth effect?*
+5.  Occupancy models can be used to separate effects of presence and detection.
 
-Patin et al. \[Patin2025\] used an occupancy model to characterize delphinid occupancy, capture, and detection across sampling methods and primers in a highly replicated survey in Southern California. The high level of replication (biological and technical) allowed the authors to separately estimate occupancy probability by depth, capture probability by sampling method, and detection probability by primer. Here, we had access to a single biological replicate collected at each sampling site and depth, so we are unable to resolve the difference between occupancy and capture of cetacean eDNA. However, in our study usually five and sometimes as many as eight technical replicates were run on each biological replicate, so we can use this information to better characterize occupancy/capture by depth and detectability by primer.
+    Also: Increasing primer specificity increases POD? and *this covaries with depth effect?*
+
+Patin et al. \[Patin2025\] used a Bayesian hierarchical occupancy model to characterize delphinid occupancy, capture, and detection across sampling methods and primers in a highly replicated survey in Southern California. The high level of replication (biological and technical) in that study allowed the authors to separately estimate occupancy probability by depth, capture probability by sampling method, and detection probability by primer. Here, we had access to a single biological replicate collected at each sampling site and depth, so we are unable to resolve the difference between occupancy and capture of cetacean eDNA. However, in our study usually five and sometimes as many as eight technical replicates were run on each biological replicate, so we did use this information to better characterize occupancy/capture by depth and detectability by primer.
+
+We found that species-specific patterns of cetacean eDNA presence with depth were qualitatively similar in shape when fitted in an occupancy model context, but the values tended to be much higher, with confidence intervals approaching 1. This makes sense since the Bayesian hierarchical occupancy model was able to separately estimate the probability of presence and the probability of detection, whereas the frequentist GAM was not.
 
 #### Question 3:
 
