@@ -134,6 +134,10 @@ m1.2_nimble <- nimbleCode({
     rho[i] <- log(lambda[i])
   }
   
+  # primer detection probability priors
+  prob_detection[1] ~ dbeta(1, 1)
+  prob_detection[2] ~ dbeta(1, 1)
+  prob_detection[3] ~ dbeta(1, 1)
   
 })
 
@@ -200,22 +204,19 @@ nimbleOut_m1.2 <- nimbleMCMC(code = m1.2_nimble,
                              WAIC = TRUE)
 
 save(nimbleOut_m1.2, file = "./ProcessedData/nimbleOut_m1.2+2LevOcc.RData")
-# load("../ProcessedData/nimbleOut_m1.2.RData")
-# 
-# 
+# load("./ProcessedData/nimbleOut_m1.2+2LevOcc.RData")
+#  
 # samps <- do.call(rbind, nimbleOut_m1.2$samples)[,1:81]
-# 
+#  
 # bt <- unique(detect_data$BestTaxon)
 # 
 # alldat <- c()
 # 
 # # need to install mcmcr
 # ss <- list(b=mcmcr::as.mcarray(nimbleOut_m1.2$samples[[1]][,1:81]),
-#            rho=array(nimbleOut_m1.2$samples[[1]][,82:85], dim=c(250,4,1)))
-# fakey_bacon <- sim2jam(ss, q1Model_m1.2$pregam)
-# 
-# 
-# 
+#             rho=array(nimbleOut_m1.2$samples[[1]][,82:85], dim=c(250,4,1)))
+#  fakey_bacon <- sim2jam(ss, q1Model_m1.2$pregam)
+#  
 # for(tax in bt){
 #   pg <- data.frame(depth=seq(0, 500, by=10),
 #                    BestTaxon=tax)
@@ -235,12 +236,12 @@ save(nimbleOut_m1.2, file = "./ProcessedData/nimbleOut_m1.2+2LevOcc.RData")
 #   geom_line(aes(x=depth, y = p)) +
 #   facet_wrap(~BestTaxon) +
 #   theme_bw()
-# 
+
 
 ## Gelman-Rubin diagnostic
 #MCMCsummary(nimbleOut_m1.2$samples)
-#
-## Visualize MCMC chains
+
+# Visualize MCMC chains
 #mcmcplot(nimbleOut_m1.2$samples)
 #
 #n.post <- 250
