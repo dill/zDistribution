@@ -84,12 +84,26 @@ m1.2_sePreds_link <- data.frame(m1.2_predictions,
   filter(BestTaxon %in% (detect_per_species %>% 
                            filter(nDetect >= 10) %>% 
                            pull(BestTaxon)))
-
-# check that this looks reasonable
-ggplot(m1.2_sePreds_link) + 
-  geom_ribbon(aes(x=depth, ymin = low, ymax = high), fill = "grey")+
-  geom_line(aes(x=depth, y=mu))+
-  facet_wrap(~BestTaxon, scales = "free_y")
+library(gtools)
+m1.2_sePreds_link <- data.frame(m1.2_predictions,
+                                mu   = inv.logit(m1.2predsL$fit),
+                                se.fit = m1.2predsL$se.fit,
+                                lowlink  = (m1.2predsL$fit - (1.96 * m1.2predsL$se.fit)),
+                                highlink = (m1.2predsL$fit + (1.96 * m1.2predsL$se.fit)),
+                                low = inv.logit(m1.2predsL$fit - (1.96 * m1.2predsL$se.fit)),
+                                high = inv.logit(m1.2predsL$fit + (1.96 * m1.2predsL$se.fit))) %>% 
+  left_join(mmEcoEvo, by = c("BestTaxon" = "Species")) %>% 
+  mutate(common_name = case_when(common_name == "killer whale"~"mammal eating killer whale",
+                                 TRUE~common_name)) %>% 
+  mutate(depth = case_when(depth == 0~1,
+                           TRUE~depth)) %>%
+  left_join(timeAtDepth, by = c("common_name" = "Species", "depth" = "depth")) %>% 
+  left_join(maxDepth_species, by = c("common_name" = "Species")) %>% 
+  mutate(time_10m = case_when(depth > maxDepth~0,
+                              TRUE~time_10m)) %>% 
+  filter(BestTaxon %in% (detect_per_species %>% 
+                           filter(nDetect >= 10) %>% 
+                           pull(BestTaxon))) 
 
 # transform time_10m to plot with POD by depth
 m1.2_scaled <- m1.2_sePreds_link %>% 
@@ -104,7 +118,7 @@ m1.2_scaled <- m1.2_sePreds_link %>%
 m1.2POD <- ggplot(m1.2_scaled, aes(x = depth, color = Broad_taxa, fill = Broad_taxa)) +
   geom_line(aes(y = mu)) +
   geom_smooth(aes(ymin = low, ymax = high, y = mu), stat = "identity") +
-  geom_smooth(aes(y = time_scaled), linetype = 2) +
+  geom_line(aes(y = time_scaled), linetype = 2) +
   scale_fill_manual(values = c(pnw_palette("Cascades",5, type = "continuous")[4:5],
                                pnw_palette("Sunset",1, type = "continuous"))) +
   scale_color_manual(values = c(pnw_palette("Cascades",5, type = "continuous")[4:5],

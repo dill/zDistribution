@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Amy M. Van Cise1*, Eiren K. Jacobson2, Megan Shaffer3, Pedro Brandao3, David Miller4, Brice Semmens5, Ryan Kelly3, Ole Shelton6, Krista Nichols6, Kim M. Parsons6">
+<meta name="author" content="Amy M. Van Cise1*, Eiren K. Jacobson2, Megan R. Shaffer3, Pedro F.P. Brandão Dias3, David L. Miller4,5, Brice X. Semmens6, Ryan P. Kelly3, A. Ole Shelton7, Krista M. Nichols7, Kim M. Parsons7">
 
 <title>Species-specific behavior and ecology drive depth distribution of rare species eDNA in pelagic marine environments</title>
 <style>
@@ -55,6 +55,35 @@ div.csl-indent {
 <link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="index_files/libs/bootstrap/bootstrap-8a79a254b8e706d3c925cde0a310d4f0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -76,7 +105,7 @@ div.csl-indent {
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Amy M. Van Cise<sup>1*</sup>, Eiren K. Jacobson<sup>2</sup>, Megan Shaffer<sup>3</sup>, Pedro Brandao<sup>3</sup>, David Miller<sup>4</sup>, Brice Semmens<sup>5</sup>, Ryan Kelly<sup>3</sup>, Ole Shelton<sup>6</sup>, Krista Nichols<sup>6</sup>, Kim M. Parsons<sup>6</sup> </p>
+             <p>Amy M. Van Cise<sup>1*</sup>, Eiren K. Jacobson<sup>2</sup>, Megan R. Shaffer<sup>3</sup>, Pedro F.P. Brandão Dias<sup>3</sup>, David L. Miller<sup>4,5</sup>, Brice X. Semmens<sup>6</sup>, Ryan P. Kelly<sup>3</sup>, A. Ole Shelton<sup>7</sup>, Krista M. Nichols<sup>7</sup>, Kim M. Parsons<sup>7</sup> </p>
           </div>
   </div>
     
@@ -91,9 +120,10 @@ div.csl-indent {
 
 <ol type="1">
 <li>School of Aquatic and Fishery Sciences, University of Washington, Seattle, WA, USA</li>
-<li>Centre for Research into Ecological and Environmental Modelling, University of St Andrews, St Andrews, Scotland</li>
+<li>Centre for Research into Ecological and Environmental Modelling, School of Mathematics and Statistics, University of St Andrews, St Andrews, Scotland</li>
 <li>School of Environmental and Marine Affairs, University of Washington, Seattle, WA, USA</li>
-<li>Dave’s affiliation</li>
+<li>Biomathematics and Statistics Scotland, Dundee, UK</li>
+<li>UK Centre for Ecology and Hydrology, Lancaster Environment Centre, Lancaster, UK</li>
 <li>Scripps Institution of Oceanography, University of California San Diego, San Diego, CA, USA</li>
 <li>Northwest Fisheries Science Center, National Marine Fisheries Service, National Oceanic and Atmospheric Administration, Seattle, WA, USA</li>
 </ol>
@@ -123,6 +153,7 @@ div.csl-indent {
 <p>We leveraged eDNA samples collected on the 2019 US-Canada Integrated Ecosystems and Acoustics-Trawl Survey for Pacific hake from 2 July to 19 August 2019. The study area is encompassed by the California Current System, which is 500-800km wide, extends from 43°N to 23°N, and comprises an equatorward surface current and a subsurface poleward current that is concentrated mainly on the continental shelf <span class="citation" data-cites="hickey79">(<a href="#ref-hickey79" role="doc-biblioref">Hickey 1979</a>)</span>. The system is characterized by strong alongshore advection, inshore upwelling concentrated primarily along the continental shelf break, and multiple terrestrial and oceanic water sources <span class="citation" data-cites="mcclatchie14">Auad, Roemmich, and Gilson (<a href="#ref-auad_etal11" role="doc-biblioref">2011</a>)</span>. These complex oceanogrpahic processes support a highly productive and diverse assemblage of plankton and fishes, form a rich prey base for at least 25 cetacean species that inhabit the study area <span class="citation" data-cites="carretta_etal23">(<a href="#ref-carretta_etal23" role="doc-biblioref">Carretta et al. 2023</a>)</span>.</p>
 <p>A full description of field sampling and DNA isolation are provided in Shelton et al.&nbsp;(2022). Briefly summarized, seawater was collected at 186 stations from six depths (surface, 50, 100, 150, 300 and 500 m) using niskin bottles attached to a CTD rosette (totalling 1769 samples). All eDNA sampling occurred at night. 2.5 L of water was filtered across a 47-mm diameter, 1-µm pore size mixed cellulose ester (MCE) filter, using a vacuum filtration manifold connected to a vacuum pump. The filters were immediately preserved in Longmire’s buffer and stored at room temperature until extraction.</p>
 <p>In total, we selected 572 samples from the dataset described above. The samples selected were collected from 182 stations, spanning south-north from latitudes 37.89499°N to 48.39881°N and west-east 126.4298°W to 122.8638°W. In terms of depth, we selected 186 were from the surface (0 m), 163 from 50 m, 74 from 150 m, 75 from 300 m, and 74 from 500 m. Samples were randomized across working plates, and were stored in the freezer when not in use. We selected the dilution for the sample that was determined from the qPCR data (described above) to be not inhibited, which was either 1x or 0.2x.</p>
+<p>** note: where should freeze/thaw information go? **</p>
 </section>
 <section id="sample-processing" class="level3">
 <h3 class="anchored" data-anchor-id="sample-processing">Sample Processing</h3>
@@ -141,29 +172,43 @@ div.csl-indent {
 <section id="bioinformatic-processing" class="level3">
 <h3 class="anchored" data-anchor-id="bioinformatic-processing">Bioinformatic Processing</h3>
 <p>Starting with Illumina-demultiplexed sequencing files, we first removed primer and adapter sequences using Cutadapt v4.9, applying the default mismatch tolerance parameter (-e 0.1) <strong>(Martin 2011)</strong>. Next, we performed quality filtering using the filterAndTrim function from the DADA2 R package, retaining its default parameters while specifying the optional truncLen argument to match the <strong>minimum MiFish amplicon length</strong>. After filtering, we denoised the sequences using DADA2 with default settings (Callahan et al.&nbsp;2016), which resulted in a list of Amplicon Sequence Variants (ASVs) across all samples. Each resulting ASV was then assigned a unique 28-character hash code using the sha-1 algorithm with the R function map chr. This allowed us to create a common database of ASVs by hash, enabling us to track which sequences have already been annotated for consistency and to avoid redundant computational efforts.</p>
-<p>For taxonomic assignment of ASVs, we used standalone BLAST (Altschul et al.&nbsp;1990) to compare each unique ASV against the NCBI nr eukaryote database as of January 2025. BLAST arguments were as follows: ”-word size 30 -evalue ”1e-30” -max target seqs 50”. To streamline annotation, we also used the ”-negative taxids” argument, including a list of target organisms closely related to those present in the sampled region, but known to be absent. The complete list of taxids that were excluded is available alongside the pipeline code. Finally, we performed a least common ancestor (LCA) analysis on the top BLAST hits using TaxonKit v0.17 <strong>(REF)</strong>. Sequences with a 100 percent identity match to any database sequence were prioritized for LCA. In the absence of perfect matches, we conducted LCA analysis on the top hits with identity scores above 99.3, 98, or 96 percent respectively. In the absence of any hits above 96 identity, taxonomic assignment was truncated.</p>
+<p>For taxonomic assignment of ASVs, we used standalone BLAST (Altschul et al.&nbsp;1990) to compare each unique ASV against the NCBI nr eukaryote database as of January 2025. BLAST arguments were as follows: “-word size 30 -evalue”1e-30” -max target seqs 50”. To streamline annotation, we also used the “-negative taxids” argument, including a list of target organisms closely related to those present in the sampled region, but known to be absent. The complete list of taxids that were excluded is available alongside the pipeline code. Finally, we performed a least common ancestor (LCA) analysis on the top BLAST hits using TaxonKit v0.17 <strong>(REF)</strong>. Sequences with a 100 percent identity match to any database sequence were prioritized for LCA. In the absence of perfect matches, we conducted LCA analysis on the top hits with identity scores above 99.3, 98, or 96 percent respectively. In the absence of any hits above 96 identity, taxonomic assignment was truncated.</p>
 <p><strong>Any extra info about D-loop and cetaceans?</strong></p>
 </section>
 <section id="data-qaqc" class="level3">
 <h3 class="anchored" data-anchor-id="data-qaqc">Data QAQC</h3>
-<p>We defined a sample as a station/depth/technical replicate combination, and first removed any samples considered to be sequencing failures. Sequencing failures were defined for MV1 and MFU as samples for which no fish were successfully sequenced. Because DL targets cetaceans and excludes fish, we did not define a sequencing failure for this primer and instead included all samples run. Positive detections were defined as samples containing at least one cetacean DNA sequence for each of the three primers, following XXX (REF HERE). We filtered out any non-target (non-cetacean) species, and also removed any detections of bottlenose dolphins and unidentified Balaenopterids or Delphinids (because … ).</p>
+<p>We defined a sample as a station/depth/technical replicate combination, and first removed any samples considered to be sequencing failures. Sequencing failures were defined for MV1 and MFU as samples for which no fish were successfully sequenced. Because DL targets cetaceans and excludes fish, we did not define a sequencing failure for this primer and instead included all samples run. We filtered out any non-target (non-cetacean) species, and also removed any detections of bottlenose dolphins and unidentified Balaenopterids or Delphinids (because … ).</p>
 <p>To obtain non-detections, we included all MFU and MV1 samples that had at least one marine species detected, but no cetaceans - excluding any samples that completely failed sequencing. Because our DL primer specifically targets a subset of very rare species, we assume that sequencing failure indicates a non-detection - therefore, for this primer we included any station/depth/species combination that was not detected as a non-detect.</p>
 </section>
 <section id="data-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="data-analysis">Data Analysis</h3>
 <section id="question-1-does-pod-vary-with-depth" class="level4">
 <h4 class="anchored" data-anchor-id="question-1-does-pod-vary-with-depth">Question 1: Does POD vary with depth?</h4>
-<p>We addressed this question using generalized additive models (GAMs; <span class="citation" data-cites="Wood2017">Wood (<a href="#ref-Wood2017" role="doc-biblioref">2017</a>)</span>) implemented using the mgcv package in R <span class="citation" data-cites="RCoreTeam2016">(<a href="#ref-RCoreTeam2016" role="doc-biblioref">R Core Team 2016</a>)</span>. GAMs have previously been demonstrated to be an appropriate tool for modeling spatial use in cetaceans (e.g. <span class="citation" data-cites="Becker2016">Elizabeth A. Becker et al. (<a href="#ref-Becker2016" role="doc-biblioref">2016</a>)</span>; <span class="citation" data-cites="Becker2019">Elizabeth A. Becker et al. (<a href="#ref-Becker2019" role="doc-biblioref">2019</a>)</span>; <span class="citation" data-cites="Becker2020">Elizabeth A. Becker et al. (<a href="#ref-Becker2020" role="doc-biblioref">2020</a>)</span>; <span class="citation" data-cites="becker_etal22">Elizabeth A. Becker et al. (<a href="#ref-becker_etal22" role="doc-biblioref">2022</a>)</span>; <span class="citation" data-cites="abrahms_etal19b">Abrahms et al. (<a href="#ref-abrahms_etal19b" role="doc-biblioref">2019</a>)</span>). We first collapsed our detection data across all technical replicates at each sampling station and depth and defined a positive detection at that location and depth as detection in at least one technical replicate. We fit all GAMs using 0/1 detections as the response variable with a binomial distribution and logit link function, and estimated model parameters using REML. Models examining depth effect alone were built iteratively, starting with (1) assessing probability of detection (POD) across all species at sampling depths between 1 and 500m, then (2) allowing y-intercept to vary by species, and finally (3) allowing model smooth to vary by species.</p>
+<p>We addressed this question using generalized additive models (GAMs; <span class="citation" data-cites="Wood2017">Wood (<a href="#ref-Wood2017" role="doc-biblioref">2017</a>)</span>) implemented using the mgcv package in R <span class="citation" data-cites="RCoreTeam2016">(<a href="#ref-RCoreTeam2016" role="doc-biblioref">R Core Team 2016</a>)</span>. GAMs have previously been demonstrated to be an appropriate tool for modeling spatial use in cetaceans (e.g. <span class="citation" data-cites="Becker2016">Elizabeth A. Becker et al. (<a href="#ref-Becker2016" role="doc-biblioref">2016</a>)</span>; <span class="citation" data-cites="Becker2019">Elizabeth A. Becker et al. (<a href="#ref-Becker2019" role="doc-biblioref">2019</a>)</span>; <span class="citation" data-cites="Becker2020">Elizabeth A. Becker et al. (<a href="#ref-Becker2020" role="doc-biblioref">2020</a>)</span>; <span class="citation" data-cites="becker_etal22">Elizabeth A. Becker et al. (<a href="#ref-becker_etal22" role="doc-biblioref">2022</a>)</span>; <span class="citation" data-cites="abrahms_etal19b">Abrahms et al. (<a href="#ref-abrahms_etal19b" role="doc-biblioref">2019</a>)</span>). We fit all GAMs using 0/1 detections as the response variable with a binomial distribution and logit link function, and estimated model parameters using REML. Models examining depth effect alone were built iteratively, starting with (1) assessing probability of detection (POD) across all species at sampling depths between 1 and 500m, then (2) allowing y-intercept to vary by species, and finally (3) allowing model smooth to vary by species.</p>
 <p>In addition to examining depth variability across species-level strata, we examined several other ecological stratification schemes in order to determine whether depth variability in detection probability is driven by (1) evolutionary inertia (i.e.&nbsp;taxonomic family) or (2) preferred prey type.</p>
 <p>We assessed model fit using AIC, and model performance using standard metrics including the percent of deviance explained, the area under the receiver operating characteristic curve <span class="citation" data-cites="fawcett06">(AUC, <a href="#ref-fawcett06" role="doc-biblioref">Fawcett 2006</a>)</span>, the true skill statistic <span class="citation" data-cites="allouche_etal06">(TSS, <a href="#ref-allouche_etal06" role="doc-biblioref">Allouche, Tsoar, and Kadmon 2006</a>)</span>, and a visual comparison of predicted vs.&nbsp;observed detection rates across sampling depths. We also visually compared our model-based predictions of probability of detection across depth with estimates of species-specific time-at-depth as reported in <span class="citation" data-cites="watwood_buonantony12">(<a href="#ref-watwood_buonantony12" role="doc-biblioref">Watwood and Buonantony 2012</a>)</span> and <span class="citation" data-cites="u_s_departmentofthenavy17">(<a href="#ref-u_s_departmentofthenavy17" role="doc-biblioref">Navy 2017</a>)</span>.</p>
 </section>
-<section id="question-2-does-depth-variability-in-pod-covary-with-observation-bias" class="level4">
-<h4 class="anchored" data-anchor-id="question-2-does-depth-variability-in-pod-covary-with-observation-bias">Question 2: Does depth variability in POD covary with observation bias?</h4>
-<p>To address this question, we extracted smooths from the best fit model in Q1 and input them into a Bayesian hierarchical occupancy model, developed based on Patin et al.&nbsp;(<em>in prep</em>) to explicitly examine depth variability alongside potential sources of observational bias, including technical replication, primer specificity, sampling volume, and number of freeze/thaw cycles. <strong>MORE HERE</strong></p>
+<section id="question-2-does-accounting-for-detectability-change-inference-on-depth-relationship" class="level4">
+<h4 class="anchored" data-anchor-id="question-2-does-accounting-for-detectability-change-inference-on-depth-relationship">Question 2: Does accounting for detectability change inference on depth relationship?</h4>
+<p>In Q1, we did not account for the primers used when processing each sample. Since primers were applied consistently across samples, as described in section X.X, this is not likely to affect our results. However, we were interested in leveraging the information contained in multiple technical replicates from individual biological samples to better understand the occupancy, capture, and detection processes for cetacean eDNA. We used a Bayesian hierarchical occupancy model to separately estimate the probability of occupancy/capture by depth and detectability by primer.</p>
+<p>GAMs can also be used in a Bayesian context <span class="citation" data-cites="miller2025">(<a href="#ref-miller2025" role="doc-biblioref">Miller 2025</a>)</span>. To incorporate smooth terms in our Bayesian hierarchical model we exported the design, penalty, and covariance matrices created in model Q1.3 using mgcv::jagam <span class="citation" data-cites="Wood2016">(<a href="#ref-Wood2016" role="doc-biblioref">Wood, N Pya, and Safken 2016</a>)</span>.</p>
+<p>Our occupancy model was modified from Patin et al.&nbsp;(submitted) and consisted of two levels: occupancy/capture (eDNA presence) and detection.</p>
+<p>We modelled the presence of cetacean eDNA in a given biological replicate at site <span class="math inline">\(s\)</span> and depth <span class="math inline">\(d\)</span>, <span class="math inline">\(z_{s,d}\)</span>, as a Bernoulli random variable with occurrence probability <span class="math inline">\(\Psi_d\)</span>:</p>
+<p><span class="math display">\[
+z_{s,d} \sim \text{Bernoulli}(\Psi_{d})
+\]</span>,</p>
+<p>where probability of presence in a sample at depth <span class="math inline">\(\Psi_d\)</span> is a smooth, species-specific function of sample depth <span class="math inline">\(D_d\)</span>:</p>
+<p><span class="math display">\[
+\text{logit}(\Psi_d) = s(d) \cdot D_d.
+\]</span></p>
+<p>Each biological replicate was then subsampled for PCR amplification with three different primer sets. We modelled the observed detection of cetacean eDNA in each technical replicate <span class="math inline">\(x_t\)</span> as a Bernoulli random variable with primer-specific detection probability <span class="math inline">\(\Omega_\text{primer}\)</span> conditional on presence in the biological sample <span class="math inline">\(z_{s,d}\)</span>:</p>
+<p><span class="math display">\[
+x_t \sim \text{Bernoulli}({\Omega_\text{primer}} \cdot z_{s,d}).
+\]</span></p>
 </section>
 <section id="question-3-does-depth-variability-in-pod-covary-with-xy-variability" class="level4">
 <h4 class="anchored" data-anchor-id="question-3-does-depth-variability-in-pod-covary-with-xy-variability">Question 3: Does depth variability in POD covary with xy variability?</h4>
-<p>We returned to the use of GAMs to address Question 3, and again built iterative models in order to examine covariability between depth, latitude, and longitude on a per-species basis. We began by examining whether xy variability explained a significant amount of remaining variability left in the model after depth variability was account for (i.e.&nbsp;POD ~ z + xy), then tested whether x, y, and z covary (i.e.&nbsp;POD ~ xyz). Finally, we allowed the model of xyz covariability to vary idependently by species.</p>
+<p>We returned to the use of GAMs in a frequentist context to address Question 3, and again built iterative models in order to examine covariability between depth, latitude, and longitude on a per-species basis. We began by examining whether xy variability explained a significant amount of remaining variability left in the model after depth variability was account for (i.e.&nbsp;POD ~ z + xy), then tested whether x, y, and z covary (i.e.&nbsp;POD ~ xyz). Finally, we allowed the model of xyz covariability to vary idependently by species.</p>
 <p>We assessed model fit using AIC, and model performance using percent deviance explained, AUC, and TSS, as in Question 1. We then conducted a visual comparison of the predicted depth of maximum POD across and our observed detection depth within the study area for the most frequently observed baleen whale, dolphin, and beaked whale.</p>
 </section>
 </section>
@@ -466,7 +511,7 @@ Figure&nbsp;1: Left: Distribution of detections across sampling depths for all s
 </div>
 <section id="question-1-does-pod-vary-with-depth-1" class="level3">
 <h3 class="anchored" data-anchor-id="question-1-does-pod-vary-with-depth-1">Question 1: Does POD vary with depth?</h3>
-<p>GAM-based model selection of detection probability across sampling depths negated the null hypothesis of no variation across depth (Supplemental Figure S1). The best alternative model includes significant smooth terms for depth, species, and depth x species interaction (AIC = 5410). This model explained 14.3% of variance in eDNA detection probability, <em>with an AUC of XXX and TSS of XXXX.</em></p>
+<p>GAM-based model selection of detection probability across sampling depths negated the null hypothesis of no variation across depth (Supplemental Figure S1). The best alternative model includes significant smooth terms for depth, species, and depth x species interaction (AIC = 5344). This model explained 14.3% of variance in eDNA detection probability, <em>with an AUC of XXX and TSS of XXXX.</em></p>
 <p>Broadly, delphinids were more likely to be detected at the surface, beaked whales at depths &gt; 200m, and baleen whales either at the surface or at depths &gt; 400m (<a href="#fig-H1POD-species" class="quarto-xref">Figure&nbsp;2</a>). While detection data from the five species detected fewer than 10 times were included in our model input, we did not make predictions for any of these species. Species-specific model predictions generally agreed with the raw detection data.</p>
 <p>Among the delphinids, species-specific trends in POD generally reflected model estimates of time-at-depth. Conversely, most beaked whale and baleen whale species in the study were most likely to be detected deeper than where they spend most of their time (<a href="#fig-H1POD-species" class="quarto-xref">Figure&nbsp;2</a>). Most notably, predicted POD-at-depth plots for two of the three baleen whales indicated a high probability of detection at 500 m, while these two species spend most of their time above ~200 m.</p>
 <div class="cell">
@@ -483,7 +528,7 @@ Figure&nbsp;2: Species-specific probability of detection across all depths sampl
 </div>
 </div>
 </div>
-<p>Models stratifying detections by taxonomic Family and preferred prey type both had lower AIC values than the model stratified by species (AIC = 5810 and 5949, respectively); however, these models still had significant terms for Family and depth x Family interactions (taxonomic model) and for depth, prey type, and depth x prey type interactions (prey type model). <em>Model diagnostics here.</em> Predicted POD curves for each model illustrate varying trends in POD with depth across strata (<a href="#fig-H1POD-family-prey" class="quarto-xref">Figure&nbsp;3</a>). Similar to the model stratified by species, we did not make predictions for Families with fewer than 10 detections using the taxonomic model, which excluded the Balaenidae (bowhead whale family).</p>
+<p>Models stratifying detections by taxonomic Family and preferred prey type both had lower AIC values than the model stratified by species (AIC = 5712 and 5836, respectively); however, these models still had significant terms for Family and depth x Family interactions (taxonomic model) and for depth, prey type, and depth x prey type interactions (prey type model). <em>Model diagnostics here.</em> Predicted POD curves for each model illustrate varying trends in POD with depth across strata (<a href="#fig-H1POD-family-prey" class="quarto-xref">Figure&nbsp;3</a>). Similar to the model stratified by species, we did not make predictions for Families with fewer than 10 detections using the taxonomic model, which excluded the Balaenidae (bowhead whale family).</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-H1POD-family-prey" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -498,14 +543,28 @@ Figure&nbsp;3: Left: POD by depth for species stratified by taxonomic Family. Ri
 </div>
 </div>
 </div>
-<section id="question-2-does-depth-variability-in-pod-covary-with-observation-bias-1" class="level4">
-<h4 class="anchored" data-anchor-id="question-2-does-depth-variability-in-pod-covary-with-observation-bias-1">Question 2: Does depth variability in POD covary with observation bias?</h4>
-<p>Technical replication increases probability of detection.</p>
+<section id="question-2-does-depth-variability-in-pod-covary-with-observation-bias" class="level4">
+<h4 class="anchored" data-anchor-id="question-2-does-depth-variability-in-pod-covary-with-observation-bias">Question 2: Does depth variability in POD covary with observation bias?</h4>
+<p>Our hierarchical model indicates that given the presence of a cetacean species’ eDNA in a sample, the probability of detecting that DNA in downstream processing is affected by primer specificity, DNA degradation by freeze/thaw cycles, and the number of technical replicates used to used to probe the sample (<a href="#fig-H2POD-obsbias" class="quarto-xref">Figure&nbsp;4</a>). Sequencing runs using MV1 and MFU primers, which target regions of XX and XX bp in length, were not affected by the number of freeze-thaw cycles accumulated prior to sequencing. Sequencing runs using the DL primer set, which targets a region of XX bp in length, was affected by freeze thaw cycles such that sequencing runs with 1 freeze/thaw cycle had a higher detection rate than MV1 or MFU and sequencing runs with 2-XX freeze/thaw cycles had a lower detection rate thn MV1 or MFU.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-H2POD-obsbias" class="quarto-float quarto-figure quarto-figure-center anchored" width="750">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-H2POD-obsbias-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./Figures/PatinEtAl_DetectionByPrimer_wThaw.png" id="fig-H2POD-obsbias" class="img-fluid figure-img" width="750">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-H2POD-obsbias-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="question-3-does-depth-variability-in-pod-covary-with-xy-variability-1" class="level4">
 <h4 class="anchored" data-anchor-id="question-3-does-depth-variability-in-pod-covary-with-xy-variability-1">Question 3: Does depth variability in POD covary with xy variability?</h4>
 <p>Our best fit model included terms for species, lat/lon, and depth, as well as species x lat/lon, species x depth, and species x depth x lat/lon (AIC = 4926.9976483), and explained 25.3% of the variability in eDNA detection. Although terms for depth and lat/lon were not significant, removing these terms increased model AIC to 4947. <em>Model AUC and TSS here</em></p>
-<p>Predicted vertical probability of detection for the most frequently detected delphinid, baleen whale, and beaked whale varied with latitute and longitude, while adhering to the broad trends identified in Q1 (<a href="#fig-H3PODxy" class="quarto-xref">Figure&nbsp;4</a>). The Pacific white-side dolphin is most likely to be detected near the surface, with max POD varying between depths of 0 m and 170 m. Generally, detections of Pacific white-sided dolphins that were farther south and east were also more likely to be deeper in the water column.</p>
+<p>Predicted vertical probability of detection for the most frequently detected delphinid, baleen whale, and beaked whale varied with latitute and longitude, while adhering to the broad trends identified in Q1 (<a href="#fig-H3PODxy" class="quarto-xref">Figure&nbsp;5</a>). The Pacific white-side dolphin is most likely to be detected near the surface, with max POD varying between depths of 0 m and 170 m. Generally, detections of Pacific white-sided dolphins that were farther south and east were also more likely to be deeper in the water column.</p>
 <p>Depths of highest POD for humpback whales had two peaks around 0 m and 500 m; and depths of highest POD for Baird’s beaked whales varied between 120 m and 500 m. Lat/lon variability in Baird’s beaked whale detections followed a similar pattern to Pacific white-sided dolphins, with greater likelihood of deeper detections in stations that are more to the south and east. The two peaks in depth of greatest POD for humpback whales were roughly distributed with higher probability of detection around 0 m on the continental shelf, and higher probability of detection around 500 m on the shelf break.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -515,13 +574,13 @@ Figure&nbsp;3: Left: POD by depth for species stratified by taxonomic Family. Ri
 <img src="index_files/figure-html/fig-H3PODxy-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-H3PODxy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4: Depth of maximum probability of detection (POD; top) and range of depths falling within 50% CI of the depth of maximum detection (bottom) for three species: Bbai = Baird’s beaked whale (<em>B. bairdii</em>), Lobl = Pacific white-sided dolphin (<em>L. obliquidens</em>), Mnov = humpback whale (<em>M. novaegliae</em>).
+Figure&nbsp;5: Depth of maximum probability of detection (POD; top) and range of depths falling within 50% CI of the depth of maximum detection (bottom) for three species: Bbai = Baird’s beaked whale (<em>B. bairdii</em>), Lobl = Pacific white-sided dolphin (<em>L. obliquidens</em>), Mnov = humpback whale (<em>M. novaegliae</em>).
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>In addition to examining geographic patterns in the depth of maximum POD, we examined uncertainty around these values by mapping the range of depths that fell within the 50% confidence interval of maximum POD (<a href="#fig-H3PODxy" class="quarto-xref">Figure&nbsp;4</a>, bottom). In the northern portion of the study area, where Pacific white-sided dolphins are most likely to be observed near the surface, the range of depths within the 50% CI of maximum POD is small (minimum depth range = 0 m). That range increases toward the south and east (maximum depth range = 480 m), as the depth of maximum POD gets deeper for this species. Baird’s beaked whales exhibited the opposite trend: the range of depths falling within the 50% CI of maximum POD was smallest in the southest portion of the range (minimum depth range = 150 m), where the depth of maximum POD was deepest, and increased in the northern part of the range (maximum depth range = 500 m). The bimodal peak of maximum POD observed in humpback whale eDNA was mirrored in the range of depths within the 50% CI of maximum POD: the depth range was largest in the transition zones between the two peaks (maximum depth range = 500 m), and relatively small outside of the transition zones (minimum depth range = 0 m).</p>
+<p>In addition to examining geographic patterns in the depth of maximum POD, we examined uncertainty around these values by mapping the range of depths that fell within the 50% confidence interval of maximum POD (<a href="#fig-H3PODxy" class="quarto-xref">Figure&nbsp;5</a>, bottom). In the northern portion of the study area, where Pacific white-sided dolphins are most likely to be observed near the surface, the range of depths within the 50% CI of maximum POD is small (minimum depth range = 0 m). That range increases toward the south and east (maximum depth range = 480 m), as the depth of maximum POD gets deeper for this species. Baird’s beaked whales exhibited the opposite trend: the range of depths falling within the 50% CI of maximum POD was smallest in the southest portion of the range (minimum depth range = 150 m), where the depth of maximum POD was deepest, and increased in the northern part of the range (maximum depth range = 500 m). The bimodal peak of maximum POD observed in humpback whale eDNA was mirrored in the range of depths within the 50% CI of maximum POD: the depth range was largest in the transition zones between the two peaks (maximum depth range = 500 m), and relatively small outside of the transition zones (minimum depth range = 0 m).</p>
 </section>
 </section>
 </section>
@@ -540,12 +599,15 @@ Figure&nbsp;4: Depth of maximum probability of detection (POD; top) and range of
 <section id="question-2" class="level4">
 <h4 class="anchored" data-anchor-id="question-2">Question 2:</h4>
 <ol start="5" type="1">
-<li>Increasing technical replication (and primer specificity?) increases POD. <em>and this covaries with depth effect?</em></li>
+<li><p>Occupancy models can be used to separate effects of presence and detection.</p>
+<p>Also: Increasing primer specificity increases POD? and <em>this covaries with depth effect?</em></p></li>
 </ol>
+<p>Patin et al.&nbsp;[Patin2025] used a Bayesian hierarchical occupancy model to characterize delphinid occupancy, capture, and detection across sampling methods and primers in a highly replicated survey in Southern California. The high level of replication (biological and technical) in that study allowed the authors to separately estimate occupancy probability by depth, capture probability by sampling method, and detection probability by primer. Here, we had access to a single biological replicate collected at each sampling site and depth, so we are unable to resolve the difference between occupancy and capture of cetacean eDNA. However, in our study usually five and sometimes as many as eight technical replicates were run on each biological replicate, so we did use this information to better characterize occupancy/capture by depth and detectability by primer.</p>
+<p>We found that species-specific patterns of cetacean eDNA presence with depth were qualitatively similar in shape when fitted in an occupancy model context, but the values tended to be much higher, with confidence intervals approaching 1. This makes sense since the Bayesian hierarchical occupancy model was able to separately estimate the probability of presence and the probability of detection, whereas the frequentist GAM was not.</p>
 </section>
 <section id="question-3" class="level4">
 <h4 class="anchored" data-anchor-id="question-3">Question 3:</h4>
-<p>Trends in POD by depth varied geographically by species, as illustrated by the three example species for which we made predictions of depth of maximum POD (<a href="#fig-H3PODxy" class="quarto-xref">Figure&nbsp;4</a>). At the broad scale of this study, we expect that this at least partially reflects geographic variability in species-specific use of the water column. That may reflect geographic shifts in the depth distribution of prey or preferred prey items of a given predator, which may in turn reflect geographic variability in oceanographic conditions.</p>
+<p>Trends in POD by depth varied geographically by species, as illustrated by the three example species for which we made predictions of depth of maximum POD (<a href="#fig-H3PODxy" class="quarto-xref">Figure&nbsp;5</a>). At the broad scale of this study, we expect that this at least partially reflects geographic variability in species-specific use of the water column. That may reflect geographic shifts in the depth distribution of prey or preferred prey items of a given predator, which may in turn reflect geographic variability in oceanographic conditions.</p>
 <p>Alternatively, it is likely that at least a portion of this observed variability is directly linked to oceanographic variability, and its effect on the fate and transport of eDNA once deposited in the water column. eDNA degradation and residence time will be affected by water temperature, pH, and microbial density. During that time, horizontal transport will be affected by currents, eddies, etc. Vertical transport will be affected by upwelling, mixed layer depth, etc. This study is relatively insensitive to horizontal transport of eDNA, which is expected to travel up to XX km on average before it is no longer detectable (CITE Mod 1 paper here?), our samples were collected at 10 km intervals throughout the study area. Our understanding of the vertical distribution of eDNA is more likely to be affected by these oceanographic processes, which can change sinking rates or residence time.</p>
 <p>In both cases, oceanography is an important driver of the 3D distribution of marine mammal eDNA; therefore our next study will focus on the development of 3D spatial distribution models using eDNA and using these models to determine the important oceanographic drivers of marine mammal eDNA in 3D space.</p>
 </section>
@@ -623,6 +685,9 @@ McClatchie, Sam. 2014. <span>“Oceanography of the <span>Southern</span> <span>
 <div id="ref-mcdonnell_etal15" class="csl-entry" role="listitem">
 McDonnell, A. M. P., P. W. Boyd, and K. O. Buesseler. 2015. <span>“Effects of Sinking Velocities and Microbial Respiration Rates on the Attenuation of Particulate Carbon Fluxes Through the Mesopelagic Zone.”</span> <em>Global Biogeochemical Cycles</em> 29 (2): 175–93. <a href="https://doi.org/10.1002/2014GB004935">https://doi.org/10.1002/2014GB004935</a>.
 </div>
+<div id="ref-miller2025" class="csl-entry" role="listitem">
+Miller, David L. 2025. <span>“Bayesian Views of Generalized Additive Modelling.”</span> <em>Methods in Ecology and Evolution</em> 16 (3): 446–55. <a href="https://doi.org/10.1111/2041-210X.14498">https://doi.org/10.1111/2041-210X.14498</a>.
+</div>
 <div id="ref-u_s_departmentofthenavy17" class="csl-entry" role="listitem">
 Navy, U. S. Department of the. 2017. <span>“Dive&nbsp;Distribution&nbsp;and&nbsp;Group&nbsp;Size&nbsp;Parameters&nbsp;for&nbsp;Marine&nbsp;Species&nbsp;Occurring&nbsp;in&nbsp;the&nbsp;u.s.&nbsp;Navy’s&nbsp;Atlantic&nbsp;and&nbsp;Hawaiisouthern&nbsp;California&nbsp;Training&nbsp;and&nbsp;Testing&nbsp;Study&nbsp;Areas.”</span> Newport, Rhode Island: Naval Undersea Warfare Center Division.
 </div>
@@ -637,6 +702,9 @@ Watwood, Stephanie L, and Danielle M Buonantony. 2012. <span>“Dive <span>Distr
 </div>
 <div id="ref-Wood2017" class="csl-entry" role="listitem">
 Wood, S N. 2017. <em>Generalized <span>Additive</span> <span>Models</span>: <span>An</span> <span>Introduction</span> with <span>R</span></em>. Chapman; Hall/CRC.
+</div>
+<div id="ref-Wood2016" class="csl-entry" role="listitem">
+Wood, S N, N Pya, and B Safken. 2016. <span>“Smoothing Parameter and Model Selection for General Smooth Models (with Discussion).”</span> <em>Journal of the American Statistical Association</em> 111: 1548–75.
 </div>
 </div></section></div></main>
 <!-- /main column -->

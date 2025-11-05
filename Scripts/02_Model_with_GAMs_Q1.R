@@ -18,7 +18,7 @@ detect_data$BestTaxon <- as.factor(detect_data$BestTaxon)
 
 ### H1: POD by depth alone -----------------------------------------------------
 # basic model with no species-specific terms
-m1.0 <- gam(Detected ~ s(depth, k = 5), family = "binomial", data = detect_data, method="REML") 
+m1.0 <- gam(Detected ~ s(depth, k = 5), family = "nb", data = detect_data, method="REML") 
 summary(m1.0)
 # depth p-value = 2.6e-06
 AIC(m1.0)
@@ -46,13 +46,13 @@ m1.2 <- gam(Detected ~
               ti(depth, k=5, bs="ts")+
               ti(BestTaxon, k=16, bs="re")+
               ti(depth, BestTaxon, k=c(5, 16), bs=c("ts","re")),
-            family = "binomial", data = detect_data,
+            family = "nb", data = detect_data,
             method = "REML")
 
 summary(m1.2)
 
 AIC(m1.2)
-# AIC 5322
+# AIC 5310
 
 ### H2a: POD by depth across taxonomic family ----------------------------------
 detect_data$Family <- as.factor(detect_data$Family)
@@ -60,14 +60,12 @@ m1.2a <- gam(Detected ~
                ti(depth, k=5, bs="ts")+
                ti(Family, k=6, bs="re")+
                ti(depth, Family, k=c(5, 6), bs=c("ts","re")),
-             family = "binomial", data = detect_data, method = "REML")
+             family = "nb", data = detect_data, method = "REML")
 summary(m1.2a)
-# significant for some families. Similar to m1.2,
-# no families with < 30 detections are significant
-# All are significant > 30 detections except Phocoenidae
+
 AIC(m1.2a)
-#AIC 5809
-#by species is lower
+#AIC 5712
+
 
 
 ### H2b:POD by depth across prey category --------------------------------------
@@ -76,11 +74,11 @@ m1.2b <-  gam(Detected ~
                      ti(depth, k=5, bs="ts")+
                      ti(Prey.family, k=3, bs="re")+
                      ti(depth, Prey.family, k=c(5, 3), bs=c("ts","re")),
-                   family = "binomial", data = detect_data,  method = "REML")
+                   family = "nb", data = detect_data,  method = "REML")
 summary(m1.2b)
 #significant for all three types
 AIC(m1.2b)
-#AIC 5949
+#AIC 5823
 
 ### H2c: POD by time-at-depth --------------------------------------------------
 # 

@@ -69,9 +69,21 @@ m1.2bPOD_bordered <- patchwork::wrap_elements(m1.2bPOD) +
 
 ```
 
+
+
 #### Question 2: Does depth variability in POD covary with observation bias?
 
-Technical replication increases probability of detection.
+Our hierarchical model indicates that given the presence of a cetacean species' eDNA in a sample, the probability of detecting that DNA in downstream processing is affected by primer specificity, DNA degradation by freeze/thaw cycles, and the number of technical replicates used to used to probe the sample (@fig-H2POD-obsbias). Sequencing runs using MV1 and MFU primers, which target regions of XX and XX bp in length, were not affected by the number of freeze-thaw cycles accumulated prior to sequencing. Sequencing runs using the DL primer set, which targets a region of XX bp in length, was affected by freeze thaw cycles such that sequencing runs with 1 freeze/thaw cycle had a higher detection rate than MV1 or MFU and sequencing runs with 2-XX freeze/thaw cycles had a lower detection rate thn MV1 or MFU. 
+
+```{r}
+#| label: fig-H2POD-obsbias
+#| fig-cap: ""
+#| fig-width: 10
+#| fig-height: 6
+
+knitr::include_graphics("./Figures/PatinEtAl_DetectionByPrimer_wThaw.png")
+
+```
 
 #### Question 3: Does depth variability in POD covary with xy variability?
 
