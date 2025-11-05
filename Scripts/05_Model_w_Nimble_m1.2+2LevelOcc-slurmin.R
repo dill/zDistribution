@@ -1,18 +1,19 @@
 # simple nimble model with just a spline on depth
 # using the jagam object 
 
-#library(MCMCvis)
+library(MCMCvis)
 #library(boot)
 #library(tidyverse)
 #library(mcmcplots)
-#library(ggplot2)
+library(ggplot2)
 #library(ggdist)
 library(dplyr)
 #library(tidyr)
-#library(viridis)
-#library(patchwork)
+library(viridis)
+library(patchwork)
 library(nimble)
 library(mgcv)
+setwd("..")
 load("./ProcessedData/detect_data.Rdata")
 detect_data$BestTaxon <- as.factor(detect_data$BestTaxon)
 load("./ProcessedData/jagam_m1.2.RData")
@@ -23,6 +24,16 @@ m1.2 <- gam(Detected ~
               ti(depth, BestTaxon, k=c(5, 16), bs=c("ts","re")),
             family = "binomial", data = detect_data,
             method = "REML")
+
+
+detect_data <- as.data.frame(ungroup(detect_data))
+
+m1.2jg <- jagam(Detected ~ 
+              ti(depth, k=5, bs="ts")+
+              ti(BestTaxon, k=16, bs="re")+
+              ti(depth, BestTaxon, k=c(5, 16), bs=c("ts","re")),
+            family = "binomial", data = detect_data,
+            diagonalize=TRUE, file="test.jags")
 
 mm.data <- detect_data
 
@@ -118,7 +129,7 @@ m1.2_nimble <- nimbleCode({
   for (i in 1:N) {
     Y[i] ~ dbern(sp_sample_occurrence[Y_sp_sample_index[i]] * prob_detection[Y_primer_index[i]]) 
   } # end for N
-  
+
   ## Parametric effect priors CHECK tau=1/11^2 is appropriate!
   for (i in 1:1) { b[i] ~ dnorm(0,0.0087) }
   ## prior for ti(depth)... 
@@ -127,7 +138,7 @@ m1.2_nimble <- nimbleCode({
   for (i in c(6:21)) { b[i] ~ dnorm(0, lambda[2]) }
   ## prior for ti(depth,BestTaxon)... 
   K3[1:60,1:60] <- S3[1:60,1:60] * lambda[3]  + S3[1:60,61:120] * lambda[4]
-  b[22:81] ~ dmnorm(zero[22:81],K3[1:60, 1:60]) 
+  b[22:81] ~ dmnorm(zero[22:81], prec=K3[1:60, 1:60])
   ## smoothing parameter priors CHECK...
   for (i in 1:4) {
     lambda[i] ~ dgamma(.05,.005)
@@ -204,103 +215,48 @@ nimbleOut_m1.2 <- nimbleMCMC(code = m1.2_nimble,
                              WAIC = TRUE)
 
 save(nimbleOut_m1.2, file = "./ProcessedData/nimbleOut_m1.2+2LevOcc.RData")
-# load("./ProcessedData/nimbleOut_m1.2+2LevOcc.RData")
-#  
-# samps <- do.call(rbind, nimbleOut_m1.2$samples)[,1:81]
-#  
-# bt <- unique(detect_data$BestTaxon)
-# 
-# alldat <- c()
-# 
-# # need to install mcmcr
-# ss <- list(b=mcmcr::as.mcarray(nimbleOut_m1.2$samples[[1]][,1:81]),
-#             rho=array(nimbleOut_m1.2$samples[[1]][,82:85], dim=c(250,4,1)))
-#  fakey_bacon <- sim2jam(ss, q1Model_m1.2$pregam)
-#  
-# for(tax in bt){
-#   pg <- data.frame(depth=seq(0, 500, by=10),
-#                    BestTaxon=tax)
-#   Xp <- predict(fakey_bacon, pg, type="lpmatrix")
-# 
-#   lp <- Xp %*% t(samps)
-# 
-#   pg$p <- ilogit(apply(lp, 1, mean))
-#   pg$lci <- ilogit(apply(lp, 1, quantile, p=0.025))
-#   pg$uci <- ilogit(apply(lp, 1, quantile, p=0.975))
-# 
-#   alldat <- rbind(alldat, pg)
-# }
-# 
-# ggplot(alldat) +
-#   geom_ribbon(aes(x=depth, ymin= lci, ymax = uci), fill = "lightgrey") +
-#   geom_line(aes(x=depth, y = p)) +
-#   facet_wrap(~BestTaxon) +
-#   theme_bw()
+load("./ProcessedData/nimbleOut_m1.2+2LevOcc.RData")
+ 
+samps <- do.call(rbind, nimbleOut_m1.2$samples)[,1:81]
+ 
+bt <- unique(detect_data$BestTaxon)
+
+alldat <- c()
+
+# need to install mcmcr
+ss <- list(b=mcmcr::as.mcarray(nimbleOut_m1.2$samples[[1]][,1:81]),
+            rho=array(nimbleOut_m1.2$samples[[1]][,82:85], dim=c(250,4,1)))
+ fakey_bacon <- sim2jam(ss, q1Model_m1.2$pregam)
+ 
+for(tax in bt){
+  pg <- data.frame(depth=seq(0, 500, by=10),
+                   BestTaxon=tax)
+  Xp <- predict(fakey_bacon, pg, type="lpmatrix")
+
+  lp <- Xp %*% t(samps)
+
+  pg$p <- ilogit(apply(lp, 1, mean))
+  pg$lci <- ilogit(apply(lp, 1, quantile, p=0.025))
+  pg$uci <- ilogit(apply(lp, 1, quantile, p=0.975))
+
+  alldat <- rbind(alldat, pg)
+}
+
+ggplot(alldat) +
+  geom_ribbon(aes(x=depth, ymin= lci, ymax = uci), fill = "lightgrey") +
+  geom_line(aes(x=depth, y = p)) +
+  facet_wrap(~BestTaxon) +
+  theme_bw()
 
 
-## Gelman-Rubin diagnostic
-#MCMCsummary(nimbleOut_m1.2$samples)
 
-# Visualize MCMC chains
-#mcmcplot(nimbleOut_m1.2$samples)
-#
-#n.post <- 250
-#post.samples <- rbind.data.frame(nimbleOut_m1.0$samples$chain1,
-#                                 nimbleOut_m1.0$samples$chain2,
-#                                 nimbleOut_m1.0$samples$chain3,
-#                                 nimbleOut_m1.0$samples$chain4)
-#
-## reconstruct the model expectation
-#
-#mu.post <- matrix(rep(0, q1Model_m1.0$jags.data$n*nrow(post.samples)), 
-#                  nrow = q1Model_m1.0$jags.data$n)
-#
-## create a new lp matrix
-#
-##predict.gam(object = m1.0, type = "lpmatrix")
-#
-## make a new design matrix just for the depths we want
-## NEED TO ADD BestTaxon here
-#depth_vals <- data.frame(depth=seq(0, 500, by=10))
-#m1_newX_pred <- predict(m1.0, newdata = depth_vals, type = "lpmatrix")
-#
-## NEED TO MODIFY
-#eta.post <- m1_newX_pred %*% t(as.matrix(post.samples[,1:5]))
-#mu.post <- ilogit(eta.post)
-#
-## look at the avg only
-#depth_vals$mp <- apply(mu.post, 1, mean)
-#plot(depth_vals$depth, depth_vals$mp, type="l", ylim=c(0,1))
-#
-#mu.post.long <- cbind.data.frame(Depth = depth_vals$depth,
-#                                 mu.post) %>%
-#  pivot_longer(cols = 2:(ncol(mu.post)+1), 
-#               names_to = "Sample", values_to = "PDetect")
-#
-#mu.post.med <- mu.post.long %>%
-#  group_by(Depth) %>%
-#  # mean is smoother
-#  summarize(Med = mean(PDetect),
-#            LCI = quantile(PDetect, 0.025),
-#            UCI = quantile(PDetect, 0.975))
-#
-#p <- ggplot() +
-#  geom_ribbon(data = mu.post.med, 
-#            aes(x=Depth, ymin= LCI, ymax = UCI), fill = "lightgrey") +
-#  geom_line(data = mu.post.med, aes(x=Depth, y = Med)) +
-#  theme_bw()
-#
-#ggsave(plot = p, file = "./Figures/m1.0_nimble.png", width = 4, height = 4, units = "in")
-#
-## this next bit doesn't work -- not sure what m1.0_sePreds is/was?
-#
-#names(m1.0_sePreds)[1] <- "Depth"
-#m1.0_compare <- left_join(m1.0_sePreds, mu.post.med, by = "Depth")
-#
-#ggplot(m1.0_compare) +
-#  geom_line(aes(x=Depth, y = mu))+
-#  geom_line(aes(x=Depth, y = mu_jags), color = "blue")+
-#  geom_point(aes(x=Depth, y = Med), color = "green")+
-#  ylab("P(Detection)")+
-#  xlab("Depth")+
-#  theme_bw()
+library(bayesplot)
+bayesplot_theme_set(new=theme_minimal())
+
+mcmc_trace(nimbleOut_m1.2$samples, pars=paste0("prob_detection[",1:3,"]"), transformations=log)
+
+mcmc_trace(nimbleOut_m1.2$samples, pars=paste0("lambda[",1:4,"]"), transformations=log)
+
+
+mcmc_pairs(nimbleOut_m1.2$samples, pars=paste0("lambda[",1:4,"]"), transformations=log)
+
