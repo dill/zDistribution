@@ -35,7 +35,7 @@ AIC(m1.0)
 
 ### H2: POD by depth across species --------------------------------------------
 # this model will have a different intercept for each species, but spline will be same shape
-m1.1 <- gam(Detected ~ s(depth) + BestTaxon, family = "binomial", data = detect_data, method="REML")
+m1.1 <- gam(Detected ~ s(depth, k = 5) + BestTaxon, family = "binomial", data = detect_data, method="REML")
 summary(m1.1)
 
 AIC(m1.1)

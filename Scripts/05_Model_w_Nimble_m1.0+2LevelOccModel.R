@@ -20,6 +20,10 @@ load("ProcessedData/jagam_m1.0.RData")
 # Import the data
 load("./ProcessedData/detect_data_allcet.RData")
 mm.data <- detect_data_allcet
+mm.data$EKJPrimer <- mm.data$primer
+for (i in 1:nrow(mm.data)){
+  mm.data$EKJPrimer[i] <- ifelse(mm.data$primer[i] == "DL" & mm.data$Thaw[i] > 1, "DL2", mm.data$primer[i])
+}
 
 m1.0 <- gam(DetectAny ~ s(depth, k = 5, bs = "bs"),  
             diagonalize = TRUE, 
@@ -36,7 +40,7 @@ mm.data$site.numeric <- as.numeric(factor(paste0(mm.data$utm.lat, mm.data$utm.lo
 # there are 182 stations
 
 # create a primer variable
-mm.data$primer.numeric <- as.numeric(factor(mm.data$primer))
+mm.data$primer.numeric <- as.numeric(factor(mm.data$EKJPrimer))
 
 # pull unique info for each bio sample (can add to these for enviro covariates)
 biosamp_dat <- mm.data %>%
@@ -110,6 +114,7 @@ m1.0_nimble <- nimbleCode({
   prob_detection[1] ~ dbeta(1, 1)
   prob_detection[2] ~ dbeta(1, 1)
   prob_detection[3] ~ dbeta(1, 1)
+  prob_detection[4] ~ dbeta(1, 1)
   
   # Linear predictor, effect of depth
   # eta has dimensions of # site-depth combos
@@ -196,17 +201,17 @@ nimbleOut_m1.0_2LevelOcc <- nimbleMCMC(code = m1.0_nimble,
 save(nimbleOut_m1.0_2LevelOcc, file = "./Results/nimbleOut_m1.0_2LevelOcc.RData")
 
 # Gelman-Rubin diagnostic
-MCMCsummary(nimbleOut_m1.0_Occ$samples)
+MCMCsummary(nimbleOut_m1.0_2LevelOcc$samples)
 
 # Visualize MCMC chains
-mcmcplot(nimbleOut_m1.0_Occ$samples)
-#mcmc.output_coda <- as.mcmc.list(lapply(nimbleOut_m1.0_Occ, as.mcmc))
+mcmcplot(nimbleOut_m1.0_2LevelOcc$samples)
+#mcmc.output_coda <- as.mcmc.list(lapply(nimbleOut_m1.0_2LevelOcc, as.mcmc))
 
 n.post <- 10000
-post.samples <- rbind.data.frame(nimbleOut_m1.0_Occ$samples$chain1,
-                                 nimbleOut_m1.0_Occ$samples$chain2,
-                                 nimbleOut_m1.0_Occ$samples$chain3,
-                                 nimbleOut_m1.0_Occ$samples$chain4)
+post.samples <- rbind.data.frame(nimbleOut_m1.0_2LevelOcc$samples$chain1,
+                                 nimbleOut_m1.0_2LevelOcc$samples$chain2,
+                                 nimbleOut_m1.0_2LevelOcc$samples$chain3,
+                                 nimbleOut_m1.0_2LevelOcc$samples$chain4)
 
 post.samples$chain <- c(rep(1, 2500), rep(2, 2500), rep(3, 2500), rep(4, 2500))
 post.samples$sample <- rep(1:2500, times = 4)
@@ -251,20 +256,45 @@ mu.post.long <- cbind.data.frame(Depth = depth_vals$depth,
   pivot_longer(cols = 2:(ncol(mu.post)+1), 
                names_to = "Sample", values_to = "PDetect")
 
-mu.post.med <- mu.post.long %>%
+mu.post.median <- mu.post.long %>%
   group_by(Depth) %>%
   # mean is smoother
-  summarize(Med = mean(PDetect),
+  summarize(Median = median(PDetect),
             LCI = quantile(PDetect, 0.025),
             UCI = quantile(PDetect, 0.975))
 
 p <- ggplot() +
-  geom_ribbon(data = mu.post.med, 
+  geom_ribbon(data = mu.post.median, 
             aes(x=Depth, ymin= LCI, ymax = UCI), fill = "lightgrey") +
-  geom_line(data = mu.post.med, aes(x=Depth, y = Med))+
-  ylab("Post Median P(Occ/Capture)") +
+  geom_line(data = mu.post.median, aes(x=Depth, y = Median))+
+  ylab("Posterior Median P(Occ/Capture)") +
+  ylim(c(0,1))+
   theme_bw()
 
 ggsave(plot = p, file = "./Figures/m1.0_nimble2LevOccModel.png", 
        width = 4, height = 4, units = "in")
+
+# plot detectability results
+
+post.samples_detectability <- post.samples %>%
+  select(`prob_detection[1]`, `prob_detection[2]`, 
+         `prob_detection[3]`, `prob_detection[4]`) %>%
+  pivot_longer(cols = 1:4, names_to = "Parameter", values_to = "Est") %>%
+  mutate(Primer = case_when(Parameter == "prob_detection[1]" ~ "DL1",
+                            Parameter == "prob_detection[2]" ~ "DL2",
+                            Parameter == "prob_detection[3]" ~ "MFU",
+                            Parameter == "prob_detection[4]" ~ "MV1"))
+
+ggplot(post.samples_detectability) +
+  geom_density(aes(x=Est, fill = Primer, color = Primer), alpha = 0.75) +
+  scale_fill_manual(values = c(pnw_palette("Cascades",5, type = "discrete")[c(2, 3, 5)],
+                                pnw_palette("Sunset",1, type = "discrete"))) +
+  scale_color_manual(values = c(pnw_palette("Cascades",5, type = "discrete")[c(2, 3, 5)],
+                               pnw_palette("Sunset",1, type = "discrete"))) +
+  theme_bw() +
+  xlab("P(Detection)") +
+  ylab("Posterior Density")
+
+ggsave(plot = last_plot(), file = "./Figures/m1.0+2LevelOcc_PDetection.png", 
+       width = 6, height = 4, units = "in")  
 
