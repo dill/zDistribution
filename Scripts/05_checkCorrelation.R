@@ -34,9 +34,11 @@ mu.post <- ilogit(eta.post)
 
 df.out <- data.frame("post.sample.index" = 1,
                    "p(detection)[1]" = post.samples$`prob_detection[1]`[1],
-                   "p(detection)[2]" = post.samples$`prob_detection[1]`[1],
-                   "p(detection)[3]" = post.samples$`prob_detection[1]`[1],
-                   "depth" = depth_vals,
+                   "p(detection)[2]" = post.samples$`prob_detection[2]`[1],
+                   "p(detection)[3]" = post.samples$`prob_detection[3]`[1],
+                   "p(detection)[4]" = post.samples$`prob_detection[4]`[1],
+                   
+                                      "depth" = depth_vals,
                    'p(occ/cap)' = as.numeric(mu.post))
 
 for (i in 2:10000){
@@ -46,9 +48,11 @@ for (i in 2:10000){
   
   df <- data.frame("post.sample.index" = i,
                    "p(detection)[1]" = post.samples$`prob_detection[1]`[i],
-                   "p(detection)[2]" = post.samples$`prob_detection[1]`[i],
-                   "p(detection)[3]" = post.samples$`prob_detection[1]`[i],
-                   "depth" = depth_vals,
+                   "p(detection)[2]" = post.samples$`prob_detection[2]`[i],
+                   "p(detection)[3]" = post.samples$`prob_detection[3]`[i],
+                   "p(detection)[4]" = post.samples$`prob_detection[4]`[i],
+                   
+                                      "depth" = depth_vals,
                    "p(occ/cap)" = as.numeric(mu.post))
   
   df.out <- rbind.data.frame(df.out, df)
