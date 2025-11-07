@@ -214,8 +214,8 @@ nimbleOut_m1.2 <- nimbleMCMC(code = m1.2_nimble,
                              samplesAsCodaMCMC = TRUE,
                              WAIC = TRUE)
 
-save(nimbleOut_m1.2, file = "./ProcessedData/nimbleOut_m1.2+2LevOcc.RData")
-load("./ProcessedData/nimbleOut_m1.2+2LevOcc.RData")
+save(nimbleOut_m1.2, file = "./Results/nimbleOut_m1.2+2LevOcc.RData")
+load("./Results/nimbleOut_m1.2+2LevOcc.RData")
  
 samps <- do.call(rbind, nimbleOut_m1.2$samples)[,1:81]
  
