@@ -22,7 +22,13 @@ detect_by_station <- detect_data %>%
                             TRUE ~ 0)) %>% 
   slice_head() %>% 
   ungroup() %>% 
-  filter(detect == 1)
+  filter(detect == 1) %>% 
+  mutate(depth = case_when(depth > 350~500,
+                           depth > 160 & depth < 351~300,
+                           depth > 60 & depth < 161~150,
+                           depth > 10 & depth < 61~50,
+                           depth < 11~0,
+                           TRUE~depth))
 
 #### Bubbleplot ----------------------------------------------------------------
 detectDepth_bubble <- ggplot(detect_by_station, aes(y = common_name, x = depth, 

@@ -137,11 +137,11 @@ detect_data_1dil <- detect_data_1seq %>%
   
 ## Count number of samples -----------------------------------------------------
 
-# nSamps_primer <- detect_data_1rep %>% 
-#   group_by(primer, NWFSCsampleID) %>% 
-#   n_groups()
-# 
-# length(unique(detect_data_1rep$NWFSCsampleID))
+nSamps_primer <- detect_data_1dil %>%
+  group_by(primer, NWFSCsampleID) %>%
+  n_groups()
+
+length(unique(detect_data_1dil$NWFSCsampleID))
 
 ## Add metadata ----------------------------------------------------------------
 

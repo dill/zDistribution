@@ -33,7 +33,19 @@ plot_grid(plotlist = aligned, ncol = 2, rel_widths = c(3, 1))
 
 ### Question 1: Does POD vary with depth?
 
-GAM-based model selection of detection probability across sampling depths negated the null hypothesis of no variation across depth (Supplemental Figure S1). The best alternative model includes significant smooth terms for depth, species, and depth x species interaction (AIC = `r round(min(modelAIC$AIC))`). This model explained 14.3% of variance in eDNA detection probability, *with an AUC of XXX and TSS of XXXX.* 
+GAM-based model selection of detection probability across sampling depths negated the null hypothesis of no variation across depth (Supplemental Figure S1). The best alternative model includes significant smooth terms for depth, species, and depth x species interaction (AIC = `r round(min(modelAIC$AIC))`, @tbl-modelAIC). This model explained 14.3% of variance in eDNA detection probability, *with an AUC of XXX and TSS of XXXX.* 
+
+```{r}
+#| label: tbl-modelAIC
+#| tbl-cap: "Akaike Information Criterion values for all GAMs tested to characterize the relationship between depth and POD of eDNA."
+
+modelAIC <- modelAIC %>% 
+  arrange(AIC) %>% 
+  mutate("stratification" = c("species", "species", "family", "prey", "none")) %>% 
+  select(model, stratification, df, AIC)
+
+pander(modelAIC)
+```
 
 Broadly, delphinids were more likely to be detected at the surface, beaked whales at depths > 200m, and baleen whales either at the surface or at depths > 400m (@fig-H1POD-species). While detection data from the five species detected fewer than 10 times were included in our model input, we did not make predictions for any of these species. Species-specific model predictions generally agreed with the raw detection data.
 
@@ -41,7 +53,7 @@ Among the delphinids, species-specific trends in POD generally reflected model e
 
 ```{r}
 #| label: fig-H1POD-species
-#| fig-cap: "Species-specific probability of detection across all depths sampled in this study. Solid line shows POD; shaded region shows 95% confidence interval. Dashed line shows proportional time at depth. Species abbreviation codes can be found in Table 1; plots are colored by taxonomic category as outlined in Table 1."
+#| fig-cap: "Species-specific probability of detection across all depths sampled in this study. Solid line shows POD; shaded regions show 95%, 75%, and 50% confidence intervals. Dashed line shows proportional time at depth. Species abbreviation codes can be found in Table 1; plots are colored by taxonomic category as outlined in Table 1."
 #| fig-width: 10
 #| fig-height: 6
 
@@ -73,15 +85,16 @@ m1.2bPOD_bordered <- patchwork::wrap_elements(m1.2bPOD) +
 
 #### Question 2: Does depth variability in POD covary with observation bias?
 
-Our hierarchical model indicates that given the presence of a cetacean species' eDNA in a sample, the probability of detecting that DNA in downstream processing is affected by primer specificity, DNA degradation by freeze/thaw cycles, and the number of technical replicates used to used to probe the sample (@fig-H2POD-obsbias). Sequencing runs using MV1 and MFU primers, which target regions of XX and XX bp in length, were not affected by the number of freeze-thaw cycles accumulated prior to sequencing. Sequencing runs using the DL primer set, which targets a region of XX bp in length, was affected by freeze thaw cycles such that sequencing runs with 1 freeze/thaw cycle had a higher detection rate than MV1 or MFU and sequencing runs with 2-XX freeze/thaw cycles had a lower detection rate thn MV1 or MFU. 
+Our hierarchical model indicates that given the presence of a cetacean species' eDNA in a sample, the probability of detecting that DNA in downstream processing is affected by primer specificity, DNA degradation by freeze/thaw cycles, and the number of technical replicates used to used to probe the sample (@fig-H2POD-obsbias). Sequencing runs using MV1 and MFU primers, which target regions of XX and XX bp in length, were not affected by the number of freeze-thaw cycles accumulated prior to sequencing. Sequencing runs using the DL primer set, which targets a region of XX bp in length, was affected by freeze thaw cycles such that sequencing runs with 1 freeze/thaw cycle had a higher detection rate than MV1 or MFU and sequencing runs with 2-XX freeze/thaw cycles had a lower detection rate thn MV1 or MFU.
 
 ```{r}
 #| label: fig-H2POD-obsbias
-#| fig-cap: ""
+#| fig-cap: "Primer-specific detection probability for each primer used in this study. MFU = Mifish, MV1 = MarVer1, DL = Dloop (1 freeze/thaw cycle, DL2 = Dloop (2+ freeze/thaw cycles)."
 #| fig-width: 10
 #| fig-height: 6
 
-knitr::include_graphics("./Figures/PatinEtAl_DetectionByPrimer_wThaw.png")
+knitr::include_graphics(c("./Figures/detectThaw.png", "./Figures/m1.0+2LevelOcc_PDetection.png"))
+
 
 ```
 
