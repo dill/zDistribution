@@ -20,6 +20,33 @@ family_taxon <- mmEcoEvo %>%
   distinct(Family, .keep_all = TRUE) %>% 
   select(Family, Broad_taxa)
 
+### m1.0 figure ----------------------------------------------------------------
+
+
+m1.0_predictions <- expand_grid(depth = 0:500)
+
+m1.0preds <- predict(m1.0, m1.0_predictions, type = "link", se.fit = TRUE)
+m1.0_CIPreds <- data.frame(m1.0_predictions,
+                           mu   = binomial()$linkinv((m1.0preds$fit)),
+                           low  = binomial()$linkinv(m1.0preds$fit - zval * m1.0preds$se.fit),
+                           high = binomial()$linkinv(m1.0preds$fit + zval * m1.0preds$se.fit))
+
+m1.0POD <- ggplot(m1.0_CIPreds) +
+  geom_ribbon(aes(x = depth, ymin = low, ymax = high), fill = "lightgrey") +
+    geom_line(aes(x=depth, y = mu), color = "black") +
+  
+  ylab("POD") +
+  
+  geom_rug(data = detect_data, aes(x=depth), color = "grey")+
+  geom_rug(data = filter(detect_data, Detected == 1), aes(x=depth))+
+  theme_minimal() +
+  theme(legend.position = "bottom") 
+
+png(file = "./Figures/m1.0POD.png")
+m1.0POD
+dev.off()
+
+
 ### m1.1 figure ----------------------------------------------------------------
 
 m1.1_predictions <- expand_grid(depth = 0:500, BestTaxon = as.factor(unique(detect_data$BestTaxon)))
