@@ -36,12 +36,16 @@ m1.2jg <- jagam(Detected ~
             diagonalize=TRUE, file="test.jags")
 
 mm.data <- detect_data
+mm.data$EKJPrimer <- mm.data$primer
+for (i in 1:nrow(mm.data)){
+  mm.data$EKJPrimer[i] <- ifelse(mm.data$primer[i] == "DL" & mm.data$Thaw[i] > 1, "DL2", mm.data$primer[i])
+}
 
 # need these to be consecutive
 mm.data$sample_numeric <- as.numeric(as.factor(mm.data$NWFSCsampleID))
 
 # create a primer variable
-mm.data$primer_numeric <- as.numeric(factor(mm.data$primer))
+mm.data$primer_numeric <- as.numeric(factor(mm.data$EKJPrimer))
 
 # create a numeric species variable
 mm.data$species_numeric <- as.numeric(factor(mm.data$BestTaxon))
@@ -149,7 +153,9 @@ m1.2_nimble <- nimbleCode({
   prob_detection[1] ~ dbeta(1, 1)
   prob_detection[2] ~ dbeta(1, 1)
   prob_detection[3] ~ dbeta(1, 1)
+  prob_detection[4] ~ dbeta(1, 1)
   
+    
 })
 
 # Data
@@ -215,48 +221,47 @@ nimbleOut_m1.2 <- nimbleMCMC(code = m1.2_nimble,
                              WAIC = TRUE)
 
 save(nimbleOut_m1.2, file = "./Results/nimbleOut_m1.2+2LevOcc.RData")
-load("./Results/nimbleOut_m1.2+2LevOcc.RData")
- 
-samps <- do.call(rbind, nimbleOut_m1.2$samples)[,1:81]
- 
-bt <- unique(detect_data$BestTaxon)
-
-alldat <- c()
-
-# need to install mcmcr
-ss <- list(b=mcmcr::as.mcarray(nimbleOut_m1.2$samples[[1]][,1:81]),
-            rho=array(nimbleOut_m1.2$samples[[1]][,82:85], dim=c(250,4,1)))
- fakey_bacon <- sim2jam(ss, q1Model_m1.2$pregam)
- 
-for(tax in bt){
-  pg <- data.frame(depth=seq(0, 500, by=10),
-                   BestTaxon=tax)
-  Xp <- predict(fakey_bacon, pg, type="lpmatrix")
-
-  lp <- Xp %*% t(samps)
-
-  pg$p <- ilogit(apply(lp, 1, mean))
-  pg$lci <- ilogit(apply(lp, 1, quantile, p=0.025))
-  pg$uci <- ilogit(apply(lp, 1, quantile, p=0.975))
-
-  alldat <- rbind(alldat, pg)
-}
-
-ggplot(alldat) +
-  geom_ribbon(aes(x=depth, ymin= lci, ymax = uci), fill = "lightgrey") +
-  geom_line(aes(x=depth, y = p)) +
-  facet_wrap(~BestTaxon) +
-  theme_bw()
-
-
-
-library(bayesplot)
-bayesplot_theme_set(new=theme_minimal())
-
-mcmc_trace(nimbleOut_m1.2$samples, pars=paste0("prob_detection[",1:3,"]"), transformations=log)
-
-mcmc_trace(nimbleOut_m1.2$samples, pars=paste0("lambda[",1:4,"]"), transformations=log)
-
-
-mcmc_pairs(nimbleOut_m1.2$samples, pars=paste0("lambda[",1:4,"]"), transformations=log)
-
+# load("./Results/nimbleOut_m1.2+2LevOcc.RData")
+#  
+# samps <- do.call(rbind, nimbleOut_m1.2$samples)[,1:81]
+#  
+# bt <- unique(detect_data$BestTaxon)
+# 
+# alldat <- c()
+# 
+# # need to install mcmcr
+# ss <- list(b=mcmcr::as.mcarray(nimbleOut_m1.2$samples[[1]][,1:81]),
+#             rho=array(nimbleOut_m1.2$samples[[1]][,82:85], dim=c(250,4,1)))
+#  fakey_bacon <- sim2jam(ss, q1Model_m1.2$pregam)
+#  
+# for(tax in bt){
+#   pg <- data.frame(depth=seq(0, 500, by=10),
+#                    BestTaxon=tax)
+#   Xp <- predict(fakey_bacon, pg, type="lpmatrix")
+# 
+#   lp <- Xp %*% t(samps)
+# 
+#   pg$p <- ilogit(apply(lp, 1, mean))
+#   pg$lci <- ilogit(apply(lp, 1, quantile, p=0.025))
+#   pg$uci <- ilogit(apply(lp, 1, quantile, p=0.975))
+# 
+#   alldat <- rbind(alldat, pg)
+# }
+# 
+# ggplot(alldat) +
+#   geom_ribbon(aes(x=depth, ymin= lci, ymax = uci), fill = "lightgrey") +
+#   geom_line(aes(x=depth, y = p)) +
+#   facet_wrap(~BestTaxon) +
+#   theme_bw()
+# 
+# 
+# 
+# library(bayesplot)
+# bayesplot_theme_set(new=theme_minimal())
+# 
+# mcmc_trace(nimbleOut_m1.2$samples, pars=paste0("prob_detection[",1:3,"]"), transformations=log)
+# 
+# mcmc_trace(nimbleOut_m1.2$samples, pars=paste0("lambda[",1:4,"]"), transformations=log)
+# 
+# mcmc_pairs(nimbleOut_m1.2$samples, pars=paste0("lambda[",1:4,"]"), transformations=log)
+# 
