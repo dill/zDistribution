@@ -19,33 +19,25 @@ This repo contains all code and analyses used to examine depth variability in th
 
 All raw data are in "Data", and intermediate data products are in "ProcessedData." Dive data come from [here](https://apps.dtic.mil/sti/tr/pdf/ADA560975.pdf) and [here](https://www.nepa.navy.mil/Portals/20/Documents/aftteis4/Dive%20Profile%20and%20Group%20Size_TR_2017_05_22.pdf).
 
-# Analysis 1: collapse data across X and Y
+# Analysis 1: POD by depth, collapse data across X and Y
 
 - Model 1: POD ~ z
 - Model 2: POD ~ z with intercept by species
 - Model 3: POD ~ z with smooth by species
 - Model 4: POD ~ z with smooth by family
 - Model 5: POD ~ z with smooth by prey category (invert, fish, squid)
-- Model 6: POD ~ time-at-depth
-- Model 7: POD ~ time-at-depth with smooth by family
-- Model 8: POD ~ time-at-depth with smooth by species
 - Run model diagnostics, select best model, interpret results within ecological context, develop recommendations for eDNA monitoring of marine mammals.
 
-# Analysis 2
+# Analysis 2: POD by primer, freeze/thaw, tech rep. and vary with depth?
 
-- Using best model(s) from Analysis 1, retest varying number of replicates with GAMs
+- Using GAM splines from Analysis 1, retest varying number of replicates with GAMs
 - Compare to alternative Bayesian occupancy model: [Brice's replication model](https://github.com/BriceSemmens/eDNA_patch) without assuming species' presence and adding depth as a covariate (see "Taking Brice's approach" below).
-- Incorporate smooths from GAMs into occupancy model
 - Run model diagnostics, select best model, interpret results within ecological context, develop recommendations for eDNA monitoring of marine mammals.
 
 # Analysis 3: depth variability across xy or oceanography
 
-- Model 1: xy + z. If both are significant, move to Model 2.
-- Model 2: xyz covariation. If this is significant, move to Model 3.
-- Model 3: xyz covariation by species (based on best fit model from H1)
-- Model 4: z and oceanobraphy. If AIC is lower than Model 3, moved to Model 5.
-- Model 5: z and oceanography by species.
-- Run model diagnostics, select best model, interpret results within ecological context, develop recommendations for eDNA monitoring of marine mammals.
+- Model 1: POD ~ xy + xy x species + z + z x species + xy x species x z
+- Run model diagnostics, report significant covariates, interpret results within ecological context, develop recommendations for eDNA monitoring of marine mammals.
 
 # Taking Brice's approach
 
