@@ -1,18 +1,19 @@
 # simple nimble model with just a spline on depth
 # using the jagam object 
 
-library(MCMCvis)
+#library(MCMCvis)
 #library(boot)
 #library(tidyverse)
 #library(mcmcplots)
-library(ggplot2)
+#library(ggplot2)
 #library(ggdist)
 library(dplyr)
 #library(tidyr)
-library(viridis)
-library(patchwork)
+#library(viridis)
+#library(patchwork)
 library(nimble)
 library(mgcv)
+
 setwd("..")
 load("./ProcessedData/detect_data.Rdata")
 detect_data$BestTaxon <- as.factor(detect_data$BestTaxon)
