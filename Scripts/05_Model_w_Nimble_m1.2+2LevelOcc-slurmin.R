@@ -14,7 +14,7 @@ library(dplyr)
 library(nimble)
 library(mgcv)
 
-setwd("..")
+#setwd("..")
 load("./ProcessedData/detect_data.Rdata")
 detect_data$BestTaxon <- as.factor(detect_data$BestTaxon)
 load("./ProcessedData/jagam_m1.2.RData")
