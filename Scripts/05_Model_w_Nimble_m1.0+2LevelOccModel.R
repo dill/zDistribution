@@ -22,7 +22,8 @@ load("./ProcessedData/detect_data_allcet.RData")
 mm.data <- detect_data_allcet
 mm.data$EKJPrimer <- mm.data$primer
 for (i in 1:nrow(mm.data)){
-  mm.data$EKJPrimer[i] <- ifelse(mm.data$primer[i] == "DL" & mm.data$Thaw[i] > 1, "DL2", mm.data$primer[i])
+  mm.data$EKJPrimer[i] <- ifelse(mm.data$primer[i] == "DL" & mm.data$Thaw[i] > 1, 
+                                 "DL2", mm.data$primer[i])
 }
 
 m1.0 <- gam(DetectAny ~ s(depth, k = 5, bs = "bs"),  
@@ -285,7 +286,7 @@ post.samples_detectability <- post.samples %>%
                             Parameter == "prob_detection[3]" ~ "MFU",
                             Parameter == "prob_detection[4]" ~ "MV1"))
 
-ggplot(post.samples_detectability) +
+Q2_Detectability <- ggplot(post.samples_detectability) +
   geom_density(aes(x=Est, fill = Primer, color = Primer), alpha = 0.75) +
   scale_fill_manual(values = c(pnw_palette("Cascades",5, type = "discrete")[c(2, 3, 5)],
                                 pnw_palette("Sunset",1, type = "discrete"))) +
@@ -294,6 +295,8 @@ ggplot(post.samples_detectability) +
   theme_bw() +
   xlab("P(Detection)") +
   ylab("Posterior Density")
+
+save(Q2_Detectability, file = "./Figures/Q2_DetectabilityByPrimer.RData")
 
 ggsave(plot = last_plot(), file = "./Figures/m1.0+2LevelOcc_PDetection.png", 
        width = 6, height = 4, units = "in")  
