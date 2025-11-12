@@ -20,15 +20,41 @@ family_taxon <- mmEcoEvo %>%
   distinct(Family, .keep_all = TRUE) %>% 
   select(Family, Broad_taxa)
 
+### m1.0 figure ----------------------------------------------------------------
+
+m1.0_predictions <- expand_grid(depth = 0:500)
+
+m1.0preds <- predict(m1.0, m1.0_predictions, se.fit = TRUE)
+
+m1.0_sePreds <- data.frame(m1.0_predictions,
+                                mu   = binomial()$linkinv((m1.0preds$fit)),
+                                low95  = binomial()$linkinv((m1.0preds$fit - zval * m1.0preds$se.fit)),
+                                high95 = binomial()$linkinv(m1.0preds$fit + zval * m1.0preds$se.fit))
+
+m1.0POD <- ggplot(m1.0_sePreds, aes(x = depth, 
+                                    color = c(pnw_palette("Cascades",1, type = "continuous")), 
+                                    fill = c(pnw_palette("Cascades",1, type = "continuous")))) +
+  geom_smooth(aes(ymin = low95, ymax = high95, y = mu), stat = "identity") +
+  ylab("POD") +
+  geom_rug(data = detect_data, aes(x=depth), color = "grey30")+
+  geom_rug(data = filter(detect_data, Detected == 1), aes(x=depth),
+           sides = "t")+
+  theme_minimal() +
+  theme(legend.position = "none")
+
+png(file = "./Figures/m1.0POD.png")
+m1.0POD
+dev.off()
+
 ### m1.1 figure ----------------------------------------------------------------
 
 m1.1_predictions <- expand_grid(depth = 0:500, BestTaxon = as.factor(unique(detect_data$BestTaxon)))
 
-m1.1preds <- predict(m1.1, m1.1_predictions, type = "response", se.fit = TRUE)
+m1.1preds <- predict(m1.1, m1.1_predictions, se.fit = TRUE)
 m1.1_sePreds <- data.frame(m1.1_predictions,
-                           mu   = m1.1preds$fit,
-                           low  = m1.1preds$fit - zval * m1.1preds$se.fit,
-                           high = m1.1preds$fit + zval * m1.1preds$se.fit) %>% 
+                           mu   = binomial()$linkinv(m1.1preds$fit),
+                           low  = binomial()$linkinv(m1.1preds$fit - zval * m1.1preds$se.fit),
+                           high = binomial()$linkinv(m1.1preds$fit + zval * m1.1preds$se.fit)) %>% 
   left_join(mmEcoEvo, by = c("BestTaxon" = "Species"))
 
 m1.1POD <- ggplot(m1.1_sePreds, aes(x = depth, color = Broad_taxa, fill = Broad_taxa)) +
@@ -39,8 +65,17 @@ m1.1POD <- ggplot(m1.1_sePreds, aes(x = depth, color = Broad_taxa, fill = Broad_
   scale_color_manual(values = c(pnw_palette("Cascades",2, type = "continuous"),
                                 pnw_palette("Sunset",2, type = "continuous"))) +
   facet_wrap(~abbrev, scales = "free_y") +
-  geom_rug(data = detect_data, aes(x=depth), color = "grey")+
-  geom_rug(data = filter(detect_data, Detected == 1), aes(x=depth))+
+  geom_rug(data = filter(detect_data, BestTaxon %in% (detect_per_species %>% 
+                                                      filter(nDetect >= 10) %>% 
+                                                        pull(BestTaxon))), 
+           aes(x=depth), color = "grey30")+
+  geom_rug(data = (detect_data %>% filter(Detected == 1) %>% 
+                   filter(BestTaxon %in% (detect_per_species %>% 
+                                          filter(nDetect >= 10) %>% 
+                                          pull(BestTaxon))) %>%
+                  mutate(depth_jittered = depth + runif(n(), -5, 30))),
+           aes(x=depth),
+           sides = "t")+
   theme_minimal() +
   theme(legend.position = "bottom")
 
@@ -112,13 +147,15 @@ m1.2POD <- ggplot(m1.2_scaled, aes(x = depth, color = Broad_taxa, fill = Broad_t
   geom_rug(data = filter(detect_data, BestTaxon %in% (detect_per_species %>% 
                                                         filter(nDetect >= 10) %>% 
                                                         pull(BestTaxon))),
-                         aes(x=depth), color = "grey")+
+                         aes(x=depth), color = "grey30")+
   geom_rug(data = (detect_data %>% 
                      filter(Detected == 1) %>% 
                      filter(BestTaxon %in% (detect_per_species %>% 
                                               filter(nDetect >= 10) %>% 
-                                              pull(BestTaxon)))), 
-           aes(x=depth))+
+                                              pull(BestTaxon))) %>%
+                     mutate(depth_jittered = depth + runif(n(), -5, 30))), 
+           aes(x=depth_jittered),
+           sides = "t") +
   theme_minimal() +
   theme(legend.position = "bottom", legend.title = element_blank()) +
   ylab("POD") +
@@ -132,25 +169,36 @@ dev.off()
 
 m1.2a_predictions <- expand_grid(depth = 0:500, Family = as.factor(unique(detect_data$Family)))
 
-m1.2apreds <- predict(m1.2a, m1.2a_predictions, type = "response", se.fit = TRUE)
+m1.2apreds <- predict(m1.2a, m1.2a_predictions, se.fit = TRUE)
 
 m1.2a_sePreds <- data.frame(m1.2a_predictions,
-                            mu   = m1.2apreds$fit,
-                            low  = m1.2apreds$fit - zval * m1.2apreds$se.fit,
-                            high = m1.2apreds$fit + zval * m1.2apreds$se.fit) %>% 
+                            mu   = binomial()$linkinv(m1.2apreds$fit),
+                            low  = binomial()$linkinv(m1.2apreds$fit - zval * m1.2apreds$se.fit),
+                            high = binomial()$linkinv(m1.2apreds$fit + zval * m1.2apreds$se.fit)) %>% 
   left_join(family_taxon, by = c("Family" = "Family")) %>% 
   filter(Family %in% (detect_per_family %>% 
                            filter(nDetect >= 10) %>% 
                            pull(Family)))
 
-m1.2aPOD <- ggplot(m1.2a_sePreds, aes(x = depth, y = mu, color = Broad_taxa, fill = Broad_taxa)) +
+m1.2aPOD <- ggplot(m1.2a_sePreds, aes(x = depth, color = Broad_taxa, fill = Broad_taxa)) +
   geom_smooth(aes(ymin = low, ymax = high, y = mu), stat = "identity") +
   scale_fill_manual(values = c(pnw_palette("Cascades",5, type = "continuous")[4:5],
                                pnw_palette("Sunset",1, type = "continuous"))) +
   scale_color_manual(values = c(pnw_palette("Cascades",5, type = "continuous")[4:5],
                                 pnw_palette("Sunset",1, type = "continuous"))) +
   facet_wrap(~Family, scales = "free_y") +
-  #coord_cartesian(ylim = c(0,0.25)) +
+  geom_rug(data = filter(detect_data, BestTaxon %in% (detect_per_species %>% 
+                                                        filter(nDetect >= 10) %>% 
+                                                        pull(BestTaxon))),
+           aes(x=depth), color = "grey30") +
+  geom_rug(data = (detect_data %>% 
+                     filter(Detected == 1) %>%
+                     filter(Family %in% (detect_per_family %>% 
+                                        filter(nDetect >= 10) %>% 
+                                        pull(Family))) %>%
+                     mutate(depth_jittered = depth + runif(n(), -5, 30))),
+           aes(x=depth_jittered),
+           sides = "t") +
   theme_minimal() +
   ylab("POD") +
   xlab("Depth") +
@@ -165,11 +213,12 @@ dev.off()
 
 m1.2b_predictions <- expand_grid(depth = 0:500, Prey.family = as.factor(unique(detect_data$Prey.family)))
 
-m1.2bpreds <- predict(m1.2b, m1.2b_predictions, type = "response", se.fit = TRUE)
+m1.2bpreds <- predict(m1.2b, m1.2b_predictions, se.fit = TRUE)
+
 m1.2b_sePreds <- data.frame(m1.2b_predictions,
-                            mu   = m1.2bpreds$fit,
-                            low  = m1.2bpreds$fit - zval * m1.2bpreds$se.fit,
-                            high = m1.2bpreds$fit + zval * m1.2bpreds$se.fit)
+                            mu   = binomial()$linkinv(m1.2bpreds$fit),
+                            low  = binomial()$linkinv(m1.2bpreds$fit - zval * m1.2bpreds$se.fit),
+                            high = binomial()$linkinv(m1.2bpreds$fit + zval * m1.2bpreds$se.fit))
 
 m1.2bPOD <- ggplot(m1.2b_sePreds, aes(x = depth, color = Prey.family, fill = Prey.family)) +
   geom_smooth(aes(ymin = low, ymax = high, y = mu), stat = "identity") +
@@ -178,8 +227,9 @@ m1.2bPOD <- ggplot(m1.2b_sePreds, aes(x = depth, color = Prey.family, fill = Pre
   #guides(color = "none", fill = "none") +
   facet_wrap(~Prey.family, scales = "free_y", ncol = 1,
              labeller = as_labeller(c(fish = "Bony Fishes", invert = "Invertebrates", squid = "Cephalopods"))) +
-  geom_rug(data = detect_data, aes(x=depth), color = "grey")+
-  geom_rug(data = filter(detect_data, Detected == 1), aes(x=depth))+
+  geom_rug(data = detect_data, aes(x=depth), color = "grey30")+
+  geom_rug(data = filter(detect_data, Detected == 1) %>%
+             mutate(depth_jittered = depth + runif(n(), -5, 30)), aes(x=depth), sides = "t")+
   theme_minimal() +
   theme_minimal() +
   xlab("Depth")+
@@ -191,4 +241,5 @@ m1.2bPOD
 dev.off()
 
 
-save(m1.1POD, m1.2POD, m1.2aPOD, m1.2bPOD, file = paste0("./Figures/H1PODplots.Rdata"))
+save(m1.0POD, m1.1POD, m1.2POD, m1.2aPOD, m1.2bPOD, 
+     file = paste0("./Figures/H1PODplots.Rdata"))

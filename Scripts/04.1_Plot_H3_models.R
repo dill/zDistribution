@@ -46,7 +46,11 @@ maxPOD_depth_sf <- maxPOD_depth %>%
   mutate(lon_plain = lon, lat_plain = lat) %>% 
   st_as_sf(coords = c("lon", "lat"), crs = 4326) 
 
-maxPOD_depth_clipped <- st_join(study_area, maxPOD_depth_sf, left = TRUE)
+maxPOD_depth_clipped <- st_join(study_area, maxPOD_depth_sf, left = TRUE) %>% 
+  mutate(depth = case_when(max_mu < 0.005~NA,
+                           TRUE~depth)) %>% 
+  mutate(depthWidth = case_when(max_mu < 0.005~NA,
+                           TRUE~depthWidth))
 
 # pull depth of detections
 pos_detect <- detect_data %>% 
@@ -57,6 +61,7 @@ pos_detect <- detect_data %>%
   mutate(depth = case_when(depth %in% c(48,50)~50,
                            depth %in% c(467,485,495,500)~500,
                            TRUE~depth))
+  
 
 ### Create coastline shapefile -------------------------------------------------
 world <- st_read("Data/ne_10m_land/ne_10m_land.shp")
@@ -96,14 +101,11 @@ depth_max_detect[[i]] <- ggplot(westcoast_land) +
   geom_tile(data = maxPOD_depth_clipped %>% 
               filter(BestTaxon == species[i]), 
             aes(x = lon_plain, y = lat_plain, fill = depth)) +
-  theme_classic() +
   geom_sf(fill = "grey50", colour = NA) +
   scale_fill_viridis_c(name = "Depth(m)",
                        option = "mako",
                        trans = "reverse",
-                       begin = 0.4, end = 0.9) +
-  geom_contour(data = bath_df, aes(x = x, y = y, z = z),
-               breaks = c(-500, -1000, -2000), color = "grey70", linewidth = 0.3) +
+                       begin = 0.4, end = 0.9, na.value = "transparent") +
   ggspatial::geom_spatial_point(data = pos_detect %>%
                                   filter(BestTaxon == species[i]),
                                 aes(x = lon, y = lat,
@@ -116,6 +118,7 @@ depth_max_detect[[i]] <- ggplot(westcoast_land) +
   scale_color_viridis_d("Detection depth (m)", option = "rocket",
                         direction = -1, begin = 0.3, end = 0.8, guide = "none") +
   ggtitle(names(species)[i]) +
+  theme_classic() +
   theme(axis.text = element_blank(),
         axis.ticks = element_blank(),
         axis.title = element_blank(),
@@ -124,8 +127,12 @@ depth_max_detect[[i]] <- ggplot(westcoast_land) +
         legend.justification = c("left"),
         legend.background = element_blank(),
         legend.box.background = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
         legend.title = element_text(size = 10),
-        legend.text = element_text(size = 9)) 
+        legend.text = element_text(size = 9)) +
+  geom_contour(data = bath_df, aes(x = x, y = y, z = z),
+               breaks = c(-500, -1000, -2000), color = "grey70", linewidth = 0.3)
 }
   
 #depth_max_detect[[1]] + depth_max_detect[[2]] + depth_max_detect[[3]] 
@@ -180,7 +187,7 @@ ci95_plot_list[[i]] <- ggplot(westcoast_land) +
   scale_fill_viridis_c(name = "50% CI\ndepth range",
                        option = "magma",
                        trans = "reverse",
-                       begin = 0.15, end = 1) +
+                       begin = 0.15, end = 1, na.value = "transparent") +
   theme(axis.text = element_blank(),
         axis.ticks = element_blank(),
         axis.title = element_blank(),

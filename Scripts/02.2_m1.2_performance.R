@@ -97,6 +97,7 @@ species <- detect_per_species %>%
 
 AUC_by_species <- data.frame()
 TSS_by_species <- data.frame()
+TSS_raw_species <- data.frame()
 
 for (a in 1:length(species)) {
  
@@ -159,34 +160,66 @@ for (a in 1:length(species)) {
   
   AUC_by_species <- rbind(AUC_by_species, AUC_dftemp)
   
+  breaks <- seq(0,0.1, by = 0.005)
+  names(breaks) <- seq(1:length(breaks))
+  
   TSS_dftemp <- as.data.frame(do.call(rbind.data.frame, TSS_list)) %>% 
     mutate(TSS = as.numeric(TSS)) %>% 
-    mutate(bins = cut(threshold, breaks = seq(0,0.1, by = 0.005),
-                      labels = FALSE)) %>% 
+    mutate(bins = cut(threshold, breaks = breaks,
+                      labels = FALSE, include.lowest = TRUE,
+                      ordered_result = TRUE)) %>% 
     group_by(bins) %>% 
     summarize(mean = mean(TSS), sd = sd(TSS), nSamp = n()) %>% 
     mutate(se = sd/(nSamp^(1/2))) %>% 
     mutate(low95 = mean - 1.96 * se,
            high95 = mean + 1.96 * se) %>% 
-    mutate(species = species[a])
+    mutate(species = species[a]) %>% 
+    mutate(bin_label = breaks[names(breaks) == bins])
   
   TSS_by_species <- rbind(TSS_by_species, TSS_dftemp)
-  
+  TSS_raw_species <- rbind(TSS_raw_species, as.data.frame(do.call(rbind.data.frame, TSS_list)) %>%
+                                            mutate(species = species[a]))
 }
 
+<<<<<<< HEAD
+TSS_species_plot <- ggplot(TSS_by_species, aes(x = bin_label, color = species, fill = species)) +
+=======
 ggplot(TSS_by_species, aes(x = bins, color = species, fill = species)) +
+>>>>>>> parent of 3d564a8 (update H1 model predictions and plots, move rug plot, add AUC and TSS to results AVC 11/11/2025)
   geom_smooth(aes(ymin = low95, ymax = high95, y = mean), 
-              stat = "identity") +
+              stat = "identity", alpha = 0.2) +
   theme_minimal() +
-  ylab("TSS")
+  ylab("TSS") +
+  ylab("POD threshold") +
+  scale_color_viridis_d() +
+  scale_fill_viridis_d()
 
 meanAUC_by_species <- AUC_by_species %>% 
   group_by(species) %>% 
   summarize(meanAUC = mean(AUC))
+
+TSS_optim_species <- TSS_raw_species %>% 
+  mutate(TSS = as.numeric(TSS)) %>% 
+  group_by(species,test) %>% 
+  arrange(desc(TSS)) %>% 
+  slice_head() %>% ungroup() %>% 
+  group_by(species) %>% 
+  summarize(meanTSS = mean(TSS), meanThreshold = mean(threshold))
+
+species_metrics <- meanAUC_by_species %>% 
+  left_join(TSS_optim_species, by = "species")
 
 ### save test metrics ----------------------------------------------------------
 
 save(AUC_df, TSS_df, 
      AUC_by_species,
      TSS_by_species, 
+<<<<<<< HEAD
+     meanAUC_by_species, 
+     TSS_species_plot,
+     TSS_plot,
+     TSS_optim_species,
+     species_metrics, file = "./ProcessedData/m1.2performance.Rdata")
+=======
      meanAUC_by_species, file = "./ProcessedData/m1.2performance.Rdata")
+>>>>>>> parent of 3d564a8 (update H1 model predictions and plots, move rug plot, add AUC and TSS to results AVC 11/11/2025)

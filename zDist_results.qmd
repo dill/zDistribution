@@ -76,7 +76,7 @@ m1.2bPOD_bordered <- patchwork::wrap_elements(m1.2bPOD) +
   theme(plot.background = element_rect(color = "black", fill = NA, linewidth = 1))
 
 (m1.2aPOD_bordered + m1.2bPOD_bordered) +
-  plot_layout(widths = c(3, 1), axis_titles = "collect") &
+  plot_layout(widths = c(3, 1), axis_titles = "collect") +
   theme(legend.position = "bottom")
 
 ```
@@ -108,7 +108,7 @@ Depths of highest POD for humpback whales had two peaks around `r min(maxPOD_dep
 
 ```{r}
 #| label: fig-H3PODxy
-#| fig-cap: "Depth of maximum probability of detection (POD; top) and range of depths falling within 50% CI of the depth of maximum detection (bottom) for three species: Bbai = Baird's beaked whale (*B. bairdii*), Lobl = Pacific white-sided dolphin (*L. obliquidens*), Mnov = humpback whale (*M. novaegliae*)."
+#| fig-cap: "Depth of maximum probability of detection (POD; top) and range of depths falling within 50% CI of the depth of maximum detection (bottom) for three species: Bbai = Baird's beaked whale (*B. bairdii*), max POD ~ 0.018; Lobl = Pacific white-sided dolphin (*L. obliquidens*), max POD ~ 0.08; Mnov = humpback whale (*M. novaegliae*), max POD ~ 0.04. In each subplot, regions with POD < 0.05% were considered 0 and left transparent."
 #| fig-width: 7
 #| fig-height: 15
 

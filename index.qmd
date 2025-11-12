@@ -33,18 +33,25 @@ library(tidyverse)
 library(patchwork)
 library(cowplot)
 library(pander)
+library(PNWColors)
 
 # load data
 load("ProcessedData/detect_data.RData")
 load("ProcessedData/H1models.RData")
 load("ProcessedData/m3.0models_preds.Rdata")
 load("ProcessedData/H3.0c_pred_flt.Rdata")
+<<<<<<< HEAD
+load("ProcessedData/m1.2performance.Rdata")
+load("ProcessedData/potential_whalefall.RData")
+=======
+>>>>>>> parent of 3d564a8 (update H1 model predictions and plots, move rug plot, add AUC and TSS to results AVC 11/11/2025)
 
 # load plots
 load("Figures/sampling_map.Rdata")
 load("Figures/detectDepth_plots.Rdata")
 load("./Figures/H1PODplots.Rdata")
 load("./Figures/H3.0c_map.Rdata")
+load("./Figures/Q2_DetectabilityByPrimer.RData")
 
 metadata <- read.csv("./Data/Hake_2019_metadata.csv")
 ```
@@ -105,9 +112,9 @@ In general, sampling near the surface will increase detection rates of delphinid
 
 #### Question 2:
 
-5.  Occupancy models can be used to separate effects of presence and detection.
+5.  Occupancy models can be used to separate effects of eDNA presence at the sampling site/in the bottle and detection in the sequence data.
 
-    Also: Increasing primer specificity increases POD? and *this covaries with depth effect?*
+6.  Increasing primer specificity increases POD. POD per station/depth increases ~linearly with technical replication, except that increasing freeze/thaw cycles decreases POD and may counteract the effect of technical replication (for longer target regions, as with Dloop in this study). Shorter regions more robust to freeze/thaw but often have less specificity and lower POD, and/or lower variability and ability to classify to species. **Add here how many detections were made at the family level that were dropped.**
 
 Patin et al. \[Patin2025\] used a Bayesian hierarchical occupancy model to characterize delphinid occupancy, capture, and detection across sampling methods and primers in a highly replicated survey in Southern California. The high level of replication (biological and technical) in that study allowed the authors to separately estimate occupancy probability by depth, capture probability by sampling method, and detection probability by primer. Here, we had access to a single biological replicate collected at each sampling site and depth, so we are unable to resolve the difference between occupancy and capture of cetacean eDNA. However, in our study usually five and sometimes as many as eight technical replicates were run on each biological replicate, so we did use this information to better characterize occupancy/capture by depth and detectability by primer.
 
@@ -149,6 +156,38 @@ Table S1. Sample metadata.
 
 Table S2. Q1 model AIC and diagnostics
 
+<<<<<<< HEAD
+```{r}
+#| label: tbl-m12AUC
+#| tbl-cap: "Table S2. Per-species AUC, optimized TSS, and optimized TSS threshold for m1.2, including all species with >20 detections."
+
+pander(species_metrics)
+```
+
+```{r}
+#| label: fig-S1-null
+#| fig-cap: "Supplemental Figure S1. Q1 null hypothesis plot."
+
+m1.0POD
+
+```
+
+```{r}
+#| label: fig-S2-TSS
+#| fig-cap: "Supplemental Figure S2. TSS (left) and per-species TSS (right) metrics for m1.2. Per-species TSS only shows species with >20 detections."
+
+TSS_plot / TSS_species_plot
+
+```
+
+```{r}
+#| label: fig-S3-whalefall
+#| fig-cap: "Supplemental Figure S3. Locations of eDNA detections within 100 m of the ocean floor, which may represent nearby whalefall."
+
+whalefall_map
+```
+=======
 Supplemental Figure S1. Q1 and Q3 Null hypothesis plots?
 
 Supplemental Figure S2. Locations of eDNA detections within 100 m of the ocean floor, which may represent nearby whalefall.
+>>>>>>> parent of 3d564a8 (update H1 model predictions and plots, move rug plot, add AUC and TSS to results AVC 11/11/2025)
