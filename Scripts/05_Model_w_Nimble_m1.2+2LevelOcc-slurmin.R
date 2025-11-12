@@ -222,47 +222,47 @@ nimbleOut_m1.2 <- nimbleMCMC(code = m1.2_nimble,
                              WAIC = TRUE)
 
 save(nimbleOut_m1.2, file = "./Results/nimbleOut_m1.2+2LevOcc.RData")
-# load("./Results/nimbleOut_m1.2+2LevOcc.RData")
-#  
-# samps <- do.call(rbind, nimbleOut_m1.2$samples)[,1:81]
-#  
-# bt <- unique(detect_data$BestTaxon)
-# 
-# alldat <- c()
-# 
-# # need to install mcmcr
-# ss <- list(b=mcmcr::as.mcarray(nimbleOut_m1.2$samples[[1]][,1:81]),
-#             rho=array(nimbleOut_m1.2$samples[[1]][,82:85], dim=c(250,4,1)))
-#  fakey_bacon <- sim2jam(ss, q1Model_m1.2$pregam)
-#  
-# for(tax in bt){
-#   pg <- data.frame(depth=seq(0, 500, by=10),
-#                    BestTaxon=tax)
-#   Xp <- predict(fakey_bacon, pg, type="lpmatrix")
-# 
-#   lp <- Xp %*% t(samps)
-# 
-#   pg$p <- ilogit(apply(lp, 1, mean))
-#   pg$lci <- ilogit(apply(lp, 1, quantile, p=0.025))
-#   pg$uci <- ilogit(apply(lp, 1, quantile, p=0.975))
-# 
-#   alldat <- rbind(alldat, pg)
-# }
-# 
-# ggplot(alldat) +
-#   geom_ribbon(aes(x=depth, ymin= lci, ymax = uci), fill = "lightgrey") +
-#   geom_line(aes(x=depth, y = p)) +
-#   facet_wrap(~BestTaxon) +
-#   theme_bw()
-# 
-# 
-# 
-# library(bayesplot)
-# bayesplot_theme_set(new=theme_minimal())
-# 
-# mcmc_trace(nimbleOut_m1.2$samples, pars=paste0("prob_detection[",1:3,"]"), transformations=log)
-# 
-# mcmc_trace(nimbleOut_m1.2$samples, pars=paste0("lambda[",1:4,"]"), transformations=log)
-# 
-# mcmc_pairs(nimbleOut_m1.2$samples, pars=paste0("lambda[",1:4,"]"), transformations=log)
-# 
+load("./Results/nimbleOut_m1.2+2LevOcc.RData")
+
+samps <- do.call(rbind, nimbleOut_m1.2$samples)[,1:81]
+
+bt <- unique(detect_data$BestTaxon)
+
+alldat <- c()
+
+# need to install mcmcr
+ss <- list(b=mcmcr::as.mcarray(nimbleOut_m1.2$samples[[1]][,1:81]),
+            rho=array(nimbleOut_m1.2$samples[[1]][,82:85], dim=c(250,4,1)))
+ fakey_bacon <- sim2jam(ss, q1Model_m1.2$pregam)
+
+for(tax in bt){
+  pg <- data.frame(depth=seq(0, 500, by=10),
+                   BestTaxon=tax)
+  Xp <- predict(fakey_bacon, pg, type="lpmatrix")
+
+  lp <- Xp %*% t(samps)
+
+  pg$p <- ilogit(apply(lp, 1, mean))
+  pg$lci <- ilogit(apply(lp, 1, quantile, p=0.025))
+  pg$uci <- ilogit(apply(lp, 1, quantile, p=0.975))
+
+  alldat <- rbind(alldat, pg)
+}
+
+ggplot(alldat) +
+  geom_ribbon(aes(x=depth, ymin= lci, ymax = uci), fill = "lightgrey") +
+  geom_line(aes(x=depth, y = p)) +
+  facet_wrap(~BestTaxon) +
+  theme_bw()
+
+
+
+library(bayesplot)
+bayesplot_theme_set(new=theme_minimal())
+
+mcmc_trace(nimbleOut_m1.2$samples, pars=paste0("prob_detection[",1:4,"]"), transformations=log)
+
+mcmc_trace(nimbleOut_m1.2$samples, pars=paste0("lambda[",1:4,"]"), transformations=log)
+
+mcmc_pairs(nimbleOut_m1.2$samples, pars=paste0("lambda[",1:4,"]"), transformations=log)
+
