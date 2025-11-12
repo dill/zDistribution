@@ -159,12 +159,12 @@ dev.off()
 
 m1.2a_predictions <- expand_grid(depth = 0:500, Family = as.factor(unique(detect_data$Family)))
 
-m1.2apreds <- predict(m1.2a, m1.2a_predictions, type = "response", se.fit = TRUE)
+m1.2apreds <- predict(m1.2a, m1.2a_predictions, type = "link", se.fit = TRUE)
 
 m1.2a_sePreds <- data.frame(m1.2a_predictions,
-                            mu   = m1.2apreds$fit,
-                            low  = m1.2apreds$fit - zval * m1.2apreds$se.fit,
-                            high = m1.2apreds$fit + zval * m1.2apreds$se.fit) %>% 
+                            mu   = binomial()$linkinv(m1.2apreds$fit),
+                            low  = binomial()$linkinv(m1.2apreds$fit - zval * m1.2apreds$se.fit),
+                            high = binomial()$linkinv(m1.2apreds$fit + zval * m1.2apreds$se.fit)) %>% 
   left_join(family_taxon, by = c("Family" = "Family")) %>% 
   filter(Family %in% (detect_per_family %>% 
                            filter(nDetect >= 10) %>% 
@@ -192,11 +192,11 @@ dev.off()
 
 m1.2b_predictions <- expand_grid(depth = 0:500, Prey.family = as.factor(unique(detect_data$Prey.family)))
 
-m1.2bpreds <- predict(m1.2b, m1.2b_predictions, type = "response", se.fit = TRUE)
+m1.2bpreds <- predict(m1.2b, m1.2b_predictions, type = "link", se.fit = TRUE)
 m1.2b_sePreds <- data.frame(m1.2b_predictions,
-                            mu   = m1.2bpreds$fit,
-                            low  = m1.2bpreds$fit - zval * m1.2bpreds$se.fit,
-                            high = m1.2bpreds$fit + zval * m1.2bpreds$se.fit)
+                            mu   = binomial()$linkinv(m1.2bpreds$fit),
+                            low  = binomial()$linkinv(m1.2bpreds$fit - zval * m1.2bpreds$se.fit),
+                            high = binomial()$linkinv(m1.2bpreds$fit + zval * m1.2bpreds$se.fit))
 
 m1.2bPOD <- ggplot(m1.2b_sePreds, aes(x = depth, color = Prey.family, fill = Prey.family)) +
   geom_smooth(aes(ymin = low, ymax = high, y = mu), stat = "identity") +
