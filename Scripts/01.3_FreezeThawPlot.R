@@ -9,6 +9,7 @@ summarize_thaw <- detect_data_allcet %>%
 
 ggplot(summarize_thaw) +
   geom_col(aes(x= Thaw, y = POD, fill = n)) +
+  geom_text(aes(x=Thaw, y = 1.1, label = paste("n = ", n)))+
   facet_wrap(~primer, nrow = 3) +
   theme_bw()+
   scale_fill_gradient2(low = "lightgrey",
@@ -18,4 +19,4 @@ ggplot(summarize_thaw) +
                         space="Lab")
 
 ggsave(plot = last_plot(), file = "./Figures/detectThaw.png", 
-       width = 6, height = 6, units = "in")
+       width = 8, height = 6, units = "in")
