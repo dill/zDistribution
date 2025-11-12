@@ -286,6 +286,8 @@ post.samples_detectability <- post.samples %>%
                             Parameter == "prob_detection[3]" ~ "MFU",
                             Parameter == "prob_detection[4]" ~ "MV1"))
 
+save(post.samples_detectability, file = "./Results/post.samples_detectability_m1.0+2LevelOcc.RData")
+
 Q2_Detectability <- ggplot(post.samples_detectability) +
   geom_density(aes(x=Est, fill = Primer, color = Primer), alpha = 0.75) +
   scale_fill_manual(values = c(pnw_palette("Cascades",5, type = "discrete")[c(2, 3, 5)],
