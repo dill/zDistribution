@@ -40,11 +40,8 @@ load("ProcessedData/detect_data.RData")
 load("ProcessedData/H1models.RData")
 load("ProcessedData/m3.0models_preds.Rdata")
 load("ProcessedData/H3.0c_pred_flt.Rdata")
-<<<<<<< HEAD
 load("ProcessedData/m1.2performance.Rdata")
 load("ProcessedData/potential_whalefall.RData")
-=======
->>>>>>> parent of 3d564a8 (update H1 model predictions and plots, move rug plot, add AUC and TSS to results AVC 11/11/2025)
 
 # load plots
 load("Figures/sampling_map.Rdata")
