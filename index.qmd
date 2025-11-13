@@ -49,6 +49,7 @@ load("Figures/detectDepth_plots.Rdata")
 load("./Figures/H1PODplots.Rdata")
 load("./Figures/H3.0c_map.Rdata")
 load("./Figures/Q2_DetectabilityByPrimer.RData")
+load("./Figures/Q2_TechRepsXPrimer.RData")
 
 metadata <- read.csv("./Data/Hake_2019_metadata.csv")
 ```
@@ -151,9 +152,6 @@ We are grateful to the many people who supported eDNA sample collection and proc
 
 Table S1. Sample metadata.
 
-Table S2. Q1 model AIC and diagnostics
-
-<<<<<<< HEAD
 ```{r}
 #| label: tbl-m12AUC
 #| tbl-cap: "Table S2. Per-species AUC, optimized TSS, and optimized TSS threshold for m1.2, including all species with >20 detections."
@@ -183,8 +181,4 @@ TSS_plot / TSS_species_plot
 
 whalefall_map
 ```
-=======
-Supplemental Figure S1. Q1 and Q3 Null hypothesis plots?
 
-Supplemental Figure S2. Locations of eDNA detections within 100 m of the ocean floor, which may represent nearby whalefall.
->>>>>>> parent of 3d564a8 (update H1 model predictions and plots, move rug plot, add AUC and TSS to results AVC 11/11/2025)
