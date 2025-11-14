@@ -126,21 +126,123 @@ m3.0c_pred_grid <- expand_grid(depth = seq(from = 0, to = 500, by = 10),
                                                         "Megaptera novaeangliae",
                                                         "Berardius bairdii")))
 # response predictions
-m3.0cpreds <- predict.bam(m3.0c, m3.0c_pred_grid, 
-                          type = "response",
+m3.0cpreds <- predict.bam(m3.0c, m3.0c_pred_grid,
                           se.fit = TRUE)
 
-m3.0c_sePreds_response <- data.frame(m3.0c_pred_grid,
-                            mu   = m3.0cpreds$fit,
-                            low  = m3.0cpreds$fit - 1.96 * m3.0cpreds$se.fit,
-                            high = m3.0cpreds$fit + 1.96 * m3.0cpreds$se.fit,
-                            low50  = m3.0cpreds$fit - 0.674 * m3.0cpreds$se.fit,
-                            high50 = m3.0cpreds$fit + 0.674 * m3.0cpreds$se.fit)
+m3.0c_sePreds <- data.frame(m3.0c_pred_grid,
+                            mu   = binomial()$linkinv(m3.0cpreds$fit),
+                            low  = binomial()$linkinv(m3.0cpreds$fit - 1.96 * m3.0cpreds$se.fit),
+                            high = binomial()$linkinv(m3.0cpreds$fit + 1.96 * m3.0cpreds$se.fit),
+                            low50  = binomial()$linkinv(m3.0cpreds$fit - 0.674 * m3.0cpreds$se.fit),
+                            high50 = binomial()$linkinv(m3.0cpreds$fit + 0.674 * m3.0cpreds$se.fit))
 
 ### Save -----------------------------------------------------------------------
 
 save(m3.0a, m3.0b, m3.0c, m3.0b_sePreds, m3.0cpreds,
      file = "./ProcessedData/m3.0models_preds_0.05degree.Rdata")
+
+
+### Do it again with baleen whales separated from probable poop ----------------
+
+## wrangle data
+
+detect_data_deep <- detect_data %>% 
+  filter(Broad_taxa == "Baleen whale") %>% 
+  mutate(BestTaxon = paste0(BestTaxon,"_poop")) %>% 
+  mutate(Detected = case_when(depth > 200 & Detected == 1~1,
+                              TRUE~0))
+
+detect_data_baleen <- detect_data %>% 
+  filter(Broad_taxa == "Baleen whale") %>% 
+  mutate(Detected = case_when(depth < 200 & Detected == 1~1,
+                              TRUE~0)) %>% 
+  bind_rows(detect_data_deep) %>% 
+  mutate(BestTaxon = as.factor(BestTaxon))
+
+
+m3.0c_baleen <-
+  bam(Detected ~ 
+        # main effects of space, depth, taxon
+        ti(lon, lat,
+           d=2,
+           k=20,
+           bs="tp")+
+        ti(depth,
+           k=5,
+           bs="ts")+
+        ti(BestTaxon,
+           k=16,
+           bs="re")+
+        # interaction between *everything*
+        ti(lon, lat, depth, BestTaxon,
+           d=c(2,1,1),
+           k=c(20, 5, 16),
+           bs=c("tp","ts", "re"))+
+        # space-taxon effect
+        ti(lon, lat, BestTaxon,
+           d=c(2,1),
+           k=c(10,16),
+           bs=c("tp","re"))+
+        # depth-taxon effect
+        ti(depth, BestTaxon,
+           k=c(10,16),
+           bs=c("ts","re")),
+      family = "binomial",
+      method = "fREML",
+      data = detect_data_baleen,
+      discrete = TRUE)
+
+summary(m3.0c_baleen)
+# Parametric coefficients:
+#   Estimate Std. Error z value Pr(>|z|)    
+# (Intercept)  -7.0746     0.3298  -21.45   <2e-16 ***
+#   ---
+#   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+# 
+# Approximate significance of smooth terms:
+#   edf Ref.df  Chi.sq  p-value    
+# ti(lon,lat)                 1.117e+01  13.46  22.736    0.075 .  
+# ti(depth)                   4.143e-01   4.00   0.664 5.52e-07 ***
+#   ti(BestTaxon)               4.269e-05  11.00   0.000    0.633    
+# ti(BestTaxon,depth,lon,lat) 4.656e+01 912.00  87.795  < 2e-16 ***
+#   ti(lon,lat,BestTaxon)       1.749e+01 106.00  26.198 2.86e-06 ***
+#   ti(depth,BestTaxon)         1.496e+01 108.00 146.276  < 2e-16 ***
+#   ---
+#   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+# 
+# R-sq.(adj) =  0.102   Deviance explained = 37.5%
+# fREML =  31515  Scale est. = 1         n = 33372
+
+AIC(m3.0c_baleen)
+#1620
+
+### m3.0c_baleen predictions ---------------------------------------------------
+
+m3.0c_baleen_pred_grid <- expand_grid(depth = seq(from = 0, to = 500, by = 10),
+                               lat = seq(min(detect_data$lat, na.rm = TRUE),
+                                         max(detect_data$lat, na.rm = TRUE),
+                                         by = 0.05),
+                               lon = seq(min(detect_data$lon, na.rm = TRUE),
+                                         max(detect_data$lon, na.rm = TRUE),
+                                         by = 0.05),
+                               BestTaxon = as.factor(c("Megaptera novaeangliae",
+                                                       "Megaptera novaeangliae_poop")))
+m3.0c_baleen_preds <- predict.bam(m3.0c_baleen, m3.0c_baleen_pred_grid, 
+                          se.fit = TRUE)
+
+m3.0c_baleen_sePreds <- data.frame(m3.0c_baleen_pred_grid,
+                                     mu   = binomial()$linkinv(m3.0c_baleen_preds$fit),
+                                     low  = binomial()$linkinv(m3.0c_baleen_preds$fit - 1.96 * m3.0c_baleen_preds$se.fit),
+                                     high = binomial()$linkinv(m3.0c_baleen_preds$fit + 1.96 * m3.0c_baleen_preds$se.fit),
+                                     low50  = binomial()$linkinv(m3.0c_baleen_preds$fit - 0.674 * m3.0c_baleen_preds$se.fit),
+                                     high50 = binomial()$linkinv(m3.0c_baleen_preds$fit + 0.674 * m3.0c_baleen_preds$se.fit))
+
+### Save -----------------------------------------------------------------------
+
+save(m3.0c_baleen, m3.0c_baleen_sePreds, m3.0c_baleen_preds,
+     file = "./ProcessedData/m3.0c_baleen.Rdata")
+
+
 
 ### DLM explanation of ti vs. te -----------------------------------------------
 

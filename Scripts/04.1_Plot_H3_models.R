@@ -19,11 +19,13 @@ load("./ProcessedData/detect_data.RData")
 mmEcoEvo <- read.csv("./Data/MM_metadata.csv")
 metadata <- read.csv("./Data/Hake_2019_metadata.csv")
 
+det_colors <- c("500" = "#03051AFF", "300" = "#611F53FF", "150" = "#CB1B4FFF","50" = "#F16445FF","0" = "#F69C73FF")
 
+#"#751F58FF" "#AC185AFF" "#DB2946FF" 
 ### m3.0c max POD depth map for three species ----------------------------------
 
 # pull depth of max POD
-maxPOD_depth <- m3.0c_sePreds_link %>% 
+maxPOD_depth <- m3.0c_sePreds %>% 
   group_by(BestTaxon, lat,lon) %>% #3816 groups
   arrange(desc(mu), .by_group = TRUE) %>% 
   mutate(max_mu = first(mu), max_low50 = first(low50), 
@@ -115,8 +117,9 @@ depth_max_detect[[i]] <- ggplot(westcoast_land) +
                                 stroke = 1,
                                 position = position_jitter(width = 0.05,
                                                            height = 0.05)) +
-  scale_color_viridis_d("Detection depth (m)", option = "rocket",
-                        direction = -1, begin = 0.3, end = 0.8, guide = "none") +
+  scale_color_manual(values = det_colors) +
+  #scale_color_viridis_d("Detection depth (m)", option = "rocket",
+  #                      direction = -1, begin = 0.3, end = 0.8, guide = "none") +
   ggtitle(names(species)[i]) +
   theme_classic() +
   theme(axis.text = element_blank(),
@@ -132,7 +135,8 @@ depth_max_detect[[i]] <- ggplot(westcoast_land) +
         legend.title = element_text(size = 10),
         legend.text = element_text(size = 9)) +
   geom_contour(data = bath_df, aes(x = x, y = y, z = z),
-               breaks = c(-500, -1000, -2000), color = "grey70", linewidth = 0.3)
+               breaks = c(-500, -1000, -2000), color = "grey70", linewidth = 0.3) +
+  guides(color = "none")
 }
   
 #depth_max_detect[[1]] + depth_max_detect[[2]] + depth_max_detect[[3]] 
@@ -145,11 +149,12 @@ dummy_df <- data.frame(
 
 dummy_plot <- ggplot(dummy_df, aes(x = x, y = y, color = depth)) +
   geom_point() +
-  scale_color_viridis_d(
-    name = "Detection depth (m)",
-    option = "rocket",
-    direction = -1,
-    begin = 0.3, end = 0.8) +
+  scale_color_manual(values = det_colors) +
+  # scale_color_viridis_d(
+  #   name = "Detection depth (m)",
+  #   option = "rocket",
+  #   direction = -1,
+  #   begin = 0.3, end = 0.8) +
   theme_minimal() +
   theme(legend.position = "bottom",
     plot.margin = margin(0, 0, 0, 0),
@@ -227,6 +232,183 @@ dev.off()
 
 save(depth_max_detect, ci95_plot_list, shared_legend, depthPODmax, file = "./Figures/H3.0c_map.Rdata")
 save(maxPOD_depth, pos_detect, maxPOD_depth_clipped, file = "./ProcessedData/H3.0c_pred_flt.Rdata")
+
+#### Do it again with poop separate --------------------------------------------
+load("./ProcessedData/m3.0c_baleen.Rdata")
+
+# pull depth of max POD
+maxPOD_depth_baleen <- m3.0c_baleen_sePreds %>% 
+  group_by(BestTaxon, lat,lon) %>% #3816 groups
+  arrange(desc(mu), .by_group = TRUE) %>% 
+  mutate(max_mu = first(mu), max_low50 = first(low50), 
+         max_high50 = first(high50), max_depth = first(depth)) %>%
+  filter(mu > max_low50 & mu < max_high50) %>%
+  mutate(depth_min = min(depth), depth_max = max(depth)) %>% 
+  slice_head() %>% 
+  ungroup() %>% 
+  mutate(depthWidth = depth_max - depth_min) %>% 
+  mutate(ci95 = high-low) %>% 
+  ungroup()
+
+# convert POD to sf
+maxPOD_depth_sf_baleen <- maxPOD_depth_baleen %>% 
+  mutate(lon_plain = lon, lat_plain = lat) %>% 
+  st_as_sf(coords = c("lon", "lat"), crs = 4326) 
+
+maxPOD_depth_clipped_baleen <- st_join(study_area, maxPOD_depth_sf_baleen, left = TRUE) %>% 
+  mutate(depth = case_when(max_mu < 0.005~NA,
+                           TRUE~depth)) %>% 
+  mutate(depthWidth = case_when(max_mu < 0.005~NA,
+                                TRUE~depthWidth))
+
+# pull depth of detections
+pos_detect_baleen <- detect_data_baleen %>% 
+  filter(BestTaxon %in% c("Megaptera novaeangliae",
+                          "Megaptera novaeangliae_poop")) %>% 
+  filter(Detected == 1) %>% 
+  mutate(depth = case_when(depth %in% c(48,50)~50,
+                           depth %in% c(467,485,495,500)~500,
+                           TRUE~depth))
+
+### depth of max POD map -------------------------------------------------------
+depth_max_detect_baleen <- list()
+
+species <- c("Megaptera novaeangliae",
+             "Megaptera novaeangliae_poop")
+names(species) <- c("Mnov","Mnov_poop")
+
+for (i in 1:length(species)){
+  depth_max_detect_baleen[[i]] <- ggplot(westcoast_land) +
+    geom_tile(data = maxPOD_depth_clipped_baleen %>% 
+                filter(BestTaxon == species[i]), 
+              aes(x = lon_plain, y = lat_plain, fill = depth)) +
+    geom_sf(fill = "grey50", colour = NA) +
+    scale_fill_viridis_c(name = "Depth(m)",
+                         option = "mako",
+                         trans = "reverse",
+                         begin = 0.4, end = 0.9, na.value = "transparent") +
+    ggspatial::geom_spatial_point(data = pos_detect_baleen %>%
+                                    filter(BestTaxon == species[i]),
+                                  aes(x = lon, y = lat,
+                                      color = as.factor(depth)),
+                                  size = 1,
+                                  alpha = 0.8,
+                                  stroke = 1,
+                                  position = position_jitter(width = 0.05,
+                                                             height = 0.05)) +
+    scale_color_manual(values = det_colors) +
+    #scale_color_viridis_d("Detection depth (m)", option = "rocket",
+    #                      direction = -1, begin = 0.3, end = 0.8, guide = "none") +
+    ggtitle(names(species)[i]) +
+    theme_classic() +
+    theme(axis.text = element_blank(),
+          axis.ticks = element_blank(),
+          axis.title = element_blank(),
+          plot.margin = margin(0, 0, 0, 0),
+          legend.position = c(0.54, 0.45),    # <<-- Adjust to place legend over land
+          legend.justification = c("left"),
+          legend.background = element_blank(),
+          legend.box.background = element_blank(),
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          legend.title = element_text(size = 10),
+          legend.text = element_text(size = 9)) +
+    geom_contour(data = bath_df, aes(x = x, y = y, z = z),
+                 breaks = c(-500, -1000, -2000), color = "grey70", linewidth = 0.3) +
+    guides(color = "none")
+}
+
+#depth_max_detect[[1]] + depth_max_detect[[2]] + depth_max_detect[[3]] 
+
+# "legend-only" plot 
+dummy_df_baleen <- data.frame(
+  x = 5, y = 1,
+  depth = factor(unique(pos_detect_baleen$depth), 
+                 levels = sort(unique(pos_detect_baleen$depth))))
+
+dummy_plot_baleen <- ggplot(dummy_df_baleen, aes(x = x, y = y, color = depth)) +
+  geom_point() +
+  scale_color_viridis_d(
+    name = "Detection depth (m)",
+    option = "rocket",
+    direction = -1,
+    begin = 0.3, end = 0.8) +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        plot.margin = margin(0, 0, 0, 0),
+        legend.title = element_text(size = 11),
+        legend.text = element_text(size = 10))
+
+# Extract legend 
+g_baleen <- ggplotGrob(dummy_plot_baleen)
+leg_index_baleen <- which(sapply(g_baleen$grobs, function(x) x$name) == "guide-box")
+shared_legend_baleen <- g_baleen$grobs[[leg_index_baleen]]
+
+# Combine maps and legend
+
+combined_plot_baleen <- cowplot::plot_grid(
+  plot_grid(plotlist = depth_max_detect_baleen, nrow = 1),
+  shared_legend_baleen,
+  ncol = 1,
+  rel_heights = c(1, 0.08))
+
+combined_plot_baleen
+
+# 95% CI of max POD
+
+ci95_plot_list_baleen <- list()
+
+for (i in 1:length(species)){
+  ci95_plot_list_baleen[[i]] <- ggplot(westcoast_land) +
+    geom_tile(data = maxPOD_depth_clipped_baleen %>% 
+                filter(BestTaxon == species[i]), 
+              aes(x = lon_plain, y = lat_plain, 
+                  fill = depthWidth)) +
+    theme_classic() +
+    #ggtitle(names(species)[i]) +
+    geom_sf(fill = "grey50", colour = NA) +
+    scale_fill_viridis_c(name = "50% CI\ndepth range",
+                         option = "magma",
+                         trans = "reverse",
+                         begin = 0.15, end = 1, na.value = "transparent") +
+    theme(axis.text = element_blank(),
+          axis.ticks = element_blank(),
+          axis.title = element_blank(),
+          plot.margin = margin(0, 0, 0, 0),
+          legend.position = c(0.54, 0.45),    # <<-- Adjust to place legend over land
+          legend.justification = c("left"),
+          legend.background = element_blank(),
+          legend.box.background = element_blank(),
+          legend.title = element_text(size = 10),
+          legend.text = element_text(size = 9)) +
+    geom_contour(data = bath_df, aes(x = x, y = y, z = z),
+                 breaks = c(-500, -1000, -2000), color = "grey70", linewidth = 0.3)
+  
+  if (i == 1){
+    ci95_plot_list_baleen[[i]] <- ci95_plot_list_baleen[[i]] +
+      annotation_north_arrow(location = "bl",
+                             which_north = "true",
+                             style = north_arrow_fancy_orienteering(fill = c("grey30", "white"),
+                                                                    line_col = "grey30"),
+                             height = unit(1, "cm"),
+                             width = unit(1, "cm"))
+  }
+}
+
+#ci95_plot_list[[1]] + ci95_plot_list[[2]] + ci95_plot_list[[3]]
+
+depthPODmax_baleen <- plot_grid(
+  plot_grid(plotlist = depth_max_detect_baleen, nrow = 1),
+  shared_legend_baleen,
+  plot_grid(plotlist = ci95_plot_list_baleen, nrow = 1),
+  ncol = 1,
+  rel_heights = c(1, 0.08, 1))
+
+pdf(height = 15, file = "./Figures/maxPODdepthmap_baleen.pdf")
+depthPODmax_baleen
+dev.off()
+
+save(depthPODmax_baleen, file = "./Figures/masPODdepthmap_baleen.Rdata")
 
 ### m3.0c dept-lat variability figure ------------------------------------------
 

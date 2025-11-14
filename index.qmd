@@ -50,6 +50,7 @@ load("./Figures/H1PODplots.Rdata")
 load("./Figures/H3.0c_map.Rdata")
 load("./Figures/Q2_DetectabilityByPrimer.RData")
 load("./Figures/Q2_TechRepsXPrimer.RData")
+load("./Figures/masPODdepthmap_baleen.Rdata")
 
 metadata <- read.csv("./Data/Hake_2019_metadata.csv")
 ```
@@ -146,8 +147,6 @@ All raw sequence data have been uploaded to GenBank (Accessions: XXXX). Detectio
 
 We are grateful to the many people who supported eDNA sample collection and processing, including XXXX, and the crew of the R/V XXXX. Funding for this research came from ONR Grant XXXX.
 
-## References
-
 ## Supplemental Materials
 
 Table S1. Sample metadata.
@@ -182,3 +181,12 @@ TSS_plot / TSS_species_plot
 whalefall_map
 ```
 
+```{r}
+#| label: fig-SuppH3PODxy_baleen
+#| fig-cap: "Depth of maximum probability of detection (POD; top) and range of depths falling within 50% CI of the depth of maximum detection (bottom) for humpback whales, separating likely whale poop (detections > 200 m) from detections within the normal depth range of humpback whales."
+#| fig-width: 7
+#| fig-height: 15
+
+depthPODmax_baleen
+
+```
