@@ -42,6 +42,7 @@ load("ProcessedData/m3.0models_preds.Rdata")
 load("ProcessedData/H3.0c_pred_flt.Rdata")
 load("ProcessedData/m1.2performance.Rdata")
 load("ProcessedData/potential_whalefall.RData")
+load("./ProcessedData/m3.0cperformance.Rdata")
 
 # load plots
 load("Figures/sampling_map.Rdata")
@@ -153,9 +154,22 @@ Table S1. Sample metadata.
 
 ```{r}
 #| label: tbl-m12AUC
-#| tbl-cap: "Table S2. Per-species AUC, optimized TSS, and optimized TSS threshold for m1.2, including all species with >20 detections."
+#| tbl-cap: "Table S2. Per-species AUC, optimized TSS, and optimized TSS threshold for Q1 and Q1 models. Per species AUC and TSS metrics for Q1 include all species with >20 detections."
 
-pander(species_metrics)
+m3.0c_metrics <- AUC_df_m3.0c %>% 
+  summarize(AUC = mean(AUC)) %>% 
+  bind_cols(TSS_df_m3.0c %>% arrange(desc(mean)) %>% slice_head()) %>% 
+  select(AUC, threshold, mean) %>% 
+  rename("TSS" = mean, "Threshold" = threshold) %>% 
+  mutate(species_model = "Q3")
+
+model_metrics <- species_metrics %>% 
+  mutate(species_model = paste0(species, "-Q1")) %>% 
+  select(-species) %>% 
+  rename("AUC" = meanAUC, "Threshold" = meanThreshold, "TSS" = meanTSS) %>% 
+  bind_rows(m3.0c_metrics)
+
+pander(model_metrics)
 ```
 
 ```{r}
@@ -168,9 +182,9 @@ m1.0POD
 
 ```{r}
 #| label: fig-S2-TSS
-#| fig-cap: "Supplemental Figure S2. TSS (left) and per-species TSS (right) metrics for m1.2. Per-species TSS only shows species with >20 detections."
+#| fig-cap: "Supplemental Figure S2. TSS (top) and per-species TSS (middle) metrics for the best-fit Q1 model. Per-species TSS only shows species with >20 detections. TSS metrics for Q3 are shown in the bottom plot."
 
-TSS_plot / TSS_species_plot
+TSS_plot / TSS_species_plot / TSS_plot_m3.0c
 
 ```
 

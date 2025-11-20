@@ -181,12 +181,10 @@ for (a in 1:length(species)) {
                                             mutate(species = species[a]))
 }
 
-<<<<<<< HEAD
-TSS_species_plot <- ggplot(TSS_by_species, aes(x = bin_label, color = species, fill = species)) +
-=======
-ggplot(TSS_by_species, aes(x = bins, color = species, fill = species)) +
->>>>>>> parent of 3d564a8 (update H1 model predictions and plots, move rug plot, add AUC and TSS to results AVC 11/11/2025)
-  geom_smooth(aes(ymin = low95, ymax = high95, y = mean), 
+
+TSS_species_plot <- ggplot(TSS_by_species, 
+                           aes(x = bin_label, color = species, fill = species)) +
+ geom_smooth(aes(ymin = low95, ymax = high95, y = mean), 
               stat = "identity", alpha = 0.2) +
   theme_minimal() +
   ylab("TSS") +
@@ -214,12 +212,8 @@ species_metrics <- meanAUC_by_species %>%
 save(AUC_df, TSS_df, 
      AUC_by_species,
      TSS_by_species, 
-<<<<<<< HEAD
      meanAUC_by_species, 
      TSS_species_plot,
      TSS_plot,
      TSS_optim_species,
      species_metrics, file = "./ProcessedData/m1.2performance.Rdata")
-=======
-     meanAUC_by_species, file = "./ProcessedData/m1.2performance.Rdata")
->>>>>>> parent of 3d564a8 (update H1 model predictions and plots, move rug plot, add AUC and TSS to results AVC 11/11/2025)
