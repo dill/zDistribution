@@ -138,7 +138,7 @@ m3.0c_sePreds <- data.frame(m3.0c_pred_grid,
 
 ### Save -----------------------------------------------------------------------
 
-save(m3.0a, m3.0b, m3.0c, m3.0b_sePreds, m3.0cpreds,
+save(m3.0a, m3.0b, m3.0c, m3.0b_sePreds, m3.0cpreds, m3.0c_sePreds,
      file = "./ProcessedData/m3.0models_preds_0.05degree.Rdata")
 
 

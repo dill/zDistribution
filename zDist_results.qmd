@@ -33,23 +33,31 @@ plot_grid(plotlist = aligned, ncol = 2, rel_widths = c(3, 1))
 
 ### Question 1: Does POD vary with depth?
 
-GAM-based model selection of detection probability across sampling depths negated the null hypothesis of no variation across depth (Supplemental Figure S1). The best alternative model includes significant smooth terms for depth, species, and depth x species interaction (AIC = `r round(min(modelAIC$AIC))`, @tbl-modelAIC). This model explained 14.3% of variance in eDNA detection probability, *with an AUC of XXX and TSS of XXXX.* 
+GAM-based model selection of detection probability across sampling depths negated the null hypothesis of no variation across depth (Supplemental Figure S1). The best alternative model includes significant smooth terms for depth, species, and depth x species interaction (AIC = `r round(min(modelAIC$AIC))`, @tbl-modelAIC). This model explained 14.3% of variance in eDNA detection probability, with a mean AUC of `r round(mean(AUC_df$AUC), digits = 2)` and a mean optimized TSS of `r round(mean(TSS_optim$TSS), digits = 2)`. Full model TSS for all thresholds, as well as per-species AUC, optimized TSS, TSS values across all thresholds are shown in Supplemental Table S2 and Supplemental Figure S2.
 
 ```{r}
 #| label: tbl-modelAIC
 #| tbl-cap: "Akaike Information Criterion values for all GAMs tested to characterize the relationship between depth and POD of eDNA."
 
-modelAIC <- modelAIC %>% 
+modelAICtable <- modelAIC %>% 
   arrange(AIC) %>% 
+  mutate(minAIC = min(AIC)) %>% 
+  mutate(deltaAIC = AIC-minAIC) %>% 
   mutate("stratification" = c("species", "species", "family", "prey", "none")) %>% 
-  select(model, stratification, df, AIC)
+  mutate(model = case_when(model == "m1.2"~"depth, s(species)",
+                           model == "m1.1"~"depth + species",
+                           model == "m1.2a"~"depth, s(family)",
+                           model == "m1.2b"~"depth, s(prey type)",
+                           model == "m1.0"~"depth", 
+                           TRUE~model)) %>% 
+  select(model, stratification, df, deltaAIC)
 
-pander(modelAIC)
+pander(modelAICtable)
 ```
 
-Broadly, delphinids were more likely to be detected at the surface, beaked whales at depths > 200m, and baleen whales either at the surface or at depths > 400m (@fig-H1POD-species). While detection data from the five species detected fewer than 10 times were included in our model input, we did not make predictions for any of these species. Species-specific model predictions generally agreed with the raw detection data.
+Broadly, delphinids were more likely to be detected at the surface, beaked whales at depths \> 200m, and baleen whales either at the surface or at depths \> 400m (@fig-H1POD-species). While detection data from the five species detected fewer than 10 times were included in our model input, we did not make predictions for any of these species. Species-specific model predictions generally agreed with the raw detection data.
 
-Among the delphinids, species-specific trends in POD generally reflected model estimates of time-at-depth. Conversely, most beaked whale and baleen whale species in the study were most likely to be detected deeper than where they spend most of their time (@fig-H1POD-species). Most notably, predicted POD-at-depth plots for two of the three baleen whales indicated a high probability of detection at 500 m, while these two species spend most of their time above ~200 m.
+Among the delphinids, species-specific trends in POD generally reflected model estimates of time-at-depth. Conversely, most beaked whale and baleen whale species in the study were most likely to be detected deeper than where they spend most of their time (@fig-H1POD-species). Most notably, predicted POD-at-depth plots for two of the three baleen whales indicated a high probability of detection at 500 m, while these two species spend most of their time above \~200 m.
 
 ```{r}
 #| label: fig-H1POD-species
@@ -81,8 +89,6 @@ m1.2bPOD_bordered <- patchwork::wrap_elements(m1.2bPOD) +
 
 ```
 
-
-
 #### Question 2: Does depth variability in POD covary with observation bias?
 
 Our hierarchical model indicates that given the presence of a cetacean species' eDNA in a sample, the probability of detecting that DNA in downstream processing is affected by primer specificity, DNA degradation by freeze/thaw cycles, and the number of technical replicates used to used to probe the sample (@fig-H2POD-obsbias). Sequencing runs using MV1 and MFU primers, which target regions of XX and XX bp in length, were not affected by the number of freeze-thaw cycles accumulated prior to sequencing. Sequencing runs using the DL primer set, which targets a region of XX bp in length, was affected by freeze thaw cycles such that sequencing runs with 1 freeze/thaw cycle had a higher detection rate than MV1 or MFU and sequencing runs with 2-XX freeze/thaw cycles had a lower detection rate thn MV1 or MFU.
@@ -102,17 +108,17 @@ knitr::include_graphics(c("./Figures/detectThaw.png", "./Figures/m1.0+2LevelOcc_
 
 Our best fit model included terms for species, lat/lon, and depth, as well as species x lat/lon, species x depth, and species x depth x lat/lon (AIC = `r AIC(m3.0c)`), and explained 25.3% of the variability in eDNA detection. Although terms for depth and lat/lon were not significant, removing these terms increased model AIC to 4947. *Model AUC and TSS here*
 
-Predicted vertical probability of detection for the most frequently detected delphinid, baleen whale, and beaked whale varied with latitute and longitude, while adhering to the broad trends identified in Q1 (@fig-H3PODxy). The Pacific white-side dolphin is most likely to be detected near the surface, with max POD varying between depths of `r min(maxPOD_depth_clipped %>% filter(BestTaxon == "Lagenorhynchus obliquidens") %>% pull(depth))` m and `r max(maxPOD_depth_clipped %>% filter(BestTaxon == "Lagenorhynchus obliquidens") %>% pull(depth))` m. Generally, detections of Pacific white-sided dolphins that were farther south and east were also more likely to be deeper in the water column. 
+Predicted vertical probability of detection for the most frequently detected delphinid, baleen whale, and beaked whale varied with latitute and longitude, while adhering to the broad trends identified in Q1 (@fig-H3PODxy). The Pacific white-side dolphin is most likely to be detected near the surface, with max POD varying between depths of `r min(maxPOD_depth_clipped %>% filter(BestTaxon == "Lagenorhynchus obliquidens") %>% pull(depth))` m and `r max(maxPOD_depth_clipped %>% filter(BestTaxon == "Lagenorhynchus obliquidens") %>% pull(depth))` m. Generally, detections of Pacific white-sided dolphins that were farther south and east were also more likely to be deeper in the water column.
 
 Depths of highest POD for humpback whales had two peaks around `r min(maxPOD_depth_clipped %>% filter(BestTaxon == "Megaptera novaeangliae") %>% pull(depth))` m and `r max(maxPOD_depth_clipped %>% filter(BestTaxon == "Megaptera novaeangliae") %>% pull(depth))` m; and depths of highest POD for Baird's beaked whales varied between `r min(maxPOD_depth_clipped %>% filter(BestTaxon == "Berardius bairdii") %>% pull(depth))` m and `r max(maxPOD_depth_clipped %>% filter(BestTaxon == "Berardius bairdii") %>% pull(depth))` m. Lat/lon variability in Baird's beaked whale detections followed a similar pattern to Pacific white-sided dolphins, with greater likelihood of deeper detections in stations that are more to the south and east. The two peaks in depth of greatest POD for humpback whales were roughly distributed with higher probability of detection around 0 m on the continental shelf, and higher probability of detection around 500 m on the shelf break.
 
 ```{r}
 #| label: fig-H3PODxy
-#| fig-cap: "Depth of maximum probability of detection (POD; top) and range of depths falling within 50% CI of the depth of maximum detection (bottom) for three species: Bbai = Baird's beaked whale (*B. bairdii*), max POD ~ 0.018; Lobl = Pacific white-sided dolphin (*L. obliquidens*), max POD ~ 0.08; Mnov = humpback whale (*M. novaegliae*), max POD ~ 0.04. In each subplot, regions with POD < 0.05% were considered 0 and left transparent."
+#| fig-cap: "Depth of maximum probability of detection (POD; top) and range of depths falling within 50% CI of the depth of maximum detection (bottom) for three species: Baird's beaked whale (*B. bairdii*), max POD ~ 0.018; Pacific white-sided dolphin (*L. obliquidens*), max POD ~ 0.08; humpback whale (*M. novaegliae*), max POD ~ 0.04. Regions with max POD < 0.3% were masked."
 #| fig-width: 7
 #| fig-height: 15
 
-depthPODmax
+depth_max_detect / ci95_plot
 
 ```
 

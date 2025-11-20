@@ -162,7 +162,7 @@ window.Quarto = {
 <section id="sample-processing" class="level3">
 <h3 class="anchored" data-anchor-id="sample-processing">Sample Processing</h3>
 <p>DNA was extracted using a phase-lock phenol chloroform method as described in Ramón-Laca et al.&nbsp;(2021). All samples were tested for inhibition by spiking an internal positive control (IPC) of known concentration into each sample and quantifying it using a probe assay with quantitative PCR (qPCR). Samples were deemed inhibited if the IPC concentration was lower than expected (e.g., a Ct cycle value of 0.5 or higher than the expected Ct) - as described in Shelton et al.&nbsp;(2022).</p>
-<p>We amplified each sample with three different primer sets: MiFish-U (Miya et al.&nbsp;2015), MarVer1 (Valsecchi et al.&nbsp;2020) and D-loop (Baker et al.&nbsp;2006), see Table X for sequences. For all samples, we ran one technical PCR replicate for MiFish-U and three technical replicates for MarVer1. We ran one technical PCR replicate for all samples with D-loop, except the 0 and 50 m samples along the WA coast, for which we ran three technical replicates. Primer, Taq, and cycling conditions were chosen after extensive testing on mock communities, see Shaffer et al.&nbsp;(2025).</p>
+<p>We amplified each sample with three different primer sets: MiFish-U <span class="citation" data-cites="miya_etal15">(<a href="#ref-miya_etal15" role="doc-biblioref">Miya et al. 2015</a>)</span>, MarVer1 <span class="citation" data-cites="valsecchi_etal20">(<a href="#ref-valsecchi_etal20" role="doc-biblioref">Valsecchi et al. 2020</a>)</span> and D-loop <span class="citation" data-cites="baker_etal06">(<a href="#ref-baker_etal06" role="doc-biblioref"><strong>baker_etal06?</strong></a>)</span>. For all samples, we ran one technical PCR replicate for MiFish-U and three technical replicates for MarVer1. We ran one technical PCR replicate for all samples with D-loop, except the 0 and 50 m samples along the WA coast, for which we ran three technical replicates. Primer, Taq, and cycling conditions were chosen after extensive testing on mock communities, see Shaffer et al. <span class="citation" data-cites="shaffer_etal25">(<a href="#ref-shaffer_etal25" role="doc-biblioref">2025</a>)</span>.</p>
 <p>For each primer set, we amplified DNA in the first PCR reaction (PCR1) in a 20 μL reaction consisting of: 10 μL of Phusion Master Mix (2X), 0.4 μL of the forward primer (10 μM); 0.4 μL of the reverse primer (10 μM), 0.6 μL of 100% DMSO, 0.5 μL of rAlbumin (20 μg/μL), 4.4 μL of nuclease-free water and 2 μL of DNA template. Reactions were run with the following cycling conditions: an initial denaturation of 98°C for 30 sec; followed by cycles of: denaturation (98°C for 10 sec), annealing (60°C for 30 sec), and extension (72°C for 3 sec); with a final extension of 72°C for 10 min and hold at 4°C. We ran 35 cycles for MiFish-U and MarVer1, and 40 cycles for D-loop.</p>
 <p>For MiFish-U and MarVer1, despite running the dilution identified by qPCR as uninhibited, some samples failed to produce a visible band on a 2% agarose gel after PCR2 (see next section). When this occurred, we diluted the sample and reran it until a visible band was produced. For D-loop, because the target was not expected in every sample unlike fish and vertebrates, we could not distinguish between an inhibited sample (i.e., one that did not produce a band) or a negative sample (e.g., one that was absent of cetaceans). Here we assumed that the dilution given by qPCR was not inhibited and treated these as negative detections.</p>
 <p>For Mifish-U and MarVer1, samples that returned less than 100 total reads were rerun in an effort to complete the dataset to include one MiFish-U replicate and three MarVer1 replicates. For some samples, we tried up to six replicates.</p>
@@ -175,20 +175,20 @@ window.Quarto = {
 </section>
 <section id="bioinformatic-processing" class="level3">
 <h3 class="anchored" data-anchor-id="bioinformatic-processing">Bioinformatic Processing</h3>
-<p>Starting with Illumina-demultiplexed sequencing files, we first removed primer and adapter sequences using Cutadapt v4.9, applying the default mismatch tolerance parameter (-e 0.1) <strong>(Martin 2011)</strong>. Next, we performed quality filtering using the filterAndTrim function from the DADA2 R package, retaining its default parameters while specifying the optional truncLen argument to match the <strong>minimum MiFish amplicon length</strong>. After filtering, we denoised the sequences using DADA2 with default settings (Callahan et al.&nbsp;2016), which resulted in a list of Amplicon Sequence Variants (ASVs) across all samples. Each resulting ASV was then assigned a unique 28-character hash code using the sha-1 algorithm with the R function map chr. This allowed us to create a common database of ASVs by hash, enabling us to track which sequences have already been annotated for consistency and to avoid redundant computational efforts.</p>
-<p>For taxonomic assignment of ASVs, we used standalone BLAST (Altschul et al.&nbsp;1990) to compare each unique ASV against the NCBI nr eukaryote database as of January 2025. BLAST arguments were as follows: “-word size 30 -evalue”1e-30” -max target seqs 50”. To streamline annotation, we also used the “-negative taxids” argument, including a list of target organisms closely related to those present in the sampled region, but known to be absent. The complete list of taxids that were excluded is available alongside the pipeline code. Finally, we performed a least common ancestor (LCA) analysis on the top BLAST hits using TaxonKit v0.17 <strong>(REF)</strong>. Sequences with a 100 percent identity match to any database sequence were prioritized for LCA. In the absence of perfect matches, we conducted LCA analysis on the top hits with identity scores above 99.3, 98, or 96 percent respectively. In the absence of any hits above 96 identity, taxonomic assignment was truncated.</p>
-<p><strong>Any extra info about D-loop and cetaceans?</strong></p>
+<p>We analyzed all sequencing data using the bioinformatics workflow established in Guri et al.&nbsp;(2025). In short, Illumina-demultiplexed reads were trimmed with Cutadapt v4.9 to remove primer and adapter sequences, allowing a maximum mismatch rate of 0.1 (Martin, 2011). Quality filtering and minimum-length truncation were performed with the DADA2 filterAndTrim function, and amplicon sequence variants (ASVs) were inferred using default denoising settings <span class="citation" data-cites="Callahan2016">(<a href="#ref-Callahan2016" role="doc-biblioref">Callahan et al. 2016</a>)</span>.</p>
+<p>Following initial QAQC of the raw sequence data, each unique ASV was queried against a vertebrate mitochondrial subset of the January 2025 NCBI nr eukaryote database using standalone BLAST configured with “-word_size 20 -evalue 1e-30 -max_target_seqs 100” (Altschul et al., 1990), supplemented with a negative-taxid file to remove taxa with distributions outside the North Pacific Ocean. Taxonomic assignments were determined using a least-common-ancestor procedure in TaxonKit v0.17 (Shen &amp; Ren, 2021), prioritizing exact-identity matches and otherwise applying a stepwise identity threshold (&gt;99.3%, &gt;98%). Marine mammal identifications were then manually reviewed to ensure consistency with regional species distributions. ASVs suspected to represent nuclear mitochondrial pseudogenes were omitted from downstream analyses.</p>
 </section>
-<section id="data-qaqc" class="level3">
-<h3 class="anchored" data-anchor-id="data-qaqc">Data QAQC</h3>
-<p>We defined a sample as a station/depth/technical replicate combination, and first removed any samples considered to be sequencing failures. Sequencing failures were defined for MV1 and MFU as samples for which no fish were successfully sequenced. Because DL targets cetaceans and excludes fish, we did not define a sequencing failure for this primer and instead included all samples run. We filtered out any non-target (non-cetacean) species, and also removed any detections of bottlenose dolphins and unidentified Balaenopterids or Delphinids (because … ).</p>
+<section id="detection-data-qaqc" class="level3">
+<h3 class="anchored" data-anchor-id="detection-data-qaqc">Detection Data QAQC</h3>
+<p>We defined a sample as a station/depth/technical replicate combination. A subset of samples were sequenced at multiple dilutions (i.e., 1:1, 1:5, or 1:10) or multiple times in order to maximize sequencing success; for these samples, we retained the iteration with the greatest number of total reads.</p>
+<p>To obtain positive detections for each sample, we kept any species with &gt; 1 sequencing read. We filtered out any non-target (non-cetacean) species, and also removed detections of bottlenose dolphins, considered likely contamination, and unidentified Balaenopterids or Delphinids.</p>
 <p>To obtain non-detections, we included all MFU and MV1 samples that had at least one marine species detected, but no cetaceans - excluding any samples that completely failed sequencing. Because our DL primer specifically targets a subset of very rare species, we assume that sequencing failure indicates a non-detection - therefore, for this primer we included any station/depth/species combination that was not detected as a non-detect.</p>
 </section>
 <section id="data-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="data-analysis">Data Analysis</h3>
 <section id="question-1-does-pod-vary-with-depth" class="level4">
 <h4 class="anchored" data-anchor-id="question-1-does-pod-vary-with-depth">Question 1: Does POD vary with depth?</h4>
-<p>We addressed this question using generalized additive models (GAMs; <span class="citation" data-cites="Wood2017">Wood (<a href="#ref-Wood2017" role="doc-biblioref">2017</a>)</span>) implemented using the mgcv package in R <span class="citation" data-cites="RCoreTeam2016">(<a href="#ref-RCoreTeam2016" role="doc-biblioref">R Core Team 2016</a>)</span>. GAMs have previously been demonstrated to be an appropriate tool for modeling spatial use in cetaceans (e.g. <span class="citation" data-cites="Becker2016">Elizabeth A. Becker et al. (<a href="#ref-Becker2016" role="doc-biblioref">2016</a>)</span>; <span class="citation" data-cites="Becker2019">Elizabeth A. Becker et al. (<a href="#ref-Becker2019" role="doc-biblioref">2019</a>)</span>; <span class="citation" data-cites="Becker2020">Elizabeth A. Becker et al. (<a href="#ref-Becker2020" role="doc-biblioref">2020</a>)</span>; <span class="citation" data-cites="becker_etal22">Elizabeth A. Becker et al. (<a href="#ref-becker_etal22" role="doc-biblioref">2022</a>)</span>; <span class="citation" data-cites="abrahms_etal19b">Abrahms et al. (<a href="#ref-abrahms_etal19b" role="doc-biblioref">2019</a>)</span>). We fit all GAMs using 0/1 detections as the response variable with a binomial distribution and logit link function, and estimated model parameters using REML. Models examining depth effect alone were built iteratively, starting with (1) assessing probability of detection (POD) across all species at sampling depths between 1 and 500m, then (2) allowing y-intercept to vary by species, and finally (3) allowing model smooth to vary by species.</p>
+<p>We addressed this question using generalized additive models [GAMs; <span class="citation" data-cites="Wood2017">Wood (<a href="#ref-Wood2017" role="doc-biblioref">2017</a>)</span>] implemented using the mgcv package in R <span class="citation" data-cites="RCoreTeam2016">(<a href="#ref-RCoreTeam2016" role="doc-biblioref">R Core Team 2016</a>)</span>. GAMs have previously been demonstrated to be an appropriate tool for modeling spatial use in cetaceans (e.g. <span class="citation" data-cites="Becker2016">Elizabeth A. Becker et al. (<a href="#ref-Becker2016" role="doc-biblioref">2016</a>)</span>; <span class="citation" data-cites="Becker2019">Elizabeth A. Becker et al. (<a href="#ref-Becker2019" role="doc-biblioref">2019</a>)</span>; <span class="citation" data-cites="Becker2020">Elizabeth A. Becker et al. (<a href="#ref-Becker2020" role="doc-biblioref">2020</a>)</span>; <span class="citation" data-cites="becker_etal22">Elizabeth A. Becker et al. (<a href="#ref-becker_etal22" role="doc-biblioref">2022</a>)</span>; <span class="citation" data-cites="abrahms_etal19b">Abrahms et al. (<a href="#ref-abrahms_etal19b" role="doc-biblioref">2019</a>)</span>). We fit all GAMs using 0/1 detections as the response variable with a binomial distribution and logit link function, and estimated model parameters using REML. Models examining depth effect alone were built iteratively, starting with (1) assessing probability of detection (POD) across all species at sampling depths between 1 and 500m, then (2) allowing y-intercept to vary by species, and finally (3) allowing model smooth to vary by species.</p>
 <p>In addition to examining depth variability across species-level strata, we examined several other ecological stratification schemes in order to determine whether depth variability in detection probability is driven by (1) evolutionary inertia (i.e.&nbsp;taxonomic family) or (2) preferred prey type.</p>
 <p>We assessed model fit using AIC, and model performance using standard metrics including the percent of deviance explained, the area under the receiver operating characteristic curve <span class="citation" data-cites="fawcett06">(AUC, <a href="#ref-fawcett06" role="doc-biblioref">Fawcett 2006</a>)</span>, the true skill statistic <span class="citation" data-cites="allouche_etal06">(TSS, <a href="#ref-allouche_etal06" role="doc-biblioref">Allouche, Tsoar, and Kadmon 2006</a>)</span>, and a visual comparison of predicted vs.&nbsp;observed detection rates across sampling depths. We also visually compared our model-based predictions of probability of detection across depth with estimates of species-specific time-at-depth as reported in <span class="citation" data-cites="watwood_buonantony12">(<a href="#ref-watwood_buonantony12" role="doc-biblioref">Watwood and Buonantony 2012</a>)</span> and <span class="citation" data-cites="u_s_departmentofthenavy17">(<a href="#ref-u_s_departmentofthenavy17" role="doc-biblioref">Navy 2017</a>)</span>.</p>
 </section>
@@ -515,7 +515,7 @@ Figure&nbsp;1: Left: Distribution of detections across sampling depths for all s
 </div>
 <section id="question-1-does-pod-vary-with-depth-1" class="level3">
 <h3 class="anchored" data-anchor-id="question-1-does-pod-vary-with-depth-1">Question 1: Does POD vary with depth?</h3>
-<p>GAM-based model selection of detection probability across sampling depths negated the null hypothesis of no variation across depth (Supplemental Figure S1). The best alternative model includes significant smooth terms for depth, species, and depth x species interaction (AIC = 5322, <a href="#tbl-modelAIC" class="quarto-xref">Table&nbsp;2</a>). This model explained 14.3% of variance in eDNA detection probability, <em>with an AUC of XXX and TSS of XXXX.</em></p>
+<p>GAM-based model selection of detection probability across sampling depths negated the null hypothesis of no variation across depth (Supplemental Figure S1). The best alternative model includes significant smooth terms for depth, species, and depth x species interaction (AIC = 5322, <a href="#tbl-modelAIC" class="quarto-xref">Table&nbsp;2</a>). This model explained 14.3% of variance in eDNA detection probability, with a mean AUC of 0.73 and a mean optimized TSS of 0.42. Full model TSS for all thresholds, as well as per-species AUC, optimized TSS, TSS values across all thresholds are shown in Supplemental Table S2 and Supplemental Figure S2.</p>
 <div class="cell">
 <div id="tbl-modelAIC" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -526,49 +526,49 @@ Table&nbsp;2: Akaike Information Criterion values for all GAMs tested to charact
 <div class="cell-output-display">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 11%">
+<col style="width: 30%">
 <col style="width: 23%">
 <col style="width: 11%">
-<col style="width: 11%">
+<col style="width: 15%">
 </colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: center;">model</th>
 <th style="text-align: center;">stratification</th>
 <th style="text-align: center;">df</th>
-<th style="text-align: center;">AIC</th>
+<th style="text-align: center;">deltaAIC</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;">m1.2</td>
+<td style="text-align: center;">depth, s(species)</td>
 <td style="text-align: center;">species</td>
 <td style="text-align: center;">47.77</td>
-<td style="text-align: center;">5322</td>
+<td style="text-align: center;">0</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">m1.1</td>
+<td style="text-align: center;">depth + species</td>
 <td style="text-align: center;">species</td>
 <td style="text-align: center;">19.41</td>
-<td style="text-align: center;">5487</td>
+<td style="text-align: center;">164.8</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">m1.2a</td>
+<td style="text-align: center;">depth, s(family)</td>
 <td style="text-align: center;">family</td>
 <td style="text-align: center;">20.3</td>
-<td style="text-align: center;">5699</td>
+<td style="text-align: center;">376.8</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">m1.2b</td>
+<td style="text-align: center;">depth, s(prey type)</td>
 <td style="text-align: center;">prey</td>
 <td style="text-align: center;">13.43</td>
-<td style="text-align: center;">5823</td>
+<td style="text-align: center;">501.1</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">m1.0</td>
+<td style="text-align: center;">depth</td>
 <td style="text-align: center;">none</td>
 <td style="text-align: center;">3.792</td>
-<td style="text-align: center;">6007</td>
+<td style="text-align: center;">684.5</td>
 </tr>
 </tbody>
 </table>
@@ -641,7 +641,7 @@ Figure&nbsp;5: Primer-specific detection probability for each primer used in thi
 <section id="question-3-does-depth-variability-in-pod-covary-with-xy-variability-1" class="level4">
 <h4 class="anchored" data-anchor-id="question-3-does-depth-variability-in-pod-covary-with-xy-variability-1">Question 3: Does depth variability in POD covary with xy variability?</h4>
 <p>Our best fit model included terms for species, lat/lon, and depth, as well as species x lat/lon, species x depth, and species x depth x lat/lon (AIC = 4926.9976483), and explained 25.3% of the variability in eDNA detection. Although terms for depth and lat/lon were not significant, removing these terms increased model AIC to 4947. <em>Model AUC and TSS here</em></p>
-<p>Predicted vertical probability of detection for the most frequently detected delphinid, baleen whale, and beaked whale varied with latitute and longitude, while adhering to the broad trends identified in Q1 (<a href="#fig-H3PODxy" class="quarto-xref">Figure&nbsp;6</a>). The Pacific white-side dolphin is most likely to be detected near the surface, with max POD varying between depths of NA m and NA m. Generally, detections of Pacific white-sided dolphins that were farther south and east were also more likely to be deeper in the water column.</p>
+<p>Predicted vertical probability of detection for the most frequently detected delphinid, baleen whale, and beaked whale varied with latitute and longitude, while adhering to the broad trends identified in Q1 (<a href="#fig-H3PODxy" class="quarto-xref">Figure&nbsp;6</a>). The Pacific white-side dolphin is most likely to be detected near the surface, with max POD varying between depths of 0 m and 170 m. Generally, detections of Pacific white-sided dolphins that were farther south and east were also more likely to be deeper in the water column.</p>
 <p>Depths of highest POD for humpback whales had two peaks around 0 m and 500 m; and depths of highest POD for Baird’s beaked whales varied between NA m and NA m. Lat/lon variability in Baird’s beaked whale detections followed a similar pattern to Pacific white-sided dolphins, with greater likelihood of deeper detections in stations that are more to the south and east. The two peaks in depth of greatest POD for humpback whales were roughly distributed with higher probability of detection around 0 m on the continental shelf, and higher probability of detection around 500 m on the shelf break.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -651,13 +651,13 @@ Figure&nbsp;5: Primer-specific detection probability for each primer used in thi
 <img src="index_files/figure-html/fig-H3PODxy-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-H3PODxy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6: Depth of maximum probability of detection (POD; top) and range of depths falling within 50% CI of the depth of maximum detection (bottom) for three species: Bbai = Baird’s beaked whale (<em>B. bairdii</em>), max POD ~ 0.018; Lobl = Pacific white-sided dolphin (<em>L. obliquidens</em>), max POD ~ 0.08; Mnov = humpback whale (<em>M. novaegliae</em>), max POD ~ 0.04. In each subplot, regions with POD &lt; 0.05% were considered 0 and left transparent.
+Figure&nbsp;6: Depth of maximum probability of detection (POD; top) and range of depths falling within 50% CI of the depth of maximum detection (bottom) for three species: Baird’s beaked whale (<em>B. bairdii</em>), max POD ~ 0.018; Pacific white-sided dolphin (<em>L. obliquidens</em>), max POD ~ 0.08; humpback whale (<em>M. novaegliae</em>), max POD ~ 0.04. Regions with max POD &lt; 0.3% were masked.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>In addition to examining geographic patterns in the depth of maximum POD, we examined uncertainty around these values by mapping the range of depths that fell within the 50% confidence interval of maximum POD (<a href="#fig-H3PODxy" class="quarto-xref">Figure&nbsp;6</a>, bottom). In the northern portion of the study area, where Pacific white-sided dolphins are most likely to be observed near the surface, the range of depths within the 50% CI of maximum POD is small (minimum depth range = NA m). That range increases toward the south and east (maximum depth range = NA m), as the depth of maximum POD gets deeper for this species. Baird’s beaked whales exhibited the opposite trend: the range of depths falling within the 50% CI of maximum POD was smallest in the southest portion of the range (minimum depth range = NA m), where the depth of maximum POD was deepest, and increased in the northern part of the range (maximum depth range = NA m). The bimodal peak of maximum POD observed in humpback whale eDNA was mirrored in the range of depths within the 50% CI of maximum POD: the depth range was largest in the transition zones between the two peaks (maximum depth range = 500 m), and relatively small outside of the transition zones (minimum depth range = 0 m).</p>
+<p>In addition to examining geographic patterns in the depth of maximum POD, we examined uncertainty around these values by mapping the range of depths that fell within the 50% confidence interval of maximum POD (<a href="#fig-H3PODxy" class="quarto-xref">Figure&nbsp;6</a>, bottom). In the northern portion of the study area, where Pacific white-sided dolphins are most likely to be observed near the surface, the range of depths within the 50% CI of maximum POD is small (minimum depth range = 0 m). That range increases toward the south and east (maximum depth range = 500 m), as the depth of maximum POD gets deeper for this species. Baird’s beaked whales exhibited the opposite trend: the range of depths falling within the 50% CI of maximum POD was smallest in the southest portion of the range (minimum depth range = NA m), where the depth of maximum POD was deepest, and increased in the northern part of the range (maximum depth range = NA m). The bimodal peak of maximum POD observed in humpback whale eDNA was mirrored in the range of depths within the 50% CI of maximum POD: the depth range was largest in the transition zones between the two peaks (maximum depth range = 500 m), and relatively small outside of the transition zones (minimum depth range = 0 m).</p>
 </section>
 </section>
 </section>
@@ -868,6 +868,9 @@ Becker, Elizabeth A, Karin A Forney, David L Miller, Paul C Fiedler, Jay Barlow,
 <div id="ref-Becker2019" class="csl-entry" role="listitem">
 Becker, Elizabeth A, Karin A Forney, Jessica V Redfern, Jay Barlow, Michael G Jacox, Jason J Roberts, and Daniel M Palacios. 2019. <span>“Predicting Cetacean Abundance and Distribution in a Changing Climate.”</span> <em>Diversity and Distributions</em> 25 (4): 626–43. <a href="https://doi.org/10.1111/ddi.12867">https://doi.org/10.1111/ddi.12867</a>.
 </div>
+<div id="ref-Callahan2016" class="csl-entry" role="listitem">
+Callahan, Benjamin J, Paul J McMurdie, Michael J Rosen, Andrew W Han, Amy Jo A Johnson, and Susan P Holmes. 2016. <span>“<span>DADA2</span>: <span>High</span>-Resolution Sample Inference from <span>Illumina</span> Amplicon Data.”</span> <em>Nature Methods</em> 13 (7): 581–83. <a href="https://doi.org/10.1038/nmeth.3869">https://doi.org/10.1038/nmeth.3869</a>.
+</div>
 <div id="ref-carretta_etal23" class="csl-entry" role="listitem">
 Carretta, James V., Erin M. Oleson, Karin A. Forney, David W. Weller, Aimee R. Lang, Jason Baker, Anthony J Orr, et al. 2023. <span>“U.<span>S</span>. <span>Pacific</span> Marine Mammal Stock Assessments: 2022.”</span> U.S. Department of Commerce, NOAA Technical Memorandum NMFS-SWFSC-684. <a href="https://repository.library.noaa.gov/view/noaa/51022">https://repository.library.noaa.gov/view/noaa/51022</a>.
 </div>
@@ -892,6 +895,9 @@ McDonnell, A. M. P., P. W. Boyd, and K. O. Buesseler. 2015. <span>“Effects of 
 <div id="ref-miller2025" class="csl-entry" role="listitem">
 Miller, David L. 2025. <span>“Bayesian Views of Generalized Additive Modelling.”</span> <em>Methods in Ecology and Evolution</em> 16 (3): 446–55. <a href="https://doi.org/10.1111/2041-210X.14498">https://doi.org/10.1111/2041-210X.14498</a>.
 </div>
+<div id="ref-miya_etal15" class="csl-entry" role="listitem">
+Miya, M., Y. Sato, T. Fukunaga, T. Sado, J. Y. Poulsen, K. Sato, T. Minamoto, et al. 2015. <span>“<span>MiFish</span>, a Set of Universal <span>PCR</span> Primers for Metabarcoding Environmental <span>DNA</span> from Fishes: Detection of More Than 230 Subtropical Marine Species.”</span> <em>Royal Society Open Science</em> 2 (7): 150088. <a href="https://doi.org/10.1098/rsos.150088">https://doi.org/10.1098/rsos.150088</a>.
+</div>
 <div id="ref-u_s_departmentofthenavy17" class="csl-entry" role="listitem">
 Navy, U. S. Department of the. 2017. <span>“Dive&nbsp;Distribution&nbsp;and&nbsp;Group&nbsp;Size&nbsp;Parameters&nbsp;for&nbsp;Marine&nbsp;Species&nbsp;Occurring&nbsp;in&nbsp;the&nbsp;u.s.&nbsp;Navy’s&nbsp;Atlantic&nbsp;and&nbsp;Hawaiisouthern&nbsp;California&nbsp;Training&nbsp;and&nbsp;Testing&nbsp;Study&nbsp;Areas.”</span> Newport, Rhode Island: Naval Undersea Warfare Center Division.
 </div>
@@ -900,6 +906,12 @@ Panigada, S, M Zanardelli, S Canese, and M Jahoda. 1999. <span>“How Deep Can B
 </div>
 <div id="ref-RCoreTeam2016" class="csl-entry" role="listitem">
 R Core Team. 2016. <span>“R: A Language and Environment for Statistical Computing.”</span> R Foundation for Statistical Computing. <a href="https://www.r-project.org/">https://www.r-project.org/</a>.
+</div>
+<div id="ref-shaffer_etal25" class="csl-entry" role="listitem">
+Shaffer, Megan R., Elizabeth Andruszkiewicz Allan, Amy M. Van Cise, Kim M. Parsons, Andrew Olaf Shelton, and Ryan P. Kelly. 2025. <span>“Observation <span>Bias</span> in <span>Metabarcoding</span>.”</span> <em>Molecular Ecology Resources</em> 25 (7): e14119. <a href="https://doi.org/10.1111/1755-0998.14119">https://doi.org/10.1111/1755-0998.14119</a>.
+</div>
+<div id="ref-valsecchi_etal20" class="csl-entry" role="listitem">
+Valsecchi, Elena, Jonas Bylemans, Simon, J Goodman, Roberto Lombardi, Ian Carr, Laura Castellano, Andrea Galimberti, and Paolo Galli. 2020. <span>“Novel Universal Primers for Metabarcoding Environmental <span>DNA</span> Surveys of Marine Mammals and Other Marine Vertebrates.”</span> <a href="https://doi.org/10.1002/edn3.72">https://doi.org/10.1002/edn3.72</a>.
 </div>
 <div id="ref-watwood_buonantony12" class="csl-entry" role="listitem">
 Watwood, Stephanie L, and Danielle M Buonantony. 2012. <span>“Dive <span>Distribution</span> and <span>Group</span> <span>Size</span> <span>Parameters</span> for <span>Marine</span> <span>Species</span> <span>Occurring</span> in <span>Navy</span> <span>Training</span> and <span>Testing</span> <span>Areas</span> in the <span>North</span> <span>Atlantic</span> and <span>North</span> <span>Pacific</span> <span>Oceans</span>. <span>NUWC</span>-<span>NPT</span> <span>Technical</span> <span>Document</span> 12,085.”</span> Newport, Rhode Island: Naval Undersea Warfare Center Division.

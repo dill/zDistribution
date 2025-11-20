@@ -113,13 +113,16 @@ m1.2_sePreds_link <- data.frame(m1.2_predictions,
                            pull(BestTaxon)))
 
 # transform time_10m to plot with POD by depth
+# m1.2_scaled <- m1.2_sePreds_link %>% 
+#   group_by(abbrev) %>%
+#   mutate(time_scaled = time_10m/545) %>% 
+#   mutate(
+#     a = diff(range(mu, na.rm = TRUE)) / diff(range(time_10m, na.rm = TRUE)),
+#     b = min(mu, na.rm = TRUE) - a * min(time_10m, na.rm = TRUE),
+#     time_scaled = a * time_10m + b)
+
 m1.2_scaled <- m1.2_sePreds_link %>% 
-  group_by(abbrev) %>%
-  mutate(time_scaled = time_10m/545) %>% 
-  mutate(
-    a = diff(range(mu, na.rm = TRUE)) / diff(range(time_10m, na.rm = TRUE)),
-    b = min(mu, na.rm = TRUE) - a * min(time_10m, na.rm = TRUE),
-    time_scaled = a * time_10m + b)
+  mutate(time_scaled = (time_10m - min(time_10m)) / (max(time_10m) - min(time_10m)) * (max(mu) - min(mu)) + min(mu))
 
 # trim CI to ranges with detections per species
 # det_ranges <- detect_data %>%
@@ -145,10 +148,12 @@ m1.2POD <- ggplot(m1.2_scaled, aes(x = depth, color = Broad_taxa, fill = Broad_t
   scale_color_manual(values = c(pnw_palette("Cascades",5, type = "continuous")[4:5],
                                 pnw_palette("Sunset",1, type = "continuous"))) +
   facet_wrap(~abbrev, scales = "free_y") +
+  scale_y_continuous(name = "POD",sec.axis = sec_axis(trans = ~ (.-min(m1.2_scaled$mu)) / (max(m1.2_scaled$mu) - min(m1.2_scaled$mu)) * (max(m1.2_scaled$time_scaled) - min(m1.2_scaled$time_scaled)) + min(m1.2_scaled$time_scaled),name = "Time at depth")) +
   geom_rug(data = filter(detect_data, BestTaxon %in% (detect_per_species %>% 
                                                         filter(nDetect >= 10) %>% 
-                                                        pull(BestTaxon))),
-                         aes(x=depth), color = "grey30")+
+                                                        pull(BestTaxon))) %>%
+             mutate(depth_jittered = depth + runif(n(), -5, 30)),
+                         aes(x=depth_jittered), color = "grey70")+
   geom_rug(data = (detect_data %>% 
                      filter(Detected == 1) %>% 
                      filter(BestTaxon %in% (detect_per_species %>% 
@@ -158,9 +163,11 @@ m1.2POD <- ggplot(m1.2_scaled, aes(x = depth, color = Broad_taxa, fill = Broad_t
            aes(x=depth_jittered),
            sides = "t") +
   theme_minimal() +
-  theme(legend.position = "bottom", legend.title = element_blank()) +
-  ylab("POD") +
+  theme(legend.position = "bottom", 
+        legend.title = element_blank(),
+        axis.text.y.right = element_blank()) +
   xlab("Depth")
+
 
 png(file = "./Figures/m1.2POD.png")
 m1.2POD
@@ -227,7 +234,7 @@ m1.2bPOD <- ggplot(m1.2b_sePreds, aes(x = depth, color = Prey.family, fill = Pre
   scale_color_manual(values = c(pnw_palette("Mushroom",5, type = "continuous")[c(1,3,4)])) +
   #guides(color = "none", fill = "none") +
   facet_wrap(~Prey.family, scales = "free_y", ncol = 1,
-             labeller = as_labeller(c(fish = "Bony Fishes", invert = "Invertebrates", squid = "Cephalopods"))) +
+             labeller = as_labeller(c(fish = "Bony Fishes", invert = "Zooplankton", squid = "Cephalopods"))) +
   geom_rug(data = detect_data, aes(x=depth), color = "grey30")+
   geom_rug(data = filter(detect_data, Detected == 1) %>%
              mutate(depth_jittered = depth + runif(n(), -5, 30)), aes(x=depth), sides = "t")+
@@ -242,5 +249,5 @@ m1.2bPOD
 dev.off()
 
 
-save(m1.0POD, m1.1POD, m1.2POD, m1.2aPOD, m1.2bPOD, 
+save(m1.0POD, m1.1POD, m1.2POD, m1.2aPOD, m1.2bPOD, m1.2_scaled,
      file = paste0("./Figures/H1PODplots.Rdata"))
