@@ -281,5 +281,5 @@ m1.2bPOD
 dev.off()
 
 
-save(m1.0POD, m1.1POD, m1.2POD, m1.2aPOD, m1.2bPOD, m1.2_scaled,
+save(m1.0POD, m1.1POD, m1.2POD, m1.2aPOD, m1.2bPOD, m1.2_scaled, m1.2PODwObs,
      file = paste0("./Figures/H1PODplots.Rdata"))
