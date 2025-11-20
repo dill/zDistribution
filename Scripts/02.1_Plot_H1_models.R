@@ -173,6 +173,38 @@ png(file = "./Figures/m1.2POD.png")
 m1.2POD
 dev.off()
 
+### m1.2 with observed detection probabilities
+
+obspod <- detect_data %>% 
+  mutate(RoundDepth = case_when(depth >= 200 ~ round(depth, digits = -2),
+                                depth < 200 ~ round(depth, digits = -1))) %>%
+  mutate(RoundDepth = case_when(RoundDepth == 40 ~ 50, 
+                                RoundDepth != 40 ~ RoundDepth)) %>%
+  filter(abbrev %in% m1.2_scaled$abbrev) %>%
+  group_by(abbrev, RoundDepth) %>%
+  summarize(POD = sum(Detected)/length(Detected), N = length(Detected))
+
+m1.2PODwObs <- ggplot(m1.2_scaled) +
+  geom_line(aes(x = depth, color = Broad_taxa, fill = Broad_taxa, y = mu)) +
+  geom_smooth(aes(x = depth, color = Broad_taxa, fill = Broad_taxa, ymin = low95, ymax = high95, y = mu), stat = "identity") +
+  geom_ribbon(aes(x = depth, color = Broad_taxa, fill = Broad_taxa, ymin = low75, ymax = high75), stat = "identity", alpha = 0.3, color = NA) +
+  geom_ribbon(aes(x = depth, color = Broad_taxa, fill = Broad_taxa, ymin = low50, ymax = high50), stat = "identity", alpha = 0.3, color = NA) +
+  geom_point(data = obspod, aes(x=RoundDepth, y = POD, alpha = N/max(N)))+
+    scale_fill_manual(values = c(pnw_palette("Cascades",5, type = "continuous")[4:5],
+                               pnw_palette("Sunset",1, type = "continuous"))) +
+  scale_color_manual(values = c(pnw_palette("Cascades",5, type = "continuous")[4:5],
+                                pnw_palette("Sunset",1, type = "continuous"))) +
+  facet_wrap(~abbrev, scales = "free_y") +
+  scale_y_continuous(name = "POD") +
+ 
+  theme_minimal() +
+ 
+  xlab("Depth")
+
+png(file = "./Figures/m1.2PODwObs.png")
+m1.2PODwObs
+dev.off()
+
 ### m1.2a figure ---------------------------------------------------------------
 
 m1.2a_predictions <- expand_grid(depth = 0:500, Family = as.factor(unique(detect_data$Family)))
@@ -249,5 +281,5 @@ m1.2bPOD
 dev.off()
 
 
-save(m1.0POD, m1.1POD, m1.2POD, m1.2aPOD, m1.2bPOD, m1.2_scaled,
+save(m1.0POD, m1.1POD, m1.2POD, m1.2aPOD, m1.2bPOD, m1.2_scaled, m1.2PODwObs,
      file = paste0("./Figures/H1PODplots.Rdata"))
