@@ -33,7 +33,7 @@ plot_grid(plotlist = aligned, ncol = 2, rel_widths = c(3, 1))
 
 ### Question 1: Does POD vary with depth?
 
-GAM-based model selection of detection probability across sampling depths negated the null hypothesis of no variation across depth (Supplemental Figure S1). The best alternative model includes significant smooth terms for depth, species, and depth x species interaction (AIC = `r round(min(modelAIC$AIC))`, @tbl-modelAIC). This model explained 14.3% of variance in eDNA detection probability, with a mean AUC of `r round(mean(AUC_df$AUC), digits = 2)` and a mean optimized TSS of `r round(mean(TSS_optim$TSS), digits = 2)`. Full model TSS for all thresholds, as well as per-species AUC, optimized TSS, TSS values across all thresholds are shown in Supplemental Table S2 and Supplemental Figure S2.
+GAM-based model selection of detection probability across sampling depths negated the null hypothesis of no variation across depth (Supplemental Figure S1). The best alternative model includes significant smooth terms for depth, species, and depth x species interaction (AIC = `r round(min(modelAIC$AIC))`, @tbl-modelAIC). This model explained 14.3% of variance in eDNA detection probability, with a mean AUC of `r round(mean(AUC_df$AUC), digits = 2)` and a mean optimized TSS of `r round(mean(TSS_optim$TSS), digits = 2)`. Full model TSS for all thresholds, as well as per-species AUC, optimized TSS, TSS values across all thresholds are shown in Supplemental Table S2 and Supplemental Figure S2. 
 
 ```{r}
 #| label: tbl-modelAIC
@@ -57,7 +57,7 @@ pander(modelAICtable)
 
 Broadly, delphinids were more likely to be detected at the surface, beaked whales at depths \> 200m, and baleen whales either at the surface or at depths \> 400m (@fig-H1POD-species). While detection data from the five species detected fewer than 10 times were included in our model input, we did not make predictions for any of these species. Species-specific model predictions generally agreed with the raw detection data.
 
-Among the delphinids, species-specific trends in POD generally reflected model estimates of time-at-depth. Conversely, most beaked whale and baleen whale species in the study were most likely to be detected deeper than where they spend most of their time (@fig-H1POD-species). Most notably, predicted POD-at-depth plots for two of the three baleen whales indicated a high probability of detection at 500 m, while these two species spend most of their time above \~200 m.
+Among the delphinids, species-specific trends in POD generally reflected model estimates of time-at-depth. Conversely, most beaked whale and baleen whale species in the study were most likely to be detected deeper than where they spend most of their time (@fig-H1POD-species). Most notably, predicted POD-at-depth plots for two of the three baleen whales indicated a high probability of detection at 500 m, while these two species spend most of their time above \~200 m. Per-species model predictions are shown alongside observed detections in Supplemental Figure S5.
 
 ```{r}
 #| label: fig-H1POD-species

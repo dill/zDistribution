@@ -197,10 +197,20 @@ whalefall_map
 
 ```{r}
 #| label: fig-SuppH3PODxy_baleen
-#| fig-cap: "Depth of maximum probability of detection (POD; top) and range of depths falling within 50% CI of the depth of maximum detection (bottom) for humpback whales, separating likely whale poop (detections > 200 m) from detections within the normal depth range of humpback whales."
+#| fig-cap: "Supplemental Figure S4. Depth of maximum probability of detection (POD; top) and range of depths falling within 50% CI of the depth of maximum detection (bottom) for humpback whales, separating likely whale poop (detections > 200 m) from detections within the normal depth range of humpback whales."
 #| fig-width: 7
 #| fig-height: 15
 
 depthPODmax_baleen
+
+```
+
+```{r}
+#| label: fig-SuppH1POD_obs
+#| fig-cap: "Supplemental Figure S5. Q1 best fit model with observed detections."
+#| fig-width: 15
+#| fig-height: 7
+
+m1.2PODwObs
 
 ```
