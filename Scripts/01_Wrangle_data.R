@@ -12,7 +12,6 @@ timeAtDepth <- read.csv("./Data/MM_dive_time_expand.csv")
 mmEcoEvo <- read.csv("./Data/MM_metadata.csv")
 freezethaw <- read.csv("./Data/HAKE2019_miseq_runs_thaw_v2.csv") # MRS: note I updated this
 sample_locs <- read.csv("./Data/HAKE2019_sample_locations_v2.csv") # MRS: note I updated this
-# sampleinfo <- read.csv("./Data/MURIsampleInfo_2025-03-05_MRS_v2.csv")
 
 detect_data_raw <- read.csv("./Data/M3_compiled_taxon_table_wide.csv") %>% 
   pivot_longer(-c(BestTaxon, Class), names_to = "SampleUID", values_to = "nReads") %>% 
@@ -41,13 +40,6 @@ detect_data_filt <- detect_data_raw %>%
 ## Add freeze/thaw info --------------------------------------------------------
 
 # # take sample info and change names to match other data streams
-# sampleinfo_mod <- sampleinfo %>%
-#   mutate(plate = paste0("MURI", Plate)) %>%
-#   rename("run" = plate) %>% 
-#   select("NWFSCsampleID", "run", "primer", "dilution", "techRep", "PlateNo") %>% 
-#   filter(!(run %in% c("MURI342", "MURI344"))) %>% # remove for now because these have weird plate numbers, we need to add them back in later
-#   distinct()
-
 # MRS: the re-aliquoted plate (2A) is causing problems, so doing separately and then joining
 
 # remove plate 2A
@@ -71,29 +63,19 @@ detect_data_plate <- rbind(detect_data_plate2, detect_data_plate2A) %>%
   mutate(Plate = as.character(Plate)) %>%
   mutate(Plate = case_when(Plate == "2" ~ "2.0", TRUE ~ Plate))
 
-# # join raw detection data with sample info
-# detect_data_plate <- detect_data_filt %>%
-#   left_join(sampleinfo_mod, by = c("NWFSCsampleID", "primer", "run", "dilution", "techRep"))
+# join raw detection data with sample info
 
 freezethaw_mod <- freezethaw %>%
   mutate(Plate = as.character(Plate)) %>%
   mutate(Plate = case_when(Plate == "2" ~ "2.0", TRUE ~ Plate)) %>%
   mutate("run" = paste0("MURI", RunNo)) %>%
-  # mutate("PlateNo" = as.numeric(Plate)) %>% #Plate 2.0A is a special case and is becoming an NA
-  # rename("primer" = Markers) %>%
-  # mutate(run = as.character(run)) %>% 
   select(primer, Plate, Thaw, run)
 
 detect_data_thaw <- detect_data_plate %>%
-  left_join(freezethaw_mod, by = c("run", "Plate", "primer")) #%>% 
-  # mutate(Thaw = case_when(run == "MURI310" & primer == "DL"~1,
-  #                         TRUE~Thaw))
+  left_join(freezethaw_mod, by = c("run", "Plate", "primer"))
 
-# check <- detect_data_thaw %>%
-#   select(run, primer, NWFSCsampleID, Plate, Thaw) %>%
-#   unique()
-# 
-# write.csv(check, "check.csv")
+rm(freezethaw_mod, detect_data_plate, detect_data_plate2, detect_data_plate2A,
+   sampleinfo2, sampleinfo2A, freezethaw)
 
 # MRS: I stopped here! And did multiple checks along the way and I think we are in good shape! 
   
