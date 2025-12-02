@@ -10,6 +10,13 @@ library(PNWColors)
 load("./ProcessedData/detect_data.RData")
 mmEcoEvo <- read.csv("./Data/MM_metadata.csv")
 detect_data$BestTaxon <- as.factor(detect_data$BestTaxon)
+detect_data$NWFSCsampleID <- as.factor(detect_data$NWFSCsampleID)
+test <- detect_data %>% group_by(NWFSCsampleID, primer) %>% summarise(n()/16)
+
+# add a variable for station/depth combo
+# detect_data <- detect_data %>% 
+#   group_by(station, depth) %>% 
+#   mutate(depthStation = cur_group_id())
 
 # Q1: Does the probability of detecting cetaceans in eDNA samples vary with sample depth?
 # H0: Probability of detection does not vary with depth.
@@ -22,7 +29,7 @@ m1.0 <- gam(Detected ~ s(depth, k = 5), family = "binomial", data = detect_data,
 summary(m1.0)
 # depth p-value = 2.6e-06
 AIC(m1.0)
-# AIC 6124
+# AIC 6051
 
 # compare gam to jags version of the same model
 # m1.0_sePreds$mu_jags <- exp(predict(jam,newdata=pd, scale = "response"))
@@ -35,14 +42,16 @@ AIC(m1.0)
 
 ### H2: POD by depth across species --------------------------------------------
 # this model will have a different intercept for each species, but spline will be same shape
+
 m1.1 <- gam(Detected ~ s(depth) + BestTaxon, family = "binomial", data = detect_data, method="REML")
 summary(m1.1)
 
 AIC(m1.1)
-# AIC = 5604
+# AIC = 5549
 
 # separate the depth effect from the taxon effect from the depth-taxon effect. 
 m1.2 <- gam(Detected ~ 
+              #ti(NWFSCsampleID, bs="re")+
               ti(depth, k=5, bs="ts")+
               ti(BestTaxon, k=16, bs="re")+
               ti(depth, BestTaxon, k=c(5, 16), bs=c("ts","re")),
@@ -50,12 +59,16 @@ m1.2 <- gam(Detected ~
             method = "REML")
 
 summary(m1.2)
+# 13% deviance explained
+# 26% deviance explained with re for NWFSCsampleID
 
 deviance(m1.2) / df.residual(m1.2)
 sum(residuals(m1.2, type = "pearson")^2) / df.residual(m1.2)
 
 AIC(m1.2)
-# AIC 5310
+# AIC 5391
+# AIC w/ re for NWFSCsampleID 5090
+#save(m1.2, file = "./ProcessedData/m1.2wSampleRE.Rdata")
 
 ### H2a: POD by depth across taxonomic family ----------------------------------
 detect_data$Family <- as.factor(detect_data$Family)
@@ -67,7 +80,7 @@ m1.2a <- gam(Detected ~
 summary(m1.2a)
 
 AIC(m1.2a)
-#AIC 5712
+#AIC 5749
 
 
 
@@ -79,9 +92,9 @@ m1.2b <-  gam(Detected ~
                      ti(depth, Prey.family, k=c(5, 3), bs=c("ts","re")),
                    family = "binomial", data = detect_data,  method = "REML")
 summary(m1.2b)
-#significant for all three types
+
 AIC(m1.2b)
-#AIC 5823
+#AIC 5901
 
 ### H2c: POD by time-at-depth --------------------------------------------------
 # 
@@ -282,6 +295,3 @@ modelAIC <- AIC(m1.0, m1.1, m1.2, m1.2a, m1.2b) %>%
 
 save(m1.0, m1.1, m1.2, m1.2a, m1.2b, modelAIC,
      file = "./ProcessedData/H1models.RData")
-# 1.2e
-# 1.1
-# 1.2

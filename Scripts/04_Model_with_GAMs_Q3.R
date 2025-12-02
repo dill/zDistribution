@@ -29,7 +29,7 @@ summary(m3.0a)
 gam.check(m3.0a)
 #both depth and xy are significant
 AIC(m3.0a)
-#4511
+#4942
 
 ### H3.0b: Depth distribution smoothed by xy space distribution ----------------
 
@@ -42,7 +42,7 @@ m3.0b <- bam(Detected ~ te(depth, lat, lon),
 summary(m3.0b)
 #te(depth, utm.lat, utm.lon) is significant
 AIC(m3.0b)
-#4477
+#5928
 
 ### m3.0b predictions ----------------------------------------------------------
 
@@ -71,9 +71,9 @@ m3.0c <-
            d=2,
            k=20,
            bs="tp")+
-        ti(depth,
-           k=5,
-           bs="ts")+
+        # ti(depth,
+        #    k=5,
+        #    bs="ts")+
         ti(BestTaxon,
            k=16,
            bs="re")+
@@ -98,20 +98,22 @@ m3.0c <-
 
 summary(m3.0c)
 # Approximate significance of smooth terms:
-#                               edf       Ref.df  Chi.sq   p-value    
-#   ti(lon,lat)                 1.048e+01   13.27  16.75   0.242    
-#   ti(depth)                   2.557e-05    4.00   0.00   0.736    
-#   ti(BestTaxon)               1.255e+01   15.00 122.49  <2e-16 ***
-#   ti(BestTaxon,depth,lon,lat) 4.904e+01 1216.00 102.55  <2e-16 ***
-#   ti(lon,lat,BestTaxon)       4.169e+01  142.00  95.53  <2e-16 ***
-#   ti(depth,BestTaxon)         2.591e+01  144.00  90.24  <2e-16 ***
-
-# R-sq.(adj) =  0.082   Deviance explained = 23.7%
-# fREML =  25017  Scale est. = 1         n = 25088
+#   edf  Ref.df Chi.sq p-value    
+#   ti(lon,lat)                 1.444e+01   16.82  31.59  0.0167 *  
+#   ti(depth)                   4.593e-05    4.00   0.00  0.8125    
+#   ti(BestTaxon)               1.279e+01   16.00 145.43  <2e-16 ***
+#   ti(BestTaxon,depth,lon,lat) 8.336e+01 1216.00 167.78  <2e-16 ***
+#   ti(lon,lat,BestTaxon)       4.764e+01  142.00 121.98  <2e-16 ***
+#   ti(depth,BestTaxon)         2.798e+01  144.00 100.49  <2e-16 ***
+#   ---
+#   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+# 
+# R-sq.(adj) =  0.0611   Deviance explained = 24.5%
+# fREML =  47307  Scale est. = 1         n = 48672
 
 AIC(m3.0c)
-#3810 with all terms
-#4947 without non-significant terms
+#4986 with all terms
+#4977 with non-significant term (depth) removed
 
 ### m3.0c predictions ----------------------------------------------------------
 

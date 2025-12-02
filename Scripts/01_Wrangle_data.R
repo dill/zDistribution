@@ -10,8 +10,14 @@ library(tidyverse)
 metadata <- read.csv("./Data/Hake_2019_metadata.csv")
 timeAtDepth <- read.csv("./Data/MM_dive_time_expand.csv")
 mmEcoEvo <- read.csv("./Data/MM_metadata.csv")
-freezethaw <- read.csv("./Data/HAKE2019_miseq_runs_thaw_v2.csv") # MRS: note I updated this
-sample_locs <- read.csv("./Data/HAKE2019_sample_locations_v2.csv") # MRS: note I updated this
+freezethaw <- read.csv("./Data/HAKE2019_miseq_runs_thaw_v3.csv") # MRS: note I updated this
+sample_locs <- read.csv("./Data/HAKE2019_sample_locations_v3.csv") # MRS: note I updated this
+
+test.meta <- metadata %>% 
+  ungroup() %>% 
+  group_by(station, depth) %>% 
+  distinct(NWFSCsampleID) %>% 
+  filter(n() > 1)
 
 detect_data_raw <- read.csv("./Data/M3_compiled_taxon_table_wide.csv") %>% 
   pivot_longer(-c(BestTaxon, Class), names_to = "SampleUID", values_to = "nReads") %>% 
@@ -25,9 +31,10 @@ detect_data_raw <- read.csv("./Data/M3_compiled_taxon_table_wide.csv") %>%
   mutate(run = gsub("b","",run)) %>% 
   mutate(run = gsub("c","",run)) %>% 
   mutate(Detected = ifelse(nReads>0, 1, 0)) %>% 
-  filter(!(primer %in% c("MFU", "MV1") & totalReads == 0)) %>% 
+  #filter(!(primer %in% c("MFU", "MV1") & totalReads == 0)) %>% 
   filter(Class == "Mammalia") %>% 
-  filter(!BestTaxon %in% c("Moschus", "Equus caballus"))
+  filter(!BestTaxon %in% c("Moschus", "Equus caballus")) %>% 
+  ungroup()
 
 ## Filter out DLL1, C16 primer, plate 309, and DL/DLL1 from plate 314 ----------
 
@@ -36,6 +43,8 @@ detect_data_filt <- detect_data_raw %>%
   filter(!(primer %in% c("DLL1N", "C16", "DLL1"))) %>% 
   filter(!(primer == "DL" & run == "MURI314")) %>% 
   ungroup()
+
+detect_data_filt %>% group_by(primer) %>% distinct(NWFSCsampleID) %>% summarize(n())
 
 ## Add freeze/thaw info --------------------------------------------------------
 
@@ -74,8 +83,11 @@ freezethaw_mod <- freezethaw %>%
 detect_data_thaw <- detect_data_plate %>%
   left_join(freezethaw_mod, by = c("run", "Plate", "primer"))
 
+nothaw <- detect_data_thaw %>% filter(is.na(Thaw)) %>% distinct(Sample_name, primer)
+#write.csv(nothaw, "no_thaw_samples_1212025.csv")
+
 rm(freezethaw_mod, detect_data_plate, detect_data_plate2, detect_data_plate2A,
-   sampleinfo2, sampleinfo2A, freezethaw)
+   sampleinfo2, sampleinfo2A, freezethaw, nothaw)
 
 # MRS: I stopped here! And did multiple checks along the way and I think we are in good shape! 
   
@@ -105,8 +117,9 @@ detect_data_1dil <- detect_data_1seq %>%
   mutate(diluti0n = as.numeric(dilution)) %>% 
   arrange(dilution, .by_group = TRUE) %>% 
   slice_head(n = 22) %>% 
-  select(-totReads) 
-          
+  select(-totReads) %>% 
+  ungroup()
+
 ## Reduce tech reps ------------------------------------------------------------
 ## EKJ Note I think we don't want to do this anymore, since
 ## each tech rep will have a different number of freeze-thaw cycles
@@ -124,12 +137,23 @@ nSamps_primer <- detect_data_1dil %>%
   n_groups()
 
 length(unique(detect_data_1dil$NWFSCsampleID))
+detect_data_1dil %>% group_by(primer) %>% distinct(NWFSCsampleID) %>% summarize(n())
+
+# NWFSC sample IDs with sequence data for fewer than 3 primers
+test <- detect_data_1dil %>% 
+  group_by(NWFSCsampleID) %>% 
+  distinct(primer) %>% 
+  filter(n() < 3)
+
+nrow(test)
 
 ## Add metadata ----------------------------------------------------------------
 
 detect_data_meta <- detect_data_1dil %>% 
   left_join(metadata, by = c("NWFSCsampleID" = "sampleID")) %>%
   left_join(mmEcoEvo, by = c("BestTaxon" = "Species"))
+
+detect_data_meta %>% group_by(primer) %>% distinct(NWFSCsampleID) %>% summarize(n())
 
 ## Check species are all marine mammals
 unique(detect_data_meta$BestTaxon)
@@ -140,10 +164,23 @@ detect_data <- detect_data_meta %>%
                             "Eumetopias jubatus", "Phoca vitulina",
                             "Zalophus californianus", "Mirounga angustirostris")))  
 
-  
 ## Check species are all cetaceans
 unique(detect_data$BestTaxon)
 unique(detect_data$common_name)
+
+# station/depth combos with multiple NWFSCsampleIDs
+detect_data %>% group_by(primer) %>% distinct(NWFSCsampleID) %>% summarize(n())
+
+test1 <- detect_data %>% 
+  ungroup() %>% 
+  group_by(station, depth) %>% 
+  distinct(NWFSCsampleID, .keep_all = TRUE) %>% 
+  select(NWFSCsampleID, station, depth, primer, Plate, totalReads) %>% 
+  filter(n() > 1)
+
+nrow(test1)/2
+
+# write.csv(test1, "duplicated_station_depth.csv", row.names = FALSE)
 
 ## Remove delphinid and baleen detections <100m from bottom (likely whalefall) -
 
@@ -176,6 +213,7 @@ detect_per_primer_species <- detect_data %>%
 maxDepth_species <- read.csv("./Data/MM_dive_time_expand.csv") %>% 
   group_by(Species) %>% 
   summarize(maxDepth = max(depth))
+
 
 detect_species_divetime <- detect_data %>% 
   mutate(common_name = case_when(common_name == "killer whale"~"mammal eating killer whale",
