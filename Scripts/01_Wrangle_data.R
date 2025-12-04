@@ -16,7 +16,7 @@ sample_locs <- read.csv("./Data/HAKE2019_sample_locations_v3.csv") # MRS: note I
 test.meta <- metadata %>% 
   ungroup() %>% 
   group_by(station, depth) %>% 
-  distinct(NWFSCsampleID) %>% 
+  distinct(sampleID) %>% 
   filter(n() > 1)
 
 detect_data_raw <- read.csv("./Data/M3_compiled_taxon_table_wide.csv") %>% 
@@ -142,8 +142,9 @@ detect_data_1dil %>% group_by(primer) %>% distinct(NWFSCsampleID) %>% summarize(
 # NWFSC sample IDs with sequence data for fewer than 3 primers
 test <- detect_data_1dil %>% 
   group_by(NWFSCsampleID) %>% 
-  distinct(primer) %>% 
-  filter(n() < 3)
+  distinct(primer, .keep_all = TRUE) %>% 
+  filter(n() < 3)%>% 
+  left_join(metadata, by = c("NWFSCsampleID" = "sampleID"))
 
 nrow(test)
 
@@ -252,3 +253,48 @@ detect_data_allcet <- detect_data %>%
   summarize(DetectAny = ifelse(sum(Detected) == 0, 0, 1))
 
 save(detect_data_allcet, file = "./ProcessedData/detect_data_allcet.RData")
+
+### Make a "clean" dataset -----------------------------------------------------
+length(unique(detect_data$NWFSCsampleID)) #574 samples, 48,656 rows, 3041 replicates
+
+bioReps <- read.csv("duplicated_station_depth.csv") %>% 
+  filter(to.remove == "x")
+
+detect_data_noBioRep <- detect_data %>% 
+  #remove BioRep samples, N = 18 samples
+  filter(!(NWFSCsampleID %in% (bioReps$NWFSCsampleID)))
+
+tooFewMV1 <- detect_data_noBioRep %>% 
+  filter(primer == "MV1") %>% 
+  group_by(NWFSCsampleID) %>% 
+  mutate(Nrep = n()/16) %>% 
+  filter(Nrep < 3) %>% 
+  distinct(NWFSCsampleID)
+
+tooFewPrimer <- detect_data_noBioRep %>% 
+  group_by(NWFSCsampleID) %>% 
+  distinct(primer, .keep_all = TRUE) %>% 
+  filter(n() < 3)
+
+detect_data_clean <- detect_data_noBioRep %>% 
+  #remove samples not covered by all primers, N =  15 samples (44 techReps)
+  filter(!(NWFSCsampleID %in% (tooFewPrimer$NWFSCsampleID))) %>% 
+  #remove samples with < 3 MV1 reps, N = 28 samples (128 techReps)
+  filter(!(NWFSCsampleID %in% tooFewMV1$NWFSCsampleID)) %>% 
+  #remove additional DL techReps, Nrow = 2896 (181 techReps)
+  filter(!(primer == "DL" & techRep > 1)) %>% 
+  #remove additional MV1 techReps, Nrow = 1232 (77 techReps)
+  filter(!(primer == "MV1" & techRep > 3)) %>% 
+  #remove additional MFU techReps, Nrow = 224 (14 techReps)
+  filter(!(primer == "MFU" & techRep > 1)) %>% 
+  mutate(BestTaxon = as.factor(BestTaxon))
+
+length(unique(detect_data_clean$NWFSCsampleID)) #515 samples, 41,200 rows, 2575 technical replicates
+
+## count number of detections by species ---------------------------------------
+
+detect_per_species_clean <- detect_data_clean %>% 
+  group_by(BestTaxon) %>% 
+  summarize(nDetect = sum(Detected))
+
+save(detect_data_clean, file = "./ProcessedData/detect_data_clean.RData")
