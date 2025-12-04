@@ -8,6 +8,7 @@ library(tidyverse)
 library(PNWColors)
 
 load("./ProcessedData/detect_data.RData")
+load("./ProcessedData/detect_data_clean.RData")
 detect_data <- detect_data %>% mutate(BestTaxon = as.factor(BestTaxon))
 mmEcoEvo <- read.csv("./Data/MM_metadata.csv")
 
@@ -71,9 +72,9 @@ m3.0c <-
            d=2,
            k=20,
            bs="tp")+
-        # ti(depth,
-        #    k=5,
-        #    bs="ts")+
+         ti(depth,
+            k=5,
+            bs="ts")+
         ti(BestTaxon,
            k=16,
            bs="re")+
@@ -98,22 +99,22 @@ m3.0c <-
 
 summary(m3.0c)
 # Approximate significance of smooth terms:
-#   edf  Ref.df Chi.sq p-value    
-#   ti(lon,lat)                 1.444e+01   16.82  31.59  0.0167 *  
-#   ti(depth)                   4.593e-05    4.00   0.00  0.8125    
-#   ti(BestTaxon)               1.279e+01   16.00 145.43  <2e-16 ***
-#   ti(BestTaxon,depth,lon,lat) 8.336e+01 1216.00 167.78  <2e-16 ***
-#   ti(lon,lat,BestTaxon)       4.764e+01  142.00 121.98  <2e-16 ***
-#   ti(depth,BestTaxon)         2.798e+01  144.00 100.49  <2e-16 ***
-#   ---
-#   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-# 
-# R-sq.(adj) =  0.0611   Deviance explained = 24.5%
-# fREML =  47307  Scale est. = 1         n = 48672
+#                               edf         Ref.df Chi.sq p-value    
+#   ti(lon,lat)                 1.403e+01   16.43  29.86  0.0233 *  
+#   ti(depth)                   3.748e-05    4.00   0.00  0.8355    
+#   ti(BestTaxon)               1.255e+01   15.00 124.53  <2e-16 ***
+#   ti(BestTaxon,depth,lon,lat) 9.049e+01 1216.00 179.41  <2e-16 ***
+#   ti(lon,lat,BestTaxon)       4.447e+01  142.00 102.60  <2e-16 ***
+#   ti(depth,BestTaxon)         2.834e+01  144.00 100.54  <2e-16 ***
+#24.7% deviance explained
+#24.6% deviance explained without depth
 
 AIC(m3.0c)
-#4986 with all terms
-#4977 with non-significant term (depth) removed
+# 4985 with all terms
+# 4985 with non-significant term (depth) removed
+
+#mean squared Pearson residual dispersion parameter
+sum(residuals(m3.0c, type = "pearson")^2) / df.residual(m3.0c)
 
 ### m3.0c predictions ----------------------------------------------------------
 
@@ -138,9 +139,86 @@ m3.0c_sePreds <- data.frame(m3.0c_pred_grid,
                             low50  = binomial()$linkinv(m3.0cpreds$fit - 0.674 * m3.0cpreds$se.fit),
                             high50 = binomial()$linkinv(m3.0cpreds$fit + 0.674 * m3.0cpreds$se.fit))
 
+### Do it again with the "clean" dataset ---------------------------------------
+
+m3.0c_clean <-
+  bam(Detected ~ 
+        # main effects of space, depth, taxon
+        ti(lon, lat,
+           d=2,
+           k=20,
+           bs="tp")+
+         ti(depth,
+            k=5,
+            bs="ts")+
+        ti(BestTaxon,
+           k=16,
+           bs="re")+
+        # interaction between *everything*
+        ti(lon, lat, depth, BestTaxon,
+           d=c(2,1,1),
+           k=c(20, 5, 16),
+           bs=c("tp","ts", "re"))+
+        # space-taxon effect
+        ti(lon, lat, BestTaxon,
+           d=c(2,1),
+           k=c(10,16),
+           bs=c("tp","re"))+
+        # depth-taxon effect
+        ti(depth, BestTaxon,
+           k=c(10,16),
+           bs=c("ts","re")),
+      family = "binomial",
+      method = "fREML",
+      data = detect_data_clean,
+      discrete = TRUE)
+
+summary(m3.0c_clean)
+# Approximate significance of smooth terms:
+#   edf  Ref.df Chi.sq p-value    
+#   ti(lon,lat)                 1.343e+01   15.96  30.82  0.0128 *  
+#   ti(depth)                   2.904e-05    4.00   0.00  0.6045    
+#   ti(BestTaxon)               1.215e+01   15.00  74.11  <2e-16 ***
+#   ti(BestTaxon,depth,lon,lat) 8.200e+01 1216.00 161.64  <2e-16 ***
+#   ti(lon,lat,BestTaxon)       3.858e+01  142.00  80.37  <2e-16 ***
+#   ti(depth,BestTaxon)         4.148e+01  144.00 127.37  <2e-16 ***
+#Deviance explained 25.7% 
+
+AIC(m3.0c_clean)
+#4200
+
+#mean squared Pearson residual dispersion parameter
+sum(residuals(m3.0c_clean, type = "pearson")^2) / df.residual(m3.0c_clean)
+#0.46 underdispersed?
+
+### m3.0c_clean predictions ----------------------------------------------------
+
+m3.0c_clean_pred_grid <- expand_grid(depth = seq(from = 0, to = 500, by = 10),
+                               lat = seq(min(detect_data_clean$lat, na.rm = TRUE),
+                                         max(detect_data_clean$lat, na.rm = TRUE),
+                                         by = 0.05),
+                               lon = seq(min(detect_data_clean$lon, na.rm = TRUE),
+                                         max(detect_data_clean$lon, na.rm = TRUE),
+                                         by = 0.05),
+                               BestTaxon = as.factor(c("Lagenorhynchus obliquidens",
+                                                       "Megaptera novaeangliae",
+                                                       "Berardius bairdii")))
+# response predictions
+m3.0c_clean_preds <- predict.bam(m3.0c_clean, m3.0c_clean_pred_grid,
+                          se.fit = TRUE)
+
+m3.0c_clean_sePreds <- data.frame(m3.0c_clean_pred_grid,
+                            mu   = binomial()$linkinv(m3.0c_clean_preds$fit),
+                            low  = binomial()$linkinv(m3.0c_clean_preds$fit - 1.96 * m3.0c_clean_preds$se.fit),
+                            high = binomial()$linkinv(m3.0c_clean_preds$fit + 1.96 * m3.0c_clean_preds$se.fit),
+                            low50  = binomial()$linkinv(m3.0c_clean_preds$fit - 0.674 * m3.0c_clean_preds$se.fit),
+                            high50 = binomial()$linkinv(m3.0c_clean_preds$fit + 0.674 * m3.0c_clean_preds$se.fit))
+
+
 ### Save -----------------------------------------------------------------------
 
 save(m3.0a, m3.0b, m3.0c, m3.0b_sePreds, m3.0cpreds, m3.0c_sePreds,
+     m3.0c_clean, m3.0c_clean_preds, m3.0c_clean_sePreds,
      file = "./ProcessedData/m3.0models_preds_0.05degree.Rdata")
 
 

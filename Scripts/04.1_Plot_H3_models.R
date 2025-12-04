@@ -16,6 +16,7 @@ library(marmap)
 
 load("./ProcessedData/m3.0models_preds_0.05degree.Rdata")
 load("./ProcessedData/detect_data.RData")
+load("./ProcessedData/detect_data_clean.RData")
 mmEcoEvo <- read.csv("./Data/MM_metadata.csv")
 metadata <- read.csv("./Data/Hake_2019_metadata.csv")
 
@@ -90,6 +91,216 @@ bath <- getNOAA.bathy(lon1 = lon1, lon2 = lon2,
 bath_df <- fortify.bathy(bath) 
 
 save(maxPOD_depth, pos_detect, maxPOD_depth_clipped, file = "./ProcessedData/H3.0c_pred_flt.Rdata")
+
+#### Max POD plot with matching color scale ------------------------------------
+
+depth_max_detect <- ggplot(westcoast_land) +
+  geom_tile(data = maxPOD_depth_clipped, 
+            aes(x = lon_plain, y = lat_plain, fill = depth)) +
+  geom_sf(fill = "grey50", colour = NA) +
+  scale_fill_viridis_c(name = "Depth (m)",
+                       option = "mako",
+                       trans = "reverse",
+                       begin = 0.4, end = 0.9, na.value = "transparent") +
+  ggspatial::geom_spatial_point(data = pos_detect,
+                                aes(x = lon, y = lat,
+                                    color = as.factor(depth)),
+                                size = 1,
+                                alpha = 0.8,
+                                stroke = 1,
+                                position = position_jitter(width = 0.05,
+                                                           height = 0.05)) +
+  scale_color_manual(values = det_colors) +
+  facet_wrap(~BestTaxon, labeller = label_wrap_gen(width=10)) +
+  theme_minimal() +
+  theme(axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        axis.title = element_blank(),
+        plot.margin = margin(0, 0, 0, 0),
+        legend.position = "right", #c(0.54, 0.45),    # <<-- Adjust to place legend over land
+        legend.justification = c("left"),
+        legend.background = element_blank(),
+        legend.box.background = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.title = element_text(size = 10),
+        legend.text = element_text(size = 9),
+        strip.text = element_text(face = "italic")) +
+  geom_contour(data = bath_df, aes(x = x, y = y, z = z),
+               breaks = c(-500, -1000, -2000), color = "grey70", linewidth = 0.3) +
+  guides(color = guide_legend("Detection\ndepth (m)"))
+
+depth_max_detect
+
+ci95_plot <- ggplot(westcoast_land) +
+  geom_tile(data = maxPOD_depth_clipped, 
+            aes(x = lon_plain, y = lat_plain, 
+                fill = depthWidth)) +
+  theme_minimal() +
+  #ggtitle(names(species)[i]) +
+  geom_sf(fill = "grey50", colour = NA) +
+  scale_fill_viridis_c(name = "50% CI\ndepth range (m)",
+                       option = "magma",
+                       trans = "reverse",
+                       begin = 0.15, end = 1, na.value = "transparent") +
+  facet_wrap(~BestTaxon, labeller = label_wrap_gen(width=10)) +
+  theme(axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        axis.title = element_blank(),
+        plot.margin = margin(0, 0, 0, 0),
+        legend.position = "right", #c(0.54, 0.45),    # <<-- Adjust to place legend over land
+        legend.justification = c("left"),
+        legend.background = element_blank(),
+        legend.box.background = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.title = element_text(size = 10),
+        legend.text = element_text(size = 9),
+        strip.text = element_text(face = "italic")) +
+  geom_contour(data = bath_df, aes(x = x, y = y, z = z),
+               breaks = c(-500, -1000, -2000), color = "grey70", linewidth = 0.3)
+
+depth_max_detect / ci95_plot
+
+save(depth_max_detect, ci95_plot, file = "./Figures/H3.0c_map.Rdata")
+
+### Repeat with "clean" dataset ------------------------------------------------
+
+### m3.0c max POD depth map for three species ----------------------------------
+
+# pull depth of max POD
+maxPOD_depth_clean <- m3.0c_clean_sePreds %>% 
+  group_by(BestTaxon, lat,lon) %>% #3816 groups
+  arrange(desc(mu), .by_group = TRUE) %>% 
+  mutate(max_mu = first(mu), max_low50 = first(low50), 
+         max_high50 = first(high50), max_depth = first(depth)) %>%
+  filter(mu > max_low50 & mu < max_high50) %>%
+  mutate(depth_min = min(depth), depth_max = max(depth)) %>% 
+  slice_head() %>% 
+  ungroup() %>% 
+  mutate(depthWidth = depth_max - depth_min) %>% 
+  mutate(ci95 = high-low) %>% 
+  ungroup()
+
+# create convex hull study area
+study_area_clean <- st_as_sf(metadata, coords = c("lon", "lat"), crs = 4326) %>%
+  summarise(geometry = st_union(geometry)) %>%
+  st_convex_hull() 
+
+# convert POD to sf
+maxPOD_depth_sf_clean <- maxPOD_depth_clean %>% 
+  mutate(lon_plain = lon, lat_plain = lat) %>% 
+  st_as_sf(coords = c("lon", "lat"), crs = 4326) 
+
+maxPOD_depth_clipped_clean <- st_join(study_area_clean, maxPOD_depth_sf_clean, left = TRUE) %>% 
+  mutate(depth = case_when(max_mu < 0.003~NA,
+                           TRUE~depth)) %>% 
+  mutate(depthWidth = case_when(max_mu < 0.003~NA,
+                                TRUE~depthWidth))
+
+# pull depth of detections
+pos_detect_clean <- detect_data_clean %>% 
+  filter(BestTaxon %in% c("Lagenorhynchus obliquidens",
+                          "Megaptera novaeangliae",
+                          "Berardius bairdii")) %>% 
+  filter(Detected == 1) %>% 
+  mutate(depth = case_when(depth %in% c(48,50)~50,
+                           depth %in% c(467,485,495,500)~500,
+                           TRUE~depth))
+
+
+
+### Get bathymetry data --------------------------------------------------------
+
+# lon‐range and lat‐range:
+lon1 <- min(maxPOD_depth_clipped_clean$lon_plain); lon2 <- max(maxPOD_depth_clipped_clean$lon_plain) 
+lat1 <- min(maxPOD_depth_clipped_clean$lat_plain); lat2 <- max(maxPOD_depth_clipped_clean$lat_plain)
+
+# Download bathymetry
+bath_clean <- getNOAA.bathy(lon1 = lon1, lon2 = lon2,
+                      lat1 = lat1, lat2 = lat2,
+                      resolution = 1)  # “1” ~ 1-minute (~1.8 km) resolution
+
+# Convert bathy to a data.frame for ggplot
+bath_df_clean <- fortify.bathy(bath_clean) 
+
+save(maxPOD_depth_clean, pos_detect_clean, maxPOD_depth_clipped_clean, file = "./ProcessedData/H3.0c_pred_flt_clean.Rdata")
+
+#### Max POD plot with matching color scale ------------------------------------
+
+depth_max_detect_clean <- ggplot(westcoast_land) +
+  geom_tile(data = maxPOD_depth_clipped_clean, 
+            aes(x = lon_plain, y = lat_plain, fill = depth)) +
+  geom_sf(fill = "grey50", colour = NA) +
+  scale_fill_viridis_c(name = "Depth (m)",
+                       option = "mako",
+                       trans = "reverse",
+                       begin = 0.4, end = 0.9, na.value = "transparent") +
+  ggspatial::geom_spatial_point(data = pos_detect_clean,
+                                aes(x = lon, y = lat,
+                                    color = as.factor(depth)),
+                                size = 1,
+                                alpha = 0.8,
+                                stroke = 1,
+                                position = position_jitter(width = 0.05,
+                                                           height = 0.05)) +
+  scale_color_manual(values = det_colors) +
+  facet_wrap(~BestTaxon, labeller = label_wrap_gen(width=10)) +
+  theme_minimal() +
+  theme(axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        axis.title = element_blank(),
+        plot.margin = margin(0, 0, 0, 0),
+        legend.position = "right", #c(0.54, 0.45),    # <<-- Adjust to place legend over land
+        legend.justification = c("left"),
+        legend.background = element_blank(),
+        legend.box.background = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.title = element_text(size = 10),
+        legend.text = element_text(size = 9),
+        strip.text = element_text(face = "italic")) +
+  geom_contour(data = bath_df_clean, aes(x = x, y = y, z = z),
+               breaks = c(-500, -1000, -2000), color = "grey70", linewidth = 0.3) +
+  guides(color = guide_legend("Detection\ndepth (m)"))
+
+depth_max_detect_clean
+
+ci95_plot_clean <- ggplot(westcoast_land) +
+  geom_tile(data = maxPOD_depth_clipped_clean, 
+            aes(x = lon_plain, y = lat_plain, 
+                fill = depthWidth)) +
+  theme_minimal() +
+  #ggtitle(names(species)[i]) +
+  geom_sf(fill = "grey50", colour = NA) +
+  scale_fill_viridis_c(name = "50% CI\ndepth range (m)",
+                       option = "magma",
+                       trans = "reverse",
+                       begin = 0.15, end = 1, na.value = "transparent") +
+  facet_wrap(~BestTaxon, labeller = label_wrap_gen(width=10)) +
+  theme(axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        axis.title = element_blank(),
+        plot.margin = margin(0, 0, 0, 0),
+        legend.position = "right", #c(0.54, 0.45),    # <<-- Adjust to place legend over land
+        legend.justification = c("left"),
+        legend.background = element_blank(),
+        legend.box.background = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.title = element_text(size = 10),
+        legend.text = element_text(size = 9),
+        strip.text = element_text(face = "italic")) +
+  geom_contour(data = bath_df_clean, aes(x = x, y = y, z = z),
+               breaks = c(-500, -1000, -2000), color = "grey70", linewidth = 0.3)
+
+depth_max_detect_clean / ci95_plot_clean
+
+save(depth_max_detect_clean, ci95_plot_clean, file = "./Figures/H3.0c_map_clean.Rdata")
+
+################################################################################
+### Max POD with individual color scales ---------------------------------------
+
 ### depth of max POD map -------------------------------------------------------
 # depth_max_detect <- list()
 # 
@@ -406,76 +617,3 @@ save(maxPOD_depth, pos_detect, maxPOD_depth_clipped, file = "./ProcessedData/H3.
 # dev.off()
 # 
 # save(depthPODmax_baleen, file = "./Figures/masPODdepthmap_baleen.Rdata")
-
-#### Max POD plot with matching color scale ------------------------------------
-
-depth_max_detect <- ggplot(westcoast_land) +
-  geom_tile(data = maxPOD_depth_clipped, 
-            aes(x = lon_plain, y = lat_plain, fill = depth)) +
-  geom_sf(fill = "grey50", colour = NA) +
-  scale_fill_viridis_c(name = "Depth (m)",
-                       option = "mako",
-                       trans = "reverse",
-                       begin = 0.4, end = 0.9, na.value = "transparent") +
-  ggspatial::geom_spatial_point(data = pos_detect,
-                                aes(x = lon, y = lat,
-                                    color = as.factor(depth)),
-                                size = 1,
-                                alpha = 0.8,
-                                stroke = 1,
-                                position = position_jitter(width = 0.05,
-                                                           height = 0.05)) +
-  scale_color_manual(values = det_colors) +
-  facet_wrap(~BestTaxon, labeller = label_wrap_gen(width=10)) +
-  theme_minimal() +
-  theme(axis.text = element_blank(),
-        axis.ticks = element_blank(),
-        axis.title = element_blank(),
-        plot.margin = margin(0, 0, 0, 0),
-        legend.position = "right", #c(0.54, 0.45),    # <<-- Adjust to place legend over land
-        legend.justification = c("left"),
-        legend.background = element_blank(),
-        legend.box.background = element_blank(),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        legend.title = element_text(size = 10),
-        legend.text = element_text(size = 9),
-        strip.text = element_text(face = "italic")) +
-  geom_contour(data = bath_df, aes(x = x, y = y, z = z),
-               breaks = c(-500, -1000, -2000), color = "grey70", linewidth = 0.3) +
-  guides(color = guide_legend("Detection\ndepth (m)"))
-
-depth_max_detect
-
-ci95_plot <- ggplot(westcoast_land) +
-  geom_tile(data = maxPOD_depth_clipped, 
-            aes(x = lon_plain, y = lat_plain, 
-                fill = depthWidth)) +
-  theme_minimal() +
-  #ggtitle(names(species)[i]) +
-  geom_sf(fill = "grey50", colour = NA) +
-  scale_fill_viridis_c(name = "50% CI\ndepth range (m)",
-                       option = "magma",
-                       trans = "reverse",
-                       begin = 0.15, end = 1, na.value = "transparent") +
-  facet_wrap(~BestTaxon, labeller = label_wrap_gen(width=10)) +
-  theme(axis.text = element_blank(),
-        axis.ticks = element_blank(),
-        axis.title = element_blank(),
-        plot.margin = margin(0, 0, 0, 0),
-        legend.position = "right", #c(0.54, 0.45),    # <<-- Adjust to place legend over land
-        legend.justification = c("left"),
-        legend.background = element_blank(),
-        legend.box.background = element_blank(),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        legend.title = element_text(size = 10),
-        legend.text = element_text(size = 9),
-        strip.text = element_text(face = "italic")) +
-  geom_contour(data = bath_df, aes(x = x, y = y, z = z),
-               breaks = c(-500, -1000, -2000), color = "grey70", linewidth = 0.3)
-
-depth_max_detect / ci95_plot
-
-save(depth_max_detect, ci95_plot, file = "./Figures/H3.0c_map.Rdata")
-

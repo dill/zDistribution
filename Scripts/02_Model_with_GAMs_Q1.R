@@ -8,6 +8,7 @@ library(tidyverse)
 library(PNWColors)
 
 load("./ProcessedData/detect_data.RData")
+load("./ProcessedData/detect_data_clean.RData")
 mmEcoEvo <- read.csv("./Data/MM_metadata.csv")
 detect_data$BestTaxon <- as.factor(detect_data$BestTaxon)
 detect_data$NWFSCsampleID <- as.factor(detect_data$NWFSCsampleID)
@@ -59,16 +60,46 @@ m1.2 <- gam(Detected ~
             method = "REML")
 
 summary(m1.2)
+# Approximate significance of smooth terms:
+#   edf Ref.df  Chi.sq  p-value    
+# ti(depth)            0.8814      4   4.769 0.000815 ***
+#   ti(BestTaxon)       13.9939     15 287.820  < 2e-16 ***
+#   ti(depth,BestTaxon) 29.4903     60 163.570  < 2e-16 ***
 # 13% deviance explained
-# 26% deviance explained with re for NWFSCsampleID
+# 26% deviance explained with re for NWFSCsampleID (depth significance decreases)
 
-deviance(m1.2) / df.residual(m1.2)
+#mean squared Pearson residual dispersion parameter
 sum(residuals(m1.2, type = "pearson")^2) / df.residual(m1.2)
+#0.774 underdispersed?
 
 AIC(m1.2)
 # AIC 5391
 # AIC w/ re for NWFSCsampleID 5090
 #save(m1.2, file = "./ProcessedData/m1.2wSampleRE.Rdata")
+
+# do it again with "clean" dataset
+m1.2clean <- gam(Detected ~ 
+              #ti(NWFSCsampleID, bs="re")+
+              ti(depth, k=5, bs="ts")+
+              ti(BestTaxon, k=16, bs="re")+
+              ti(depth, BestTaxon, k=c(5, 16), bs=c("ts","re")),
+            family = "binomial", data = detect_data_clean,
+            method = "REML")
+
+summary(m1.2clean)
+# Approximate significance of smooth terms:
+#   edf Ref.df Chi.sq  p-value    
+# ti(depth)            0.9928      4  11.87 2.29e-06 ***
+#   ti(BestTaxon)       13.8293     15 235.16  < 2e-16 ***
+#   ti(depth,BestTaxon) 29.9849     60 145.13  < 2e-16 ***
+# 13.1% deviance explained
+
+#mean squared Pearson residual dispersion parameter
+sum(residuals(m1.2clean, type = "pearson")^2) / df.residual(m1.2clean)
+#0.757 #underdispersed?
+
+AIC(m1.2clean)
+# AIC 4547
 
 ### H2a: POD by depth across taxonomic family ----------------------------------
 detect_data$Family <- as.factor(detect_data$Family)
@@ -293,5 +324,6 @@ modelAIC <- AIC(m1.0, m1.1, m1.2, m1.2a, m1.2b) %>%
 
 ######## save all models -------------------------------------------------------
 
-save(m1.0, m1.1, m1.2, m1.2a, m1.2b, modelAIC,
+save(m1.0, m1.1, m1.2, m1.2clean,
+     m1.2a, m1.2b, modelAIC,
      file = "./ProcessedData/H1models.RData")

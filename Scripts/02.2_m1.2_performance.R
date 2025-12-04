@@ -83,7 +83,7 @@ TSS_df <- as.data.frame(do.call(rbind.data.frame, TSS_list)) %>%
   mutate(low95 = mean - 1.96 * se,
          high95 = mean + 1.96 * se)
 
-ggplot(TSS_df, aes(x = threshold)) +
+TSS_plot <- ggplot(TSS_df, aes(x = threshold)) +
   geom_smooth(aes(ymin = low95, ymax = high95, y = mean), 
               stat = "identity") +
   theme_minimal() +
@@ -217,3 +217,90 @@ save(AUC_df, TSS_df,
      TSS_plot,
      TSS_optim_species,
      species_metrics, file = "./ProcessedData/m1.2performance.Rdata")
+
+### Repeat with "clean" dataset ------------------------------------------------
+
+random_samples_clean <- detect_data_clean %>% 
+  ungroup() %>% 
+  select(NWFSCsampleID) %>% 
+  distinct(NWFSCsampleID) %>% 
+  mutate(groupNo = sample(1:10, size = nrow(.), replace = TRUE))
+
+
+detect_data_AUC_clean <- detect_data_clean %>% 
+  filter(BestTaxon %in% c(detect_per_species %>% 
+                            filter(nDetect > 10) %>% 
+                            pull(BestTaxon))) %>% 
+  mutate(BestTaxon = as.factor(BestTaxon)) %>% 
+  left_join(random_samples_clean, by = "NWFSCsampleID")
+
+#### AUC and TSS test ----------------------------------------------------------
+
+AUC_list_clean <- list()
+TSS_list_clean <- list()
+
+for (i in 1:10){
+  
+  detect_data_train <- detect_data_AUC_clean %>% 
+    filter(!(groupNo == i))
+  
+  detect_data_test <- detect_data_AUC_clean %>% 
+    filter(groupNo == i)
+  
+  m1.2train <- gam(Detected ~ 
+                     ti(depth, k=5, bs="ts")+
+                     ti(BestTaxon, k=16, bs="re")+
+                     ti(depth, BestTaxon, k=c(5, 16), bs=c("ts","re")),
+                   family = "binomial", data = detect_data_train,
+                   method = "REML")
+  
+  m1.2preds <- predict(m1.2train, detect_data_test, type = "response")
+  
+  roc_object <- roc(detect_data_test$Detected, m1.2preds)
+  
+  AUC_list_clean[[i]] <- auc(roc_object)
+  
+  threshold <- seq(0.005,max(m1.2preds),by=0.001)
+  
+  TSS_df <- list()
+  
+  for (j in 1:length(threshold)){
+    TSS_df[[j]] <- detect_data_test %>% 
+      as.data.frame() %>% 
+      bind_cols(as.data.frame(m1.2preds)) %>% 
+      mutate(Detected = as.factor(Detected)) %>% 
+      mutate(m1.2preds = case_when(m1.2preds > threshold[j]~1,
+                                   TRUE~0)) %>% 
+      mutate(m1.2preds = as.factor(m1.2preds)) %>% 
+      tss(., Detected, m1.2preds)
+    
+  }
+  
+  TSS_list_clean[[i]] <- as.data.frame(unlist(TSS_df)) %>% 
+    rename("TSS" = 1) %>% 
+    filter(!(TSS %in% c("tss", "binary"))) %>% 
+    mutate("threshold" = threshold) %>% 
+    mutate("test" = i)
+}
+
+AUC_df_clean <- do.call(rbind.data.frame, AUC_list_clean) %>% 
+  rename("AUC" = 1)
+
+TSS_df_clean <- as.data.frame(do.call(rbind.data.frame, TSS_list_clean)) %>% 
+  mutate(TSS = as.numeric(TSS)) %>% 
+  group_by(threshold) %>% 
+  summarize(mean = mean(TSS), sd = sd(TSS), nSamp = n()) %>% 
+  mutate(se = sd/(nSamp^(1/2))) %>% 
+  mutate(low95 = mean - 1.96 * se,
+         high95 = mean + 1.96 * se)
+
+TSS_plot_clean <- ggplot(TSS_df_clean, aes(x = threshold)) +
+  geom_smooth(aes(ymin = low95, ymax = high95, y = mean), 
+              stat = "identity") +
+  theme_minimal() +
+  ylab("TSS")
+
+### save "clean" test metrics --------------------------------------------------
+
+save(AUC_df_clean, TSS_df_clean, 
+     TSS_plot_clean, file = "./ProcessedData/m1.2clean_performance.Rdata")
