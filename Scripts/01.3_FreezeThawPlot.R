@@ -85,8 +85,8 @@ boot_results <- replicate(n_boot, {
 }, simplify = FALSE)
 
 boot_df <- bind_rows(boot_results, .id = "Bootstrap") %>% 
-  crossing(Thaw = 1:7) %>% 
-  mutate(POD = Intercept + Slope * Thaw)
+  crossing(Thaw = 1:6) %>% 
+  mutate(POD = plogis(Intercept + Slope * Thaw)) 
 
 boot_df$Bootstrap <- as.integer(boot_df$Bootstrap)
 
@@ -98,7 +98,7 @@ ggplot(boot_df, aes(x = Thaw, y = POD, group = Bootstrap)) +
 
 #Get CI from bootstrap
 
-ci_df <- boot_df %>%
+ci_df_thaw <- boot_df %>%
   mutate(Primer = case_when(Primer == "DL.(Intercept)"~"DL",
                             Primer == "MFU.(Intercept)"~"MFU",
                             TRUE~"MV1")) %>% 
@@ -113,11 +113,9 @@ ci_df <- boot_df %>%
 
 ## Plot
 
-newdat <- expand.grid(Thaw = seq(1,7,1),
-                      primer = unique(detect_data_allcet_clean$primer))
-
-newdat <- newdat %>%
-  left_join(ci_df %>% select(Primer, Intercept_mean, Slope_mean,
+newdat_thaw <- expand.grid(Thaw = seq(1,7,1),
+                      primer = unique(detect_data_allcet_clean$primer)) %>% 
+  left_join(ci_df_thaw %>% select(Primer, Intercept_mean, Slope_mean,
                              Intercept_lower, Intercept_upper,
                              Slope_lower, Slope_upper),
             by = c("primer" = "Primer")) %>%
@@ -125,14 +123,31 @@ newdat <- newdat %>%
          lower = plogis(Intercept_lower + Slope_lower * Thaw),
          upper = plogis(Intercept_upper + Slope_upper * Thaw))
 
-ggplot(newdat, aes(x = Thaw, y = fit, color = primer, fill = primer)) +
+PODthaw_plot <- ggplot(newdat_thaw, aes(x = Thaw, y = fit, color = primer, fill = primer)) +
   geom_ribbon(aes(ymin = lower, ymax = upper), alpha = 0.5, color = NA) +
   geom_line(linewidth = 1.2) +
   labs(x = "Thaw cycles", y = "Detection probability") +
   theme_minimal() +
   facet_wrap(~primer, scales = "free_y", nrow = 3) +
-  scale_fill_manual(values = c(pnw_palette("Cascades",5, type = "continuous")[4:5],
-                               pnw_palette("Sunset",1, type = "continuous"))) +
-  scale_color_manual(values = c(pnw_palette("Cascades",5, type = "continuous")[4:5],
-                                pnw_palette("Sunset",1, type = "continuous"))) 
+  ylim(0,1) +
+  scale_color_manual(values = c(pnw_palette("Cascades",5, type = "discrete")[c(3)],
+                                pnw_palette("Sunset",7, type = "discrete")[c(3,5)])) +
+  scale_fill_manual(values = c(pnw_palette("Cascades",5, type = "discrete")[c(3)],
+                                pnw_palette("Sunset",7, type = "discrete")[c(3,5)]))
+
+save(ci_df_thaw, PODthaw_plot, file = "ProcessedData/PODxThawxPrimer.Rdata")
+
+## Estimate POD average across grid -------------------------------------------
+
+POD_samples_exp <- summarize_thaw_clean %>% 
+  rename("PODobs" = "POD") %>% 
+  left_join(newdat_thaw %>% 
+              dplyr::select(fit, lower, upper, Thaw, primer), 
+            by = c("Thaw", "primer")) %>%
+  group_by(primer) %>% 
+  mutate(fit_n = n*fit, lower_n = n*lower, upper_n = n*upper) %>% 
+  summarize(meanPOD = sum(fit_n)/516, maxPOD = sum(upper_n)/516, minPOD = sum(lower_n)/516) %>% 
+  ungroup() %>% 
+  summarise(sum(meanPOD), sum(maxPOD), sum(minPOD))
+
 
