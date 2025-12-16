@@ -297,4 +297,15 @@ detect_per_species_clean <- detect_data_clean %>%
   group_by(BestTaxon) %>% 
   summarize(nDetect = sum(Detected))
 
-save(detect_data_clean, file = "./ProcessedData/detect_data_clean.RData")
+detect_per_family_clean <- detect_data_clean %>% 
+  group_by(Family) %>% 
+  summarize(nDetect = sum(Detected))
+
+detect_per_primer_species_clean <- detect_data_clean %>% 
+  group_by(BestTaxon, primer) %>% 
+  summarize(nDetect = sum(Detected)) %>% 
+  pivot_wider(names_from = "primer", values_from = "nDetect")
+
+save(detect_data_clean, detect_per_species_clean,
+     detect_per_primer_species_clean, mmEcoEvo,
+     detect_per_family_clean, file = "./ProcessedData/detect_data_clean.RData")

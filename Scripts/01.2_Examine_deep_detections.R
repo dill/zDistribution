@@ -5,7 +5,7 @@ library(tidyverse)
 library(PNWColors)
 library(ggOceanMaps)
 
-load("ProcessedData/detect_data.RData")
+load("ProcessedData/detect_data_clean.RData")
 metadata <- read.csv("./Data/Hake_2019_metadata.csv")
 mmEcoEvo <- read.csv("./Data/MM_metadata.csv")
 all_detect_data <- read.csv("Data/M3_compiled_taxon_table_wide.csv")
@@ -15,7 +15,7 @@ tax_data <- read.csv("Data/MFU_database.csv") %>%
 
 #### Look @ bottom depth of deep detections ------------------------------------
 
-detect_data_deep <- detect_data %>% 
+detect_data_deep <- detect_data_clean %>% 
   filter(depth > 250) %>% 
   filter(Detected == 1) %>% 
   mutate(distToBottom = bottom.depth.consensus - depth) %>% 
@@ -37,30 +37,33 @@ ggplot(detect_data_deep, aes(x= distToBottom, fill = Broad_taxa)) +
 
 # Plot the location of likely whalefall (dist to bottom < 100m)
 potential_whalefall <- detect_data_deep %>% 
-  filter(distToBottom < 100 & distToBottom > 0)
+  filter(distToBottom < 100 & distToBottom > 0) %>% 
+  mutate(depth_bin = as.factor(ifelse(distToBottom < 50, "<50m", "50-100m")))
 
 whalefall_summary <- potential_whalefall %>% 
   group_by(Broad_taxa) %>% 
   summarize(nObs = n())
 
-basemap(limits = c(min(potential_whalefall$lon)-0.9,
-                   max(potential_whalefall$lon)+0.25,
-                   min(potential_whalefall$lat)-0.25,
-                   max(potential_whalefall$lat)+0.4),
+whalefall_map <- basemap(limits = c(min(potential_whalefall$lon)-1.6,
+                   max(potential_whalefall$lon)+0.74,
+                   min(potential_whalefall$lat)-0.6,
+                   max(potential_whalefall$lat)+0.75),
         bathy.style = "rcb", crs = 4236,
         rotate = FALSE) +
   ggspatial::geom_spatial_point(data = potential_whalefall, 
-                                aes(x = lon, y = lat, color = BestTaxon),
-                                size = 4, alpha = 0.8, fill = "transparent") +
+                                aes(x = lon, y = lat, color = BestTaxon,
+                                    shape = depth_bin),
+                                size = 5, alpha = 0.8, fill = "transparent") +
   guides(fill = "none") +
   scale_color_manual(values = c(pnw_palette("Sunset",6, type = "continuous"))) +
   theme(legend.key = element_blank()) +
-  theme_minimal() +
-  geom_label(data = potential_whalefall, aes(x = lon-0.5, y = lat+0.25, label = round(distToBottom, digits = 2)))
+  theme_minimal()
+  #geom_label(data = potential_whalefall, aes(x = lon-0.75, y = lat+0.5, label = round(distToBottom, digits = 2)))
 
+whalefall_map
 # Look for killer whale prey
 
-detect_data_deep_detect_stations <- detect_data %>% 
+detect_data_deep_detect_stations <- detect_data_clean %>% 
   filter(station %in% detect_data_deep$station) %>% 
   group_by(station) %>% 
   filter(any(BestTaxon == "Orcinus orca")) %>% 
@@ -69,7 +72,7 @@ detect_data_deep_detect_stations <- detect_data %>%
 deepDetect_noFall <- detect_data_deep %>% 
   filter(distToBottom > 100) 
 
-detectKW <- detect_data %>% 
+detectKW <- detect_data_clean %>% 
   ungroup() %>% 
   filter(Detected == 1) %>% 
   filter(BestTaxon == "Orcinus orca") %>% 
@@ -153,5 +156,5 @@ basemap(limits = c(min(deepDetect_noFall$lon)-0.25,
 
 #### Resave data with whalefall filtered out -----------------------------------
 
-save(potential_whalefall,
+save(potential_whalefall, whalefall_map,
      file = "./ProcessedData/detect_species_meta.RData")

@@ -7,12 +7,11 @@ library(mgcv)
 library(tidyverse)
 library(PNWColors)
 
-load("./ProcessedData/detect_data.RData")
 load("./ProcessedData/detect_data_clean.RData")
 mmEcoEvo <- read.csv("./Data/MM_metadata.csv")
-detect_data$BestTaxon <- as.factor(detect_data$BestTaxon)
-detect_data$NWFSCsampleID <- as.factor(detect_data$NWFSCsampleID)
-test <- detect_data %>% group_by(NWFSCsampleID, primer) %>% summarise(n()/16)
+detect_data_clean$BestTaxon <- as.factor(detect_data_clean$BestTaxon)
+detect_data_clean$NWFSCsampleID <- as.factor(detect_data_clean$NWFSCsampleID)
+test <- detect_data_clean %>% group_by(NWFSCsampleID, primer) %>% summarise(n()/16)
 
 # add a variable for station/depth combo
 # detect_data <- detect_data %>% 
@@ -26,7 +25,8 @@ test <- detect_data %>% group_by(NWFSCsampleID, primer) %>% summarise(n()/16)
 
 ### H1: POD by depth alone -----------------------------------------------------
 # basic model with no species-specific terms
-m1.0 <- gam(Detected ~ s(depth, k = 5), family = "binomial", data = detect_data, method="REML") 
+m1.0 <- gam(Detected ~ s(depth, k = 5), family = "binomial", 
+            data = detect_data_clean, method="REML") 
 summary(m1.0)
 # depth p-value = 2.6e-06
 AIC(m1.0)
@@ -44,7 +44,8 @@ AIC(m1.0)
 ### H2: POD by depth across species --------------------------------------------
 # this model will have a different intercept for each species, but spline will be same shape
 
-m1.1 <- gam(Detected ~ s(depth) + BestTaxon, family = "binomial", data = detect_data, method="REML")
+m1.1 <- gam(Detected ~ s(depth) + BestTaxon, family = "binomial", 
+            data = detect_data_clean, method="REML")
 summary(m1.1)
 
 AIC(m1.1)
@@ -56,37 +57,10 @@ m1.2 <- gam(Detected ~
               ti(depth, k=5, bs="ts")+
               ti(BestTaxon, k=16, bs="re")+
               ti(depth, BestTaxon, k=c(5, 16), bs=c("ts","re")),
-            family = "binomial", data = detect_data,
-            method = "REML")
-
-summary(m1.2)
-# Approximate significance of smooth terms:
-#   edf Ref.df  Chi.sq  p-value    
-# ti(depth)            0.8814      4   4.769 0.000815 ***
-#   ti(BestTaxon)       13.9939     15 287.820  < 2e-16 ***
-#   ti(depth,BestTaxon) 29.4903     60 163.570  < 2e-16 ***
-# 13% deviance explained
-# 26% deviance explained with re for NWFSCsampleID (depth significance decreases)
-
-#mean squared Pearson residual dispersion parameter
-sum(residuals(m1.2, type = "pearson")^2) / df.residual(m1.2)
-#0.774 underdispersed?
-
-AIC(m1.2)
-# AIC 5391
-# AIC w/ re for NWFSCsampleID 5090
-#save(m1.2, file = "./ProcessedData/m1.2wSampleRE.Rdata")
-
-# do it again with "clean" dataset
-m1.2clean <- gam(Detected ~ 
-              #ti(NWFSCsampleID, bs="re")+
-              ti(depth, k=5, bs="ts")+
-              ti(BestTaxon, k=16, bs="re")+
-              ti(depth, BestTaxon, k=c(5, 16), bs=c("ts","re")),
             family = "binomial", data = detect_data_clean,
             method = "REML")
 
-summary(m1.2clean)
+summary(m1.2)
 # Approximate significance of smooth terms:
 #   edf Ref.df Chi.sq  p-value    
 # ti(depth)            0.9928      4  11.87 2.29e-06 ***
@@ -95,19 +69,19 @@ summary(m1.2clean)
 # 13.1% deviance explained
 
 #mean squared Pearson residual dispersion parameter
-sum(residuals(m1.2clean, type = "pearson")^2) / df.residual(m1.2clean)
+sum(residuals(m1.2, type = "pearson")^2) / df.residual(m1.2)
 #0.757 #underdispersed?
 
-AIC(m1.2clean)
+AIC(m1.2)
 # AIC 4547
 
 ### H2a: POD by depth across taxonomic family ----------------------------------
-detect_data$Family <- as.factor(detect_data$Family)
+detect_data_clean$Family <- as.factor(detect_data_clean$Family)
 m1.2a <- gam(Detected ~ 
                ti(depth, k=5, bs="ts")+
                ti(Family, k=6, bs="re")+
                ti(depth, Family, k=c(5, 6), bs=c("ts","re")),
-             family = "binomial", data = detect_data, method = "REML")
+             family = "binomial", data = detect_data_clean, method = "REML")
 summary(m1.2a)
 
 AIC(m1.2a)
@@ -116,12 +90,12 @@ AIC(m1.2a)
 
 
 ### H2b:POD by depth across prey category --------------------------------------
-detect_data$Prey.family <- as.factor(detect_data$Prey.family)
+detect_data_clean$Prey.family <- as.factor(detect_data_clean$Prey.family)
 m1.2b <-  gam(Detected ~ 
                      ti(depth, k=5, bs="ts")+
                      ti(Prey.family, k=3, bs="re")+
                      ti(depth, Prey.family, k=c(5, 3), bs=c("ts","re")),
-                   family = "binomial", data = detect_data,  method = "REML")
+                   family = "binomial", data = detect_data_clean,  method = "REML")
 summary(m1.2b)
 
 AIC(m1.2b)

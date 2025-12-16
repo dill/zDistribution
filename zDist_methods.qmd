@@ -12,7 +12,7 @@ A full description of field sampling and DNA isolation are provided in Shelton e
 
 In total, we selected 572 samples from the dataset described above. The samples selected were collected from 182 stations, spanning south-north from latitudes 37.89499°N to 48.39881°N and west-east 126.4298°W to 122.8638°W. In terms of depth, we selected 186 were from the surface (0 m), 163 from 50 m, 74 from 150 m, 75 from 300 m, and 74 from 500 m. Samples were randomized across working plates, and were stored in the freezer when not in use. We selected the dilution for the sample that was determined from the qPCR data (described above) to be not inhibited, which was either 1x or 0.2x.
 
-** note: where should freeze/thaw information go? **
+\*\* note: where should freeze/thaw information go? \*\*
 
 ### Sample Processing
 
@@ -36,16 +36,15 @@ For every sequencing run, we included negative and positive controls. We either 
 
 ### Bioinformatic Processing
 
-We analyzed all sequencing data using the bioinformatics workflow established in Guri et al. (2025). In short, Illumina-demultiplexed reads were trimmed with Cutadapt v4.9 to remove primer and adapter sequences, allowing a maximum mismatch rate of 0.1 (Martin, 2011). Quality filtering and minimum-length truncation were performed with the DADA2 filterAndTrim function, and amplicon sequence variants (ASVs) were inferred using default denoising settings [@Callahan2016]. 
+We analyzed all sequencing data using the bioinformatics workflow established in Guri et al. (2025). In short, Illumina-demultiplexed reads were trimmed with Cutadapt v4.9 to remove primer and adapter sequences, allowing a maximum mismatch rate of 0.1 (Martin, 2011). Quality filtering and minimum-length truncation were performed with the DADA2 filterAndTrim function, and amplicon sequence variants (ASVs) were inferred using default denoising settings [@Callahan2016].
 
-Following initial QAQC of the raw sequence data, each unique ASV was queried against a vertebrate mitochondrial subset of the January 2025 NCBI nr eukaryote database using standalone BLAST configured with “-word_size 20 -evalue 1e-30 -max_target_seqs 100” (Altschul et al., 1990), supplemented with a negative-taxid file to remove taxa with distributions outside the North Pacific Ocean. Taxonomic assignments were determined using a least-common-ancestor procedure in TaxonKit v0.17 (Shen & Ren, 2021), prioritizing exact-identity matches and otherwise applying a stepwise identity threshold (>99.3%, >98%). Marine mammal identifications were then manually reviewed to ensure consistency with regional species distributions. ASVs suspected to represent nuclear mitochondrial pseudogenes were omitted from downstream analyses.
-
+Following initial QAQC of the raw sequence data, each unique ASV was queried against a vertebrate mitochondrial subset of the January 2025 NCBI nr eukaryote database using standalone BLAST configured with “-word_size 20 -evalue 1e-30 -max_target_seqs 100” (Altschul et al., 1990), supplemented with a negative-taxid file to remove taxa with distributions outside the North Pacific Ocean. Taxonomic assignments were determined using a least-common-ancestor procedure in TaxonKit v0.17 (Shen & Ren, 2021), prioritizing exact-identity matches and otherwise applying a stepwise identity threshold (\>99.3%, \>98%). Marine mammal identifications were then manually reviewed to ensure consistency with regional species distributions. ASVs suspected to represent nuclear mitochondrial pseudogenes were omitted from downstream analyses.
 
 ### Detection Data QAQC
 
 We defined a sample as a station/depth/technical replicate combination. A subset of samples were sequenced at multiple dilutions (i.e., 1:1, 1:5, or 1:10) or multiple times in order to maximize sequencing success; for these samples, we retained the iteration with the greatest number of total reads.
 
-To obtain positive detections for each sample, we kept any species with > 1 sequencing read. We filtered out any non-target (non-cetacean) species, and also removed detections of bottlenose dolphins, considered likely contamination, and unidentified Balaenopterids or Delphinids.
+To obtain positive detections for each sample, we kept any species with \> 1 sequencing read. We filtered out any non-target (non-cetacean) species, and also removed detections of bottlenose dolphins, considered likely contamination, and unidentified Balaenopterids or Delphinids.
 
 To obtain non-detections, we included all MFU and MV1 samples that had at least one marine species detected, but no cetaceans - excluding any samples that completely failed sequencing. Because our DL primer specifically targets a subset of very rare species, we assume that sequencing failure indicates a non-detection - therefore, for this primer we included any station/depth/species combination that was not detected as a non-detect.
 
@@ -63,7 +62,7 @@ We assessed model fit using AIC, and model performance using standard metrics in
 
 In Q1, we did not account for the primers used when processing each sample. Since primers were applied consistently across samples, as described in section X.X, this is not likely to affect our results. However, we were interested in leveraging the information contained in multiple technical replicates from individual biological samples to better understand the occupancy, capture, and detection processes for cetacean eDNA. We used a Bayesian hierarchical occupancy model to separately estimate the probability of occupancy/capture by depth and detectability by primer.
 
-GAMs can also be used in a Bayesian context [@miller2025]. To incorporate smooth terms in our Bayesian hierarchical model we exported the design, penalty, and covariance matrices created in model Q1.3 using mgcv::jagam [@Wood2016]. 
+GAMs can also be used in a Bayesian context [@miller2025]. To incorporate smooth terms in our Bayesian hierarchical model we exported the design, penalty, and covariance matrices created in model Q1.3 using mgcv::jagam [@Wood2016].
 
 Our occupancy model was modified from Patin et al. (submitted) and consisted of two levels: occupancy/capture (eDNA presence) and detection.
 

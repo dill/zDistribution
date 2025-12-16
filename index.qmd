@@ -1,6 +1,6 @@
 ---
 title: "Species-specific behavior and ecology drive depth distribution of rare species eDNA in pelagic marine environments"
-author: "Amy M. Van Cise^1\\*^, Eiren K. Jacobson^2^, Megan R. Shaffer^3^, Pedro F.P. Brandão Dias^3^, David L. Miller^4,5^, Brice X. Semmens^6^, Ryan P. Kelly^3^, A. Ole Shelton^7^, Krista M. Nichols^7^,  Kim M. Parsons^7^"
+author: "Amy M. Van Cise^1\\*^, Eiren K. Jacobson^2^, Megan R. Shaffer^3^, Pedro F.P. Brandão Dias^3^, David L. Miller^4,5^, Brice X. Semmens^6^, Len Thomas^2^, Ryan P. Kelly^3^, A. Ole Shelton^7^, Krista M. Nichols^7^,  Kim M. Parsons^7^"
 format: html
 editor: visual
 execute:
@@ -36,22 +36,22 @@ library(pander)
 library(PNWColors)
 
 # load data
-load("ProcessedData/detect_data.RData")
-load("ProcessedData/H1models.RData")
-load("ProcessedData/m3.0models_preds.Rdata")
-load("ProcessedData/H3.0c_pred_flt.Rdata")
-load("ProcessedData/m1.2performance.Rdata")
+load("ProcessedData/detect_data_clean.RData")
 load("ProcessedData/potential_whalefall.RData")
-load("./ProcessedData/m3.0cperformance.Rdata")
+load("ProcessedData/H1models.RData")
+load("ProcessedData/m1.2clean_performance.Rdata")
+load("ProcessedData/m1.2performance.Rdata")
+load("ProcessedData/m3.0models_preds_0.05degree.Rdata")
+load("ProcessedData/H3.0c_pred_flt_clean.Rdata")
+load("ProcessedData/m3.0cperformance.Rdata")
 
 # load plots
 load("Figures/sampling_map.Rdata")
 load("Figures/detectDepth_plots.Rdata")
-load("./Figures/H1PODplots.Rdata")
-load("./Figures/H3.0c_map.Rdata")
-load("./Figures/Q2_DetectabilityByPrimer.RData")
-load("./Figures/Q2_TechRepsXPrimer.RData")
-load("./Figures/masPODdepthmap_baleen.Rdata")
+load("Figures/H1PODplots.Rdata")
+load("Figures/H3.0c_map_clean.Rdata")
+load("Figures/Q2_DetectabilityByPrimer.RData")
+load("Figures/Q2_TechRepsXPrimer.RData")
 
 metadata <- read.csv("./Data/Hake_2019_metadata.csv")
 ```
@@ -154,22 +154,23 @@ Table S1. Sample metadata.
 
 ```{r}
 #| label: tbl-m12AUC
-#| tbl-cap: "Table S2. Per-species AUC, optimized TSS, and optimized TSS threshold for Q1 and Q1 models. Per species AUC and TSS metrics for Q1 include all species with >20 detections."
+#| eval: FALSE
+#| tbl-cap: "Table S2. Per-species AUC, optimized TSS, and optimized TSS threshold for Q1 and Q3 models."
 
-m3.0c_metrics <- AUC_df_m3.0c %>% 
-  summarize(AUC = mean(AUC)) %>% 
-  bind_cols(TSS_df_m3.0c %>% arrange(desc(mean)) %>% slice_head()) %>% 
-  select(AUC, threshold, mean) %>% 
-  rename("TSS" = mean, "Threshold" = threshold) %>% 
-  mutate(species_model = "Q3")
-
-model_metrics <- species_metrics %>% 
-  mutate(species_model = paste0(species, "-Q1")) %>% 
-  select(-species) %>% 
-  rename("AUC" = meanAUC, "Threshold" = meanThreshold, "TSS" = meanTSS) %>% 
-  bind_rows(m3.0c_metrics)
-
-pander(model_metrics)
+# m3.0c_metrics <- AUC_df_m3.0c %>% 
+#   summarize(AUC = mean(AUC)) %>% 
+#   bind_cols(TSS_df_m3.0c %>% arrange(desc(mean)) %>% slice_head()) %>% 
+#   select(AUC, threshold, mean) %>% 
+#   rename("TSS" = mean, "Threshold" = threshold) %>% 
+#   mutate(species_model = "Q3")
+# 
+# model_metrics <- species_metrics %>% 
+#   mutate(species_model = paste0(species, "-Q1")) %>% 
+#   select(-species) %>% 
+#   rename("AUC" = meanAUC, "Threshold" = meanThreshold, "TSS" = meanTSS) %>% 
+#   bind_rows(m3.0c_metrics)
+# 
+# pander(m3.0c_metrics)
 ```
 
 ```{r}
@@ -182,9 +183,9 @@ m1.0POD
 
 ```{r}
 #| label: fig-S2-TSS
-#| fig-cap: "Supplemental Figure S2. TSS (top) and per-species TSS (middle) metrics for the best-fit Q1 model. Per-species TSS only shows species with >20 detections. TSS metrics for Q3 are shown in the bottom plot."
+#| fig-cap: "Supplemental Figure S2. TSS plots for the best-fit Q1 model (top) and Q3 model (bottom) showing the 10-fold mean TSS values across all detection thresholds. The optimal detection threshold is that which maximizes TSS."
 
-TSS_plot / TSS_species_plot / TSS_plot_m3.0c
+TSS_plot / TSS_plot_m3.0c
 
 ```
 
@@ -197,11 +198,12 @@ whalefall_map
 
 ```{r}
 #| label: fig-SuppH3PODxy_baleen
+#| eval: FALSE
 #| fig-cap: "Supplemental Figure S4. Depth of maximum probability of detection (POD; top) and range of depths falling within 50% CI of the depth of maximum detection (bottom) for humpback whales, separating likely whale poop (detections > 200 m) from detections within the normal depth range of humpback whales."
 #| fig-width: 7
 #| fig-height: 15
 
-depthPODmax_baleen
+#depthPODmax_baleen
 
 ```
 

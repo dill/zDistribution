@@ -9,13 +9,13 @@ library(tidyverse)
 library(PNWColors)
 library(ggridges)
 
-load("./ProcessedData/detect_data.RData")
+load("./ProcessedData/detect_data_clean.RData")
 metadata <- read.csv("./Data/Hake_2019_metadata.csv")
 mmEcoEvo <- read.csv("./Data/MM_metadata.csv")
 
 #### Collapse by station/species -----------------------------------------------
 
-detect_by_station <- detect_data %>% 
+detect_by_station <- detect_data_clean %>% 
   group_by(station, depth, BestTaxon) %>% 
   mutate(totReads = sum(nReads)) %>% 
   mutate(detect = case_when(totReads > 0 ~ 1,

@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Amy M. Van Cise1*, Eiren K. Jacobson2, Megan R. Shaffer3, Pedro F.P. Brandão Dias3, David L. Miller4,5, Brice X. Semmens6, Ryan P. Kelly3, A. Ole Shelton7, Krista M. Nichols7, Kim M. Parsons7">
+<meta name="author" content="Amy M. Van Cise1*, Eiren K. Jacobson2, Megan R. Shaffer3, Pedro F.P. Brandão Dias3, David L. Miller4,5, Brice X. Semmens6, Len Thomas2, Ryan P. Kelly3, A. Ole Shelton7, Krista M. Nichols7, Kim M. Parsons7">
 
 <title>Species-specific behavior and ecology drive depth distribution of rare species eDNA in pelagic marine environments</title>
 <style>
@@ -105,7 +105,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Amy M. Van Cise<sup>1*</sup>, Eiren K. Jacobson<sup>2</sup>, Megan R. Shaffer<sup>3</sup>, Pedro F.P. Brandão Dias<sup>3</sup>, David L. Miller<sup>4,5</sup>, Brice X. Semmens<sup>6</sup>, Ryan P. Kelly<sup>3</sup>, A. Ole Shelton<sup>7</sup>, Krista M. Nichols<sup>7</sup>, Kim M. Parsons<sup>7</sup> </p>
+             <p>Amy M. Van Cise<sup>1*</sup>, Eiren K. Jacobson<sup>2</sup>, Megan R. Shaffer<sup>3</sup>, Pedro F.P. Brandão Dias<sup>3</sup>, David L. Miller<sup>4,5</sup>, Brice X. Semmens<sup>6</sup>, Len Thomas<sup>2</sup>, Ryan P. Kelly<sup>3</sup>, A. Ole Shelton<sup>7</sup>, Krista M. Nichols<sup>7</sup>, Kim M. Parsons<sup>7</sup> </p>
           </div>
   </div>
     
@@ -219,7 +219,7 @@ x_t \sim \text{Bernoulli}({\Omega_\text{primer}} \cdot z_{s,d}).
 </section>
 <section id="results" class="level2">
 <h2 class="anchored" data-anchor-id="results">Results</h2>
-<p>We selected 572 water samples collected at 182 unique locations during the 2019 NOAA hake abundance survey (<a href="#fig-bubble" class="quarto-xref">Figure&nbsp;1</a>), targeting 0, 50, 150, 300, and 500 m sampling depths at each station. Where the bottom was less than 500 m deep, we did not collect a sample at 500 m. We amplified and sequenced these samples in 1 technical replicate using MFU, 3 technical replicates using MV1, and 3-5 technical replicates using DL, resulting in a final total of 1558 amplified and sequenced samples.</p>
+<p>We selected 516 water samples collected at 175 unique locations during the 2019 NOAA hake abundance survey (<a href="#fig-bubble" class="quarto-xref">Figure&nbsp;1</a>), targeting 0, 50, 150, 300, and 500 m sampling depths at each station. Where the bottom was less than 500 m deep, we did not collect a sample at 500 m. We amplified and sequenced these samples in 1 technical replicate using MFU, 3 technical replicates using MV1, and 1 technical replicate using DL, resulting in a final total of 1548 amplified and sequenced samples.</p>
 <div class="cell">
 <div id="tbl-sp-detects" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -249,14 +249,14 @@ Table&nbsp;1: Scientific names, common names, abbrevation, taxonomic family, bro
 <td style="text-align: center;">Lobl</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">Megaptera novaeangliae</td>
-<td style="text-align: center;">humpback whale</td>
-<td style="text-align: center;">Mnov</td>
-</tr>
-<tr class="odd">
 <td style="text-align: center;">Phocoenoides dalli</td>
 <td style="text-align: center;">Dall’s porpoise</td>
 <td style="text-align: center;">Pdal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Megaptera novaeangliae</td>
+<td style="text-align: center;">humpback whale</td>
+<td style="text-align: center;">Mnov</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">Balaenoptera physalus</td>
@@ -264,14 +264,14 @@ Table&nbsp;1: Scientific names, common names, abbrevation, taxonomic family, bro
 <td style="text-align: center;">Bphy</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">Phocoena phocoena</td>
-<td style="text-align: center;">harbor porpoise</td>
-<td style="text-align: center;">Ppho</td>
-</tr>
-<tr class="even">
 <td style="text-align: center;">Stenella coeruleoalba</td>
 <td style="text-align: center;">striped dolphin</td>
 <td style="text-align: center;">Scoe</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Phocoena phocoena</td>
+<td style="text-align: center;">harbor porpoise</td>
+<td style="text-align: center;">Ppho</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">Grampus griseus</td>
@@ -351,62 +351,62 @@ Table&nbsp;1: Scientific names, common names, abbrevation, taxonomic family, bro
 <td style="text-align: center;">Delphinidae</td>
 <td style="text-align: center;">Dolphin/Porpoise</td>
 <td style="text-align: center;">fish</td>
-<td style="text-align: center;">119</td>
-<td style="text-align: center;">18</td>
-<td style="text-align: center;">22</td>
-<td style="text-align: center;">79</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">Balaenopteridae</td>
-<td style="text-align: center;">Baleen whale</td>
-<td style="text-align: center;">invert</td>
-<td style="text-align: center;">94</td>
-<td style="text-align: center;">21</td>
-<td style="text-align: center;">16</td>
-<td style="text-align: center;">57</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">Phocoenidae</td>
-<td style="text-align: center;">Dolphin/Porpoise</td>
-<td style="text-align: center;">fish</td>
-<td style="text-align: center;">88</td>
-<td style="text-align: center;">12</td>
-<td style="text-align: center;">5</td>
+<td style="text-align: center;">95</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">20</td>
 <td style="text-align: center;">71</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">Balaenopteridae</td>
-<td style="text-align: center;">Baleen whale</td>
-<td style="text-align: center;">invert</td>
-<td style="text-align: center;">62</td>
-<td style="text-align: center;">5</td>
-<td style="text-align: center;">16</td>
-<td style="text-align: center;">41</td>
-</tr>
-<tr class="odd">
 <td style="text-align: center;">Phocoenidae</td>
 <td style="text-align: center;">Dolphin/Porpoise</td>
 <td style="text-align: center;">fish</td>
-<td style="text-align: center;">46</td>
-<td style="text-align: center;">7</td>
+<td style="text-align: center;">74</td>
 <td style="text-align: center;">6</td>
-<td style="text-align: center;">33</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">63</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Balaenopteridae</td>
+<td style="text-align: center;">Baleen whale</td>
+<td style="text-align: center;">invert</td>
+<td style="text-align: center;">73</td>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">50</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">Delphinidae</td>
-<td style="text-align: center;">Dolphin/Porpoise</td>
-<td style="text-align: center;">fish</td>
-<td style="text-align: center;">36</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">34</td>
+<td style="text-align: center;">Balaenopteridae</td>
+<td style="text-align: center;">Baleen whale</td>
+<td style="text-align: center;">invert</td>
+<td style="text-align: center;">60</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">16</td>
+<td style="text-align: center;">40</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">Delphinidae</td>
 <td style="text-align: center;">Dolphin/Porpoise</td>
 <td style="text-align: center;">fish</td>
 <td style="text-align: center;">33</td>
-<td style="text-align: center;">12</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">31</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Phocoenidae</td>
+<td style="text-align: center;">Dolphin/Porpoise</td>
+<td style="text-align: center;">fish</td>
+<td style="text-align: center;">32</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">26</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Delphinidae</td>
+<td style="text-align: center;">Dolphin/Porpoise</td>
+<td style="text-align: center;">fish</td>
+<td style="text-align: center;">26</td>
+<td style="text-align: center;">5</td>
 <td style="text-align: center;">3</td>
 <td style="text-align: center;">18</td>
 </tr>
@@ -414,18 +414,18 @@ Table&nbsp;1: Scientific names, common names, abbrevation, taxonomic family, bro
 <td style="text-align: center;">Delphinidae</td>
 <td style="text-align: center;">Dolphin/Porpoise</td>
 <td style="text-align: center;">fish</td>
-<td style="text-align: center;">22</td>
-<td style="text-align: center;">5</td>
+<td style="text-align: center;">16</td>
+<td style="text-align: center;">2</td>
 <td style="text-align: center;">3</td>
-<td style="text-align: center;">14</td>
+<td style="text-align: center;">11</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">Ziphiidae</td>
 <td style="text-align: center;">Beaked whale</td>
 <td style="text-align: center;">squid</td>
-<td style="text-align: center;">16</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">3</td>
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">2</td>
 <td style="text-align: center;">12</td>
 </tr>
 <tr class="even">
@@ -441,9 +441,9 @@ Table&nbsp;1: Scientific names, common names, abbrevation, taxonomic family, bro
 <td style="text-align: center;">Eschrichtiidae</td>
 <td style="text-align: center;">Baleen whale</td>
 <td style="text-align: center;">invert</td>
-<td style="text-align: center;">12</td>
+<td style="text-align: center;">11</td>
 <td style="text-align: center;">0</td>
-<td style="text-align: center;">4</td>
+<td style="text-align: center;">3</td>
 <td style="text-align: center;">8</td>
 </tr>
 <tr class="even">
@@ -468,8 +468,8 @@ Table&nbsp;1: Scientific names, common names, abbrevation, taxonomic family, bro
 <td style="text-align: center;">Delphinidae</td>
 <td style="text-align: center;">Dolphin/Porpoise</td>
 <td style="text-align: center;">fish</td>
-<td style="text-align: center;">5</td>
-<td style="text-align: center;">5</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">4</td>
 <td style="text-align: center;">0</td>
 <td style="text-align: center;">0</td>
 </tr>
@@ -477,10 +477,10 @@ Table&nbsp;1: Scientific names, common names, abbrevation, taxonomic family, bro
 <td style="text-align: center;">Ziphiidae</td>
 <td style="text-align: center;">Beaked whale</td>
 <td style="text-align: center;">squid</td>
-<td style="text-align: center;">3</td>
+<td style="text-align: center;">2</td>
 <td style="text-align: center;">0</td>
 <td style="text-align: center;">0</td>
-<td style="text-align: center;">3</td>
+<td style="text-align: center;">2</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">Balaenidae</td>
@@ -498,7 +498,7 @@ Table&nbsp;1: Scientific names, common names, abbrevation, taxonomic family, bro
 </figure>
 </div>
 </div>
-<p>Across all samples, we observed 564 positive detections of 16 cetacean species, including 6 baleen whale species, 5 dolphin species, 2 porpoise species, and 3 beaked whale species (<a href="#tbl-sp-detects" class="quarto-xref">Table&nbsp;1</a>). 11 species were observed more than 10 times, and and additional 5 were observed fewer than 10 times. This includes one detection of a bowhead whale (<em>Balaena mysticetus</em>), as well as three detections of saber-toothed whales (<em>Mesoplodon stejnegeri</em>). <a href="#fig-bubble" class="quarto-xref">Figure&nbsp;1</a> illustrates the distribution of detections across sampling depths, ignoring x-y distribution, for all cetacean species included in the study.</p>
+<p>Across all samples, we observed 468 positive detections of 16 cetacean species, including 6 baleen whale species, 5 dolphin species, 2 porpoise species, and 3 beaked whale species (<a href="#tbl-sp-detects" class="quarto-xref">Table&nbsp;1</a>). 11 species were observed more than 10 times, and and additional 5 were observed fewer than 10 times. This includes one detection of a bowhead whale (<em>Balaena mysticetus</em>), as well as three detections of saber-toothed whales (<em>Mesoplodon stejnegeri</em>). <a href="#fig-bubble" class="quarto-xref">Figure&nbsp;1</a> illustrates the distribution of detections across sampling depths, ignoring x-y distribution, for all cetacean species included in the study.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-bubble" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -515,7 +515,7 @@ Figure&nbsp;1: Left: Distribution of detections across sampling depths for all s
 </div>
 <section id="question-1-does-pod-vary-with-depth-1" class="level3">
 <h3 class="anchored" data-anchor-id="question-1-does-pod-vary-with-depth-1">Question 1: Does POD vary with depth?</h3>
-<p>GAM-based model selection of detection probability across sampling depths negated the null hypothesis of no variation across depth (Supplemental Figure S1). The best alternative model includes significant smooth terms for depth, species, and depth x species interaction (AIC = 5322, <a href="#tbl-modelAIC" class="quarto-xref">Table&nbsp;2</a>). This model explained 14.3% of variance in eDNA detection probability, with a mean AUC of 0.73 and a mean optimized TSS of 0.42. Full model TSS for all thresholds, as well as per-species AUC, optimized TSS, TSS values across all thresholds are shown in Supplemental Table S2 and Supplemental Figure S2.</p>
+<p>GAM-based model selection of detection probability across sampling depths negated the null hypothesis of no variation across depth (Supplemental Figure S1). The best alternative model includes significant smooth terms for depth, species, and depth x species interaction (AIC = 4547, <a href="#tbl-modelAIC" class="quarto-xref">Table&nbsp;2</a>). This model explained 14.3% of variance in eDNA detection probability, with a mean AUC of 0.73 and a mean optimized TSS of 0.38. Full model TSS for all thresholds, as well as per-species AUC, optimized TSS, TSS values across all thresholds are shown in Supplemental Table S2 and Supplemental Figure S2.</p>
 <div class="cell">
 <div id="tbl-modelAIC" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -543,32 +543,32 @@ Table&nbsp;2: Akaike Information Criterion values for all GAMs tested to charact
 <tr class="odd">
 <td style="text-align: center;">depth, s(species)</td>
 <td style="text-align: center;">species</td>
-<td style="text-align: center;">47.77</td>
+<td style="text-align: center;">48</td>
 <td style="text-align: center;">0</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">depth + species</td>
 <td style="text-align: center;">species</td>
-<td style="text-align: center;">19.41</td>
-<td style="text-align: center;">164.8</td>
+<td style="text-align: center;">19.28</td>
+<td style="text-align: center;">141.6</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">depth, s(family)</td>
 <td style="text-align: center;">family</td>
-<td style="text-align: center;">20.3</td>
-<td style="text-align: center;">376.8</td>
+<td style="text-align: center;">19.72</td>
+<td style="text-align: center;">307.4</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">depth, s(prey type)</td>
 <td style="text-align: center;">prey</td>
-<td style="text-align: center;">13.43</td>
-<td style="text-align: center;">501.1</td>
+<td style="text-align: center;">13.16</td>
+<td style="text-align: center;">412.5</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">depth</td>
 <td style="text-align: center;">none</td>
-<td style="text-align: center;">3.792</td>
-<td style="text-align: center;">684.5</td>
+<td style="text-align: center;">3.734</td>
+<td style="text-align: center;">549.4</td>
 </tr>
 </tbody>
 </table>
@@ -593,7 +593,7 @@ Figure&nbsp;2: Species-specific probability of detection across all depths sampl
 </div>
 </div>
 </div>
-<p>Models stratifying detections by taxonomic Family and preferred prey type both had lower AIC values than the model stratified by species (AIC = 5699 and 5823, respectively); however, these models still had significant terms for Family and depth x Family interactions (taxonomic model) and for depth, prey type, and depth x prey type interactions (prey type model). Predicted POD curves for each model illustrate varying trends in POD with depth across strata (<a href="#fig-H1POD-family-prey" class="quarto-xref">Figure&nbsp;3</a>). Similar to the model stratified by species, we did not make predictions for Families with fewer than 10 detections using the taxonomic model, which excluded the Balaenidae (bowhead whale family).</p>
+<p>Models stratifying detections by taxonomic Family and preferred prey type both had lower AIC values than the model stratified by species (AIC = 4854 and 4960, respectively); however, these models still had significant terms for Family and depth x Family interactions (taxonomic model) and for depth, prey type, and depth x prey type interactions (prey type model). Predicted POD curves for each model illustrate varying trends in POD with depth across strata (<a href="#fig-H1POD-family-prey" class="quarto-xref">Figure&nbsp;3</a>). Similar to the model stratified by species, we did not make predictions for Families with fewer than 10 detections using the taxonomic model, which excluded the Balaenidae (bowhead whale family).</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-H1POD-family-prey" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -640,9 +640,9 @@ Figure&nbsp;5: Primer-specific detection probability for each primer used in thi
 </section>
 <section id="question-3-does-depth-variability-in-pod-covary-with-xy-variability-1" class="level4">
 <h4 class="anchored" data-anchor-id="question-3-does-depth-variability-in-pod-covary-with-xy-variability-1">Question 3: Does depth variability in POD covary with xy variability?</h4>
-<p>Adding xy covariates to the best fit model from Q1 improved overall model performance. Our model included terms for species, lat/lon, and depth, as well as species x lat/lon, species x depth, and species x depth x lat/lon (AIC = 4926.9976483), and explained 25.3% of the variability in eDNA detection. Although terms for depth and lat/lon were not significant, removing these terms increased model AIC to 4947. Mean AUC across a 10-fold validation test was 0.78 and mean optimized TSS was 0.44. Full model TSS for all thresholds are shown in Supplemental Table S2 and Supplemental Figure S2.</p>
-<p>Predicted vertical probability of detection for the most frequently detected delphinid, baleen whale, and beaked whale varied with latitute and longitude, while adhering to the broad trends identified in Q1 (<a href="#fig-H3PODxy" class="quarto-xref">Figure&nbsp;6</a>). The Pacific white-side dolphin is most likely to be detected near the surface, with max POD varying between depths of 0 m and 170 m. Generally, detections of Pacific white-sided dolphins that were farther south and east were also more likely to be deeper in the water column.</p>
-<p>Depths of highest POD for humpback whales had two peaks around 0 m and 500 m; and depths of highest POD for Baird’s beaked whales varied between NA m and NA m. Lat/lon variability in Baird’s beaked whale detections followed a similar pattern to Pacific white-sided dolphins, with greater likelihood of deeper detections in stations that are more to the south and east. The two peaks in depth of greatest POD for humpback whales were roughly distributed with higher probability of detection around 0 m on the continental shelf, and higher probability of detection around 500 m on the shelf break.</p>
+<p>Adding xy covariates to the best fit model from Q1 improved overall model performance. Our model included terms for species, lat/lon, and depth, as well as species x lat/lon, species x depth, and species x depth x lat/lon (AIC = 4200.509007), and explained 25.3% of the variability in eDNA detection. Although terms for depth and lat/lon were not significant, removing these terms increased model AIC to 4947. Mean AUC across a 10-fold validation test was 0.78 and mean optimized TSS was 0.45. Full model TSS for all thresholds are shown in Supplemental Table S2 and Supplemental Figure S2.</p>
+<p>Predicted vertical probability of detection for the most frequently detected delphinid, baleen whale, and beaked whale varied with latitute and longitude, while adhering to the broad trends identified in Q1 (<a href="#fig-H3PODxy" class="quarto-xref">Figure&nbsp;6</a>). The Pacific white-side dolphin is most likely to be detected near the surface, with max POD varying between depths of 0 m and 410 m. Generally, detections of Pacific white-sided dolphins that were farther south and east were also more likely to be deeper in the water column.</p>
+<p>Depths of highest POD for humpback whales had two peaks around 0 m and 500 m; and depths of highest POD for Baird’s beaked whales varied between 460 m and 470 m. Lat/lon variability in Baird’s beaked whale detections followed a similar pattern to Pacific white-sided dolphins, with greater likelihood of deeper detections in stations that are more to the south and east. The two peaks in depth of greatest POD for humpback whales were roughly distributed with higher probability of detection around 0 m on the continental shelf, and higher probability of detection around 500 m on the shelf break.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-H3PODxy" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -657,7 +657,7 @@ Figure&nbsp;6: Depth of maximum probability of detection (POD; top) and range of
 </div>
 </div>
 </div>
-<p>In addition to examining geographic patterns in the depth of maximum POD, we examined uncertainty around these values by mapping the range of depths that fell within the 50% confidence interval of maximum POD (<a href="#fig-H3PODxy" class="quarto-xref">Figure&nbsp;6</a>, bottom). In the northern portion of the study area, where Pacific white-sided dolphins are most likely to be observed near the surface, the range of depths within the 50% CI of maximum POD is small (minimum depth range = 0 m). That range increases toward the south and east (maximum depth range = 500 m), as the depth of maximum POD gets deeper for this species. Baird’s beaked whales exhibited the opposite trend: the range of depths falling within the 50% CI of maximum POD was smallest in the southest portion of the range (minimum depth range = NA m), where the depth of maximum POD was deepest, and increased in the northern part of the range (maximum depth range = NA m). The bimodal peak of maximum POD observed in humpback whale eDNA was mirrored in the range of depths within the 50% CI of maximum POD: the depth range was largest in the transition zones between the two peaks (maximum depth range = 500 m), and relatively small outside of the transition zones (minimum depth range = 0 m).</p>
+<p>In addition to examining geographic patterns in the depth of maximum POD, we examined uncertainty around these values by mapping the range of depths that fell within the 50% confidence interval of maximum POD (<a href="#fig-H3PODxy" class="quarto-xref">Figure&nbsp;6</a>, bottom). In the northern portion of the study area, where Pacific white-sided dolphins are most likely to be observed near the surface, the range of depths within the 50% CI of maximum POD is small (minimum depth range = 10 m). That range increases toward the south and east (maximum depth range = 500 m), as the depth of maximum POD gets deeper for this species. Baird’s beaked whales exhibited the opposite trend: the range of depths falling within the 50% CI of maximum POD was smallest in the southest portion of the range (minimum depth range = 10 m), where the depth of maximum POD was deepest, and increased in the northern part of the range (maximum depth range = 470 m). The bimodal peak of maximum POD observed in humpback whale eDNA was mirrored in the range of depths within the 50% CI of maximum POD: the depth range was largest in the transition zones between the two peaks (maximum depth range = 500 m), and relatively small outside of the transition zones (minimum depth range = 0 m).</p>
 </section>
 </section>
 </section>
@@ -714,84 +714,17 @@ Figure&nbsp;6: Depth of maximum probability of detection (POD; top) and range of
 <section id="supplemental-materials" class="level2">
 <h2 class="anchored" data-anchor-id="supplemental-materials">Supplemental Materials</h2>
 <p>Table S1. Sample metadata.</p>
-<div class="cell">
 <div id="tbl-m12AUC" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-m12AUC-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;3: Table S2. Per-species AUC, optimized TSS, and optimized TSS threshold for Q1 and Q1 models. Per species AUC and TSS metrics for Q1 include all species with &gt;20 detections.
+Table&nbsp;3: Table S2. Per-species AUC, optimized TSS, and optimized TSS threshold for Q1 and Q3 models.
 </figcaption>
 <div aria-describedby="tbl-m12AUC-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output-display">
-<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 12%">
-<col style="width: 12%">
-<col style="width: 16%">
-<col style="width: 44%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: center;">AUC</th>
-<th style="text-align: center;">TSS</th>
-<th style="text-align: center;">Threshold</th>
-<th style="text-align: center;">species_model</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">0.5925</td>
-<td style="text-align: center;">0.0972</td>
-<td style="text-align: center;">0.01779</td>
-<td style="text-align: center;">Balaenoptera physalus-Q1</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">0.5509</td>
-<td style="text-align: center;">0.2882</td>
-<td style="text-align: center;">0.004005</td>
-<td style="text-align: center;">Grampus griseus-Q1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">0.6978</td>
-<td style="text-align: center;">0.3939</td>
-<td style="text-align: center;">0.03396</td>
-<td style="text-align: center;">Lagenorhynchus obliquidens-Q1</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">0.6203</td>
-<td style="text-align: center;">0.2921</td>
-<td style="text-align: center;">0.02722</td>
-<td style="text-align: center;">Megaptera novaeangliae-Q1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">0.5911</td>
-<td style="text-align: center;">0.1238</td>
-<td style="text-align: center;">0.006916</td>
-<td style="text-align: center;">Orcinus orca-Q1</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">0.7733</td>
-<td style="text-align: center;">0.5541</td>
-<td style="text-align: center;">0.011</td>
-<td style="text-align: center;">Phocoena phocoena-Q1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">0.5972</td>
-<td style="text-align: center;">NA</td>
-<td style="text-align: center;">NA</td>
-<td style="text-align: center;">Phocoenoides dalli-Q1</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">0.7846</td>
-<td style="text-align: center;">0.4444</td>
-<td style="text-align: center;">0.011</td>
-<td style="text-align: center;">Q3</td>
-</tr>
-</tbody>
-</table>
+<div>
+
 </div>
 </div>
 </figure>
-</div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
@@ -815,7 +748,7 @@ Figure&nbsp;7: Supplemental Figure S1. Q1 null hypothesis plot.
 <img src="index_files/figure-html/fig-S2-TSS-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-S2-TSS-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8: Supplemental Figure S2. TSS (top) and per-species TSS (middle) metrics for the best-fit Q1 model. Per-species TSS only shows species with &gt;20 detections. TSS metrics for Q3 are shown in the bottom plot.
+Figure&nbsp;8: Supplemental Figure S2. TSS (top) plot the best-fit Q1 model and Q3 model (bottom).
 </figcaption>
 </figure>
 </div>
@@ -837,27 +770,13 @@ Figure&nbsp;9: Supplemental Figure S3. Locations of eDNA detections within 100 m
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-SuppH3PODxy_baleen" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-SuppH3PODxy_baleen-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="index_files/figure-html/fig-SuppH3PODxy_baleen-1.png" class="img-fluid figure-img" width="672">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-SuppH3PODxy_baleen-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;10: Supplemental Figure S4. Depth of maximum probability of detection (POD; top) and range of depths falling within 50% CI of the depth of maximum detection (bottom) for humpback whales, separating likely whale poop (detections &gt; 200 m) from detections within the normal depth range of humpback whales.
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<div class="cell">
-<div class="cell-output-display">
 <div id="fig-SuppH1POD_obs" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-SuppH1POD_obs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="index_files/figure-html/fig-SuppH1POD_obs-1.png" class="img-fluid figure-img" width="1440">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-SuppH1POD_obs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;11: Supplemental Figure S5. Q1 best fit model with observed detections.
+Figure&nbsp;10: Supplemental Figure S5. Q1 best fit model with observed detections.
 </figcaption>
 </figure>
 </div>
