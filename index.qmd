@@ -44,6 +44,7 @@ load("ProcessedData/m1.2performance.Rdata")
 load("ProcessedData/m3.0models_preds_0.05degree.Rdata")
 load("ProcessedData/H3.0c_pred_flt_clean.Rdata")
 load("ProcessedData/m3.0cperformance.Rdata")
+load("ProcessedData/PODxThawxPrimer.Rdata")
 
 # load plots
 load("Figures/sampling_map.Rdata")

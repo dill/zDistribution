@@ -608,30 +608,20 @@ Figure&nbsp;3: Left: POD by depth for species stratified by taxonomic Family. Ri
 </div>
 </div>
 </div>
-<section id="question-2-does-depth-variability-in-pod-covary-with-observation-bias" class="level4">
-<h4 class="anchored" data-anchor-id="question-2-does-depth-variability-in-pod-covary-with-observation-bias">Question 2: Does depth variability in POD covary with observation bias?</h4>
-<p>Our hierarchical model indicates that given the presence of a cetacean species’ eDNA in a sample, the probability of detecting that DNA in downstream processing is affected by primer specificity, DNA degradation by freeze/thaw cycles, and the number of technical replicates used to used to probe the sample (<strong>?@fig-H2POD-obsbias</strong>). Sequencing runs using MV1 and MFU primers, which target regions of XX and XX bp in length, were not affected by the number of freeze-thaw cycles accumulated prior to sequencing. Sequencing runs using the DL primer set, which targets a region of XX bp in length, was affected by freeze thaw cycles such that sequencing runs with 1 freeze/thaw cycle had a higher detection rate than MV1 or MFU and sequencing runs with 2-XX freeze/thaw cycles had a lower detection rate thn MV1 or MFU.</p>
+<section id="question-2-what-is-the-effect-of-observation-bias-on-pod" class="level4">
+<h4 class="anchored" data-anchor-id="question-2-what-is-the-effect-of-observation-bias-on-pod">Question 2: What is the effect of observation bias on POD?</h4>
+<p>Wefirst used an occupancy model and GLM to assess the probability of detecting cetacean eDNA in a sample conditionl on its presence. Our occupancy model indicates that, given the presence of cetacean eDNA in a sample, the probability of detecting that DNA is primaraily affected by primer specificity. On average across all species and samples, MV1 had the highest predicted POD (XX%), followed by MFU (XX%) and then DL (XX%).</p>
+<p>Futher, DNA degradation by freeze/thaw cycles decreased the probability of detecting cetacean DNA in a given sample (<a href="#fig-H2POD-obsbias" class="quarto-xref">Figure&nbsp;4</a>), as determined by GLM. DL and MFU had similar predicted POD at thaw = 1 (~0.25), but predicted POD for DL rapidly declined with increasing freeze/thaw cycles while predicted POD for MV1 was less affected by thaw cycle. There was no significant relationship between predicted POD for MFU and freeze/thaw cycles, noting that only 5 of 516 total MFU samples had &gt; 2 thaw cycles.</p>
+<p>Based on these results, the simulated POD of cetacean DNA, conditional on DNA being present in the sample, increases with technical replication (<a href="#fig-H2POD-obsbias" class="quarto-xref">Figure&nbsp;4</a>). Given a per station/depth coverage of 3 MV1, 1 MFU, and 1 DL technical replicates, we estimate a mean POD for each station/depth sample of 0.79 (upper CI = 1, lower CI = 0.37). <strong>Note that these numbers are etimated from the predictions from the GLM but that model does not condition on presence of DNA in the sample. Not sure if it would be better to use numbers from the nimble model.</strong></p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-H2POD-obsbias-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="fig-H2POD-obsbias" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-H2POD-obsbias-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="./Figures/detectThaw.png" class="img-fluid figure-img" width="1200">
+<div aria-describedby="fig-H2POD-obsbias-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-H2POD-obsbias-1.png" class="img-fluid figure-img" width="960">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-H2POD-obsbias-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-H2POD-obsbias-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;4: Primer-specific detection probability for each primer used in this study. MFU = Mifish, MV1 = MarVer1, DL = Dloop (1 freeze/thaw cycle, DL2 = Dloop (2+ freeze/thaw cycles).
-</figcaption>
-</figure>
-</div>
-</div>
-<div class="cell-output-display">
-<div id="fig-H2POD-obsbias-2" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-H2POD-obsbias-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="./Figures/m1.0+2LevelOcc_PDetection.png" class="img-fluid figure-img" width="900">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-H2POD-obsbias-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5: Primer-specific detection probability for each primer used in this study. MFU = Mifish, MV1 = MarVer1, DL = Dloop (1 freeze/thaw cycle, DL2 = Dloop (2+ freeze/thaw cycles).
 </figcaption>
 </figure>
 </div>
@@ -641,7 +631,7 @@ Figure&nbsp;5: Primer-specific detection probability for each primer used in thi
 <section id="question-3-does-depth-variability-in-pod-covary-with-xy-variability-1" class="level4">
 <h4 class="anchored" data-anchor-id="question-3-does-depth-variability-in-pod-covary-with-xy-variability-1">Question 3: Does depth variability in POD covary with xy variability?</h4>
 <p>Adding xy covariates to the best fit model from Q1 improved overall model performance. Our model included terms for species, lat/lon, and depth, as well as species x lat/lon, species x depth, and species x depth x lat/lon (AIC = 4200.509007), and explained 25.3% of the variability in eDNA detection. Although terms for depth and lat/lon were not significant, removing these terms increased model AIC to 4947. Mean AUC across a 10-fold validation test was 0.78 and mean optimized TSS was 0.45. Full model TSS for all thresholds are shown in Supplemental Table S2 and Supplemental Figure S2.</p>
-<p>Predicted vertical probability of detection for the most frequently detected delphinid, baleen whale, and beaked whale varied with latitute and longitude, while adhering to the broad trends identified in Q1 (<a href="#fig-H3PODxy" class="quarto-xref">Figure&nbsp;6</a>). The Pacific white-side dolphin is most likely to be detected near the surface, with max POD varying between depths of 0 m and 410 m. Generally, detections of Pacific white-sided dolphins that were farther south and east were also more likely to be deeper in the water column.</p>
+<p>Predicted vertical probability of detection for the most frequently detected delphinid, baleen whale, and beaked whale varied with latitute and longitude, while adhering to the broad trends identified in Q1 (<a href="#fig-H3PODxy" class="quarto-xref">Figure&nbsp;5</a>). The Pacific white-side dolphin is most likely to be detected near the surface, with max POD varying between depths of 0 m and 410 m. Generally, detections of Pacific white-sided dolphins that were farther south and east were also more likely to be deeper in the water column.</p>
 <p>Depths of highest POD for humpback whales had two peaks around 0 m and 500 m; and depths of highest POD for Baird’s beaked whales varied between 460 m and 470 m. Lat/lon variability in Baird’s beaked whale detections followed a similar pattern to Pacific white-sided dolphins, with greater likelihood of deeper detections in stations that are more to the south and east. The two peaks in depth of greatest POD for humpback whales were roughly distributed with higher probability of detection around 0 m on the continental shelf, and higher probability of detection around 500 m on the shelf break.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -651,13 +641,13 @@ Figure&nbsp;5: Primer-specific detection probability for each primer used in thi
 <img src="index_files/figure-html/fig-H3PODxy-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-H3PODxy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6: Depth of maximum probability of detection (POD; top) and range of depths falling within 50% CI of the depth of maximum detection (bottom) for three species: Baird’s beaked whale (<em>B. bairdii</em>), max POD ~ 0.018; Pacific white-sided dolphin (<em>L. obliquidens</em>), max POD ~ 0.08; humpback whale (<em>M. novaegliae</em>), max POD ~ 0.04. Regions with max POD &lt; 0.3% were masked.
+Figure&nbsp;5: Depth of maximum probability of detection (POD; top) and range of depths falling within 50% CI of the depth of maximum detection (bottom) for three species: Baird’s beaked whale (<em>B. bairdii</em>), max POD ~ 0.018; Pacific white-sided dolphin (<em>L. obliquidens</em>), max POD ~ 0.08; humpback whale (<em>M. novaegliae</em>), max POD ~ 0.04. Regions with max POD &lt; 0.3% were masked.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>In addition to examining geographic patterns in the depth of maximum POD, we examined uncertainty around these values by mapping the range of depths that fell within the 50% confidence interval of maximum POD (<a href="#fig-H3PODxy" class="quarto-xref">Figure&nbsp;6</a>, bottom). In the northern portion of the study area, where Pacific white-sided dolphins are most likely to be observed near the surface, the range of depths within the 50% CI of maximum POD is small (minimum depth range = 10 m). That range increases toward the south and east (maximum depth range = 500 m), as the depth of maximum POD gets deeper for this species. Baird’s beaked whales exhibited the opposite trend: the range of depths falling within the 50% CI of maximum POD was smallest in the southest portion of the range (minimum depth range = 10 m), where the depth of maximum POD was deepest, and increased in the northern part of the range (maximum depth range = 470 m). The bimodal peak of maximum POD observed in humpback whale eDNA was mirrored in the range of depths within the 50% CI of maximum POD: the depth range was largest in the transition zones between the two peaks (maximum depth range = 500 m), and relatively small outside of the transition zones (minimum depth range = 0 m).</p>
+<p>In addition to examining geographic patterns in the depth of maximum POD, we examined uncertainty around these values by mapping the range of depths that fell within the 50% confidence interval of maximum POD (<a href="#fig-H3PODxy" class="quarto-xref">Figure&nbsp;5</a>, bottom). In the northern portion of the study area, where Pacific white-sided dolphins are most likely to be observed near the surface, the range of depths within the 50% CI of maximum POD is small (minimum depth range = 10 m). That range increases toward the south and east (maximum depth range = 500 m), as the depth of maximum POD gets deeper for this species. Baird’s beaked whales exhibited the opposite trend: the range of depths falling within the 50% CI of maximum POD was smallest in the southest portion of the range (minimum depth range = 10 m), where the depth of maximum POD was deepest, and increased in the northern part of the range (maximum depth range = 470 m). The bimodal peak of maximum POD observed in humpback whale eDNA was mirrored in the range of depths within the 50% CI of maximum POD: the depth range was largest in the transition zones between the two peaks (maximum depth range = 500 m), and relatively small outside of the transition zones (minimum depth range = 0 m).</p>
 </section>
 </section>
 </section>
@@ -686,7 +676,7 @@ Figure&nbsp;6: Depth of maximum probability of detection (POD; top) and range of
 </section>
 <section id="question-3" class="level4">
 <h4 class="anchored" data-anchor-id="question-3">Question 3:</h4>
-<p>Trends in POD by depth varied geographically by species, as illustrated by the three example species for which we made predictions of depth of maximum POD (<a href="#fig-H3PODxy" class="quarto-xref">Figure&nbsp;6</a>). At the broad scale of this study, we expect that this at least partially reflects geographic variability in species-specific use of the water column. That may reflect geographic shifts in the depth distribution of prey or preferred prey items of a given predator, which may in turn reflect geographic variability in oceanographic conditions.</p>
+<p>Trends in POD by depth varied geographically by species, as illustrated by the three example species for which we made predictions of depth of maximum POD (<a href="#fig-H3PODxy" class="quarto-xref">Figure&nbsp;5</a>). At the broad scale of this study, we expect that this at least partially reflects geographic variability in species-specific use of the water column. That may reflect geographic shifts in the depth distribution of prey or preferred prey items of a given predator, which may in turn reflect geographic variability in oceanographic conditions.</p>
 <p>Alternatively, it is likely that at least a portion of this observed variability is directly linked to oceanographic variability, and its effect on the fate and transport of eDNA once deposited in the water column. eDNA degradation and residence time will be affected by water temperature, pH, and microbial density. During that time, horizontal transport will be affected by currents, eddies, etc. Vertical transport will be affected by upwelling, mixed layer depth, etc. This study is relatively insensitive to horizontal transport of eDNA, which is expected to travel up to XX km on average before it is no longer detectable (CITE Mod 1 paper here?), our samples were collected at 10 km intervals throughout the study area. Our understanding of the vertical distribution of eDNA is more likely to be affected by these oceanographic processes, which can change sinking rates or residence time.</p>
 <p>In both cases, oceanography is an important driver of the 3D distribution of marine mammal eDNA; therefore our next study will focus on the development of 3D spatial distribution models using eDNA and using these models to determine the important oceanographic drivers of marine mammal eDNA in 3D space.</p>
 </section>
@@ -734,7 +724,7 @@ Table&nbsp;3: Table S2. Per-species AUC, optimized TSS, and optimized TSS thresh
 <img src="index_files/figure-html/fig-S1-null-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-S1-null-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;7: Supplemental Figure S1. Q1 null hypothesis plot.
+Figure&nbsp;6: Supplemental Figure S1. Q1 null hypothesis plot.
 </figcaption>
 </figure>
 </div>
@@ -748,7 +738,7 @@ Figure&nbsp;7: Supplemental Figure S1. Q1 null hypothesis plot.
 <img src="index_files/figure-html/fig-S2-TSS-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-S2-TSS-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8: Supplemental Figure S2. TSS (top) plot the best-fit Q1 model and Q3 model (bottom).
+Figure&nbsp;7: Supplemental Figure S2. TSS plots for the best-fit Q1 model (top) and Q3 model (bottom) showing the 10-fold mean TSS values across all detection thresholds. The optimal detection threshold is that which maximizes TSS.
 </figcaption>
 </figure>
 </div>
@@ -762,7 +752,7 @@ Figure&nbsp;8: Supplemental Figure S2. TSS (top) plot the best-fit Q1 model and 
 <img src="index_files/figure-html/fig-S3-whalefall-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-S3-whalefall-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9: Supplemental Figure S3. Locations of eDNA detections within 100 m of the ocean floor, which may represent nearby whalefall.
+Figure&nbsp;8: Supplemental Figure S3. Locations of eDNA detections within 100 m of the ocean floor, which may represent nearby whalefall.
 </figcaption>
 </figure>
 </div>
@@ -776,7 +766,7 @@ Figure&nbsp;9: Supplemental Figure S3. Locations of eDNA detections within 100 m
 <img src="index_files/figure-html/fig-SuppH1POD_obs-1.png" class="img-fluid figure-img" width="1440">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-SuppH1POD_obs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;10: Supplemental Figure S5. Q1 best fit model with observed detections.
+Figure&nbsp;9: Supplemental Figure S5. Q1 best fit model with observed detections.
 </figcaption>
 </figure>
 </div>

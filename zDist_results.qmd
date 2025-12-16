@@ -89,9 +89,13 @@ m1.2bPOD_bordered <- patchwork::wrap_elements(m1.2bPOD) +
 
 ```
 
-#### Question 2: Does depth variability in POD covary with observation bias?
+#### Question 2: What is the effect of observation bias on POD?
 
-Our hierarchical model indicates that given the presence of a cetacean species' eDNA in a sample, the probability of detecting that DNA in downstream processing is affected by primer specificity, DNA degradation by freeze/thaw cycles, and the number of technical replicates used to used to probe the sample (@fig-H2POD-obsbias). Sequencing runs using MV1 and MFU primers, which target regions of XX and XX bp in length, were not affected by the number of freeze-thaw cycles accumulated prior to sequencing. Sequencing runs using the DL primer set, which targets a region of XX bp in length, was affected by freeze thaw cycles such that sequencing runs with 1 freeze/thaw cycle had a higher detection rate than MV1 or MFU and sequencing runs with 2-XX freeze/thaw cycles had a lower detection rate thn MV1 or MFU.
+Wefirst used an occupancy model and GLM to assess the probability of detecting cetacean eDNA in a sample conditionl on its presence. Our occupancy model indicates that, given the presence of cetacean eDNA in a sample, the probability of detecting that DNA is primaraily affected by primer specificity. On average across all species and samples, MV1 had the highest predicted POD (XX%), followed by MFU (XX%) and then DL (XX%). 
+
+Futher, DNA degradation by freeze/thaw cycles decreased the probability of detecting cetacean DNA in a given sample (@fig-H2POD-obsbias), as determined by GLM. DL and MFU had similar predicted POD at thaw = 1 (~0.25), but predicted POD for DL rapidly declined with increasing freeze/thaw cycles while predicted POD for MV1 was less affected by thaw cycle. There was no significant relationship between predicted POD for MFU and freeze/thaw cycles, noting that only 5 of 516 total MFU samples had > 2 thaw cycles. 
+
+Based on these results, the simulated POD of cetacean DNA, conditional on DNA being present in the sample, increases with technical replication (@fig-H2POD-obsbias). Given a per station/depth coverage of 3 MV1, 1 MFU, and 1 DL technical replicates, we estimate a mean POD for each station/depth sample of 0.79 (upper CI = 1, lower CI = 0.37). **Note that these numbers are etimated from the predictions from the GLM but that model does not condition on presence of DNA in the sample. Not sure if it would be better to use numbers from the nimble model.**
 
 ```{r}
 #| label: fig-H2POD-obsbias
@@ -99,8 +103,9 @@ Our hierarchical model indicates that given the presence of a cetacean species' 
 #| fig-width: 10
 #| fig-height: 6
 
-knitr::include_graphics(c("./Figures/detectThaw.png", "./Figures/m1.0+2LevelOcc_PDetection.png"))
+ PODthaw_plot | Q2_TechRepsXPrimer
 
+ #Add Q2_detectability once it's rerun in the new ggplot2
 
 ```
 
