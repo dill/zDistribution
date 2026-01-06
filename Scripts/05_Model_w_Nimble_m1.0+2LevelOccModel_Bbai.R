@@ -1,4 +1,4 @@
-# simple nimble model with just a spline on depth (for all cetaceans)
+# simple nimble model with just a spline on depth (for Bbai)
 # using the jagam object 
 
 library(MCMCvis)
@@ -18,13 +18,12 @@ library(PNWColors)
 load("ProcessedData/jagam_m1.0.RData")
 
 # Import the data
-load("./ProcessedData/detect_data_allcet.RData")
-mm.data <- detect_data_allcet
+load("./ProcessedData/detect_data_bbai.RData")
+mm.data <- detect_data_bbai
 
-
-m1.0 <- gam(DetectAny ~ s(depth, k = 5, bs = "bs"),  
+m1.0 <- gam(Detected ~ s(depth, k = 5, bs = "bs"),  
             diagonalize = TRUE, 
-            family = "binomial", data = detect_data_allcet, method="REML", 
+            family = "binomial", data = detect_data_bbai, method="REML", 
             select = TRUE) # to create two lambdas
 
 # because I've removed some of the unique biosample reference numbers with the above 
@@ -60,7 +59,7 @@ n_biosamples <- length(unique(mm.data$unique_biorep_numeric))
 #n_methods <- length(unique(mm.data$Collection_method_numeric ))
 n_primers <- length(unique(mm.data$primer.numeric))
 
-Y <- mm.data$DetectAny
+Y <- mm.data$Detected
 
 #############
 # SITE x DEPTH MODEL: Site-depth specific occupancy states
@@ -139,7 +138,7 @@ data <- list(X = m1_newX,
              Y = Y)
 
 # Constants
-constants <- list(  #n_sites = n_sites,
+constants <- list(  n_sites = n_sites,
                     n_biosamples = n_biosamples,
                     n_site_depth_states = n_site_depth_states,
                     N = q1Model_m1.0$jags.data$n,
@@ -194,7 +193,7 @@ nimbleOut_m1.0_2LevelOcc <- nimbleMCMC(code = m1.0_nimble,
                              samplesAsCodaMCMC = TRUE,
                              WAIC = TRUE)
 
-save(nimbleOut_m1.0_2LevelOcc, file = "./Results/nimbleOut_m1.0_2LevelOcc.RData")
+save(nimbleOut_m1.0_2LevelOcc, file = "./Results/nimbleOut_m1.0_2LevelOcc_Bbai.RData")
 
 # Gelman-Rubin diagnostic
 MCMCsummary(nimbleOut_m1.0_2LevelOcc$samples)
@@ -267,7 +266,7 @@ p <- ggplot() +
   ylim(c(0,1))+
   theme_bw()
 
-ggsave(plot = p, file = "./Figures/m1.0_nimble2LevOccModel.png", 
+ggsave(plot = p, file = "./Figures/m1.0_nimble2LevOccModel_Bbai.png", 
        width = 4, height = 4, units = "in")
 
 # plot detectability results
@@ -280,7 +279,7 @@ post.samples_detectability <- post.samples %>%
                             Parameter == "prob_detection[2]" ~ "MFU",
                             Parameter == "prob_detection[3]" ~ "MV1"))
 
-save(post.samples_detectability, file = "./Results/post.samples_detectability_m1.0+2LevelOcc.RData")
+save(post.samples_detectability, file = "./Results/post.samples_detectability_m1.0+2LevelOcc_Bbai.RData")
 
 Q2_Detectability <- ggplot(post.samples_detectability) +
   geom_density(aes(x=Est, fill = Primer, color = Primer), alpha = 0.75) +
@@ -292,8 +291,8 @@ Q2_Detectability <- ggplot(post.samples_detectability) +
   xlab("P(Detection)") +
   ylab("Posterior Density")
 
-save(Q2_Detectability, file = "./Figures/Q2_DetectabilityByPrimer.RData")
+save(Q2_Detectability, file = "./Figures/Q2_DetectabilityByPrimer_Bbai.RData")
 
-ggsave(plot = last_plot(), file = "./Figures/m1.0+2LevelOcc_PDetection.png", 
+ggsave(plot = last_plot(), file = "./Figures/m1.0+2LevelOcc_PDetection_Bbai.png", 
        width = 6, height = 4, units = "in")  
 

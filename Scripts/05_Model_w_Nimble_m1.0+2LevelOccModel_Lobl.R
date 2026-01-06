@@ -1,10 +1,9 @@
-# simple nimble model with just a spline on depth (for all cetaceans)
+# simple nimble model with just a spline on depth (for Lobl)
 # using the jagam object 
 
 library(MCMCvis)
 library(boot)
 library(tidyverse)
-library(mcmcplots)
 library(ggplot2)
 library(ggdist)
 library(dplyr)
@@ -13,24 +12,18 @@ library(viridis)
 library(patchwork)
 library(nimble)
 library(mgcv)
+library(PNWColors)
 
 # Import the jagam object we created previously
 load("ProcessedData/jagam_m1.0.RData")
 
 # Import the data
-#load("./ProcessedData/detect_data_allcet.RData")
-load("./ProcessedData/detect_data.Rdata")
-mm.data <- detect_data
-mm.data$EKJPrimer <- mm.data$primer
-for (i in 1:nrow(mm.data)){
-  mm.data$EKJPrimer[i] <- ifelse(mm.data$primer[i] == "DL" & mm.data$Thaw[i] > 1, "DL2", mm.data$primer[i])
-}
-
-mm.data <- filter(mm.data, BestTaxon == "Lagenorhynchus obliquidens")
+load("./ProcessedData/detect_data_lobl.RData")
+mm.data <- detect_data_lobl
 
 m1.0 <- gam(Detected ~ s(depth, k = 5, bs = "bs"),  
             diagonalize = TRUE, 
-            family = "binomial", data = mm.data, method="REML", 
+            family = "binomial", data = detect_data_lobl, method="REML", 
             select = TRUE) # to create two lambdas
 
 # because I've removed some of the unique biosample reference numbers with the above 
@@ -43,7 +36,7 @@ mm.data$site.numeric <- as.numeric(factor(paste0(mm.data$utm.lat, mm.data$utm.lo
 # there are 182 stations
 
 # create a primer variable
-mm.data$primer.numeric <- as.numeric(factor(mm.data$EKJPrimer))
+mm.data$primer.numeric <- as.numeric(factor(mm.data$primer))
 
 # pull unique info for each bio sample (can add to these for enviro covariates)
 biosamp_dat <- mm.data %>%
@@ -117,7 +110,6 @@ m1.0_nimble <- nimbleCode({
   prob_detection[1] ~ dbeta(1, 1)
   prob_detection[2] ~ dbeta(1, 1)
   prob_detection[3] ~ dbeta(1, 1)
-  prob_detection[4] ~ dbeta(1, 1)
   
   # Linear predictor, effect of depth
   # eta has dimensions of # site-depth combos
@@ -207,7 +199,7 @@ save(nimbleOut_m1.0_2LevelOcc, file = "./Results/nimbleOut_m1.0_2LevelOcc_Lobl.R
 MCMCsummary(nimbleOut_m1.0_2LevelOcc$samples)
 
 # Visualize MCMC chains
-mcmcplot(nimbleOut_m1.0_2LevelOcc$samples)
+#mcmcplot(nimbleOut_m1.0_2LevelOcc$samples)
 #mcmc.output_coda <- as.mcmc.list(lapply(nimbleOut_m1.0_2LevelOcc, as.mcmc))
 
 n.post <- 10000
@@ -281,14 +273,15 @@ ggsave(plot = p, file = "./Figures/m1.0_nimble2LevOccModel_Lobl.png",
 
 post.samples_detectability <- post.samples %>%
   select(`prob_detection[1]`, `prob_detection[2]`, 
-         `prob_detection[3]`, `prob_detection[4]`) %>%
-  pivot_longer(cols = 1:4, names_to = "Parameter", values_to = "Est") %>%
+         `prob_detection[3]`) %>%
+  pivot_longer(cols = 1:3, names_to = "Parameter", values_to = "Est") %>%
   mutate(Primer = case_when(Parameter == "prob_detection[1]" ~ "DL1",
-                            Parameter == "prob_detection[2]" ~ "DL2",
-                            Parameter == "prob_detection[3]" ~ "MFU",
-                            Parameter == "prob_detection[4]" ~ "MV1"))
+                            Parameter == "prob_detection[2]" ~ "MFU",
+                            Parameter == "prob_detection[3]" ~ "MV1"))
 
-ggplot(post.samples_detectability) +
+save(post.samples_detectability, file = "./Results/post.samples_detectability_m1.0+2LevelOcc_Lobl.RData")
+
+Q2_Detectability <- ggplot(post.samples_detectability) +
   geom_density(aes(x=Est, fill = Primer, color = Primer), alpha = 0.75) +
   scale_fill_manual(values = c(pnw_palette("Cascades",5, type = "discrete")[c(2, 3, 5)],
                                 pnw_palette("Sunset",1, type = "discrete"))) +
@@ -297,6 +290,8 @@ ggplot(post.samples_detectability) +
   theme_bw() +
   xlab("P(Detection)") +
   ylab("Posterior Density")
+
+save(Q2_Detectability, file = "./Figures/Q2_DetectabilityByPrimer_Lobl.RData")
 
 ggsave(plot = last_plot(), file = "./Figures/m1.0+2LevelOcc_PDetection_Lobl.png", 
        width = 6, height = 4, units = "in")  
