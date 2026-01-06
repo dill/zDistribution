@@ -50,9 +50,9 @@ maxPOD_depth_sf <- maxPOD_depth %>%
   st_as_sf(coords = c("lon", "lat"), crs = 4326) 
 
 maxPOD_depth_clipped <- st_join(study_area, maxPOD_depth_sf, left = TRUE) %>% 
-  mutate(depth = case_when(max_mu < 0.003~NA,
+  mutate(depth = case_when(max_mu < 0.005~NA,
                            TRUE~depth)) %>% 
-  mutate(depthWidth = case_when(max_mu < 0.003~NA,
+  mutate(depthWidth = case_when(max_mu < 0.005~NA,
                            TRUE~depthWidth))
 
 # pull depth of detections
@@ -193,9 +193,9 @@ maxPOD_depth_sf_clean <- maxPOD_depth_clean %>%
   st_as_sf(coords = c("lon", "lat"), crs = 4326) 
 
 maxPOD_depth_clipped_clean <- st_join(study_area_clean, maxPOD_depth_sf_clean, left = TRUE) %>% 
-  mutate(depth = case_when(max_mu < 0.003~NA,
+  mutate(depth = case_when(max_mu < 0.02~NA,
                            TRUE~depth)) %>% 
-  mutate(depthWidth = case_when(max_mu < 0.003~NA,
+  mutate(depthWidth = case_when(max_mu < 0.02~NA,
                                 TRUE~depthWidth))
 
 # pull depth of detections
@@ -235,7 +235,7 @@ depth_max_detect_clean <- ggplot(westcoast_land) +
   scale_fill_viridis_c(name = "Depth (m)",
                        option = "mako",
                        trans = "reverse",
-                       begin = 0.4, end = 0.9, na.value = "transparent") +
+                       begin = 0.4, end = 0.9, na.value = "grey90") +
   ggspatial::geom_spatial_point(data = pos_detect_clean,
                                 aes(x = lon, y = lat,
                                     color = as.factor(depth)),
@@ -276,7 +276,7 @@ ci95_plot_clean <- ggplot(westcoast_land) +
   scale_fill_viridis_c(name = "50% CI\ndepth range (m)",
                        option = "magma",
                        trans = "reverse",
-                       begin = 0.15, end = 1, na.value = "transparent") +
+                       begin = 0.15, end = 1, na.value = "grey90") +
   facet_wrap(~BestTaxon, labeller = label_wrap_gen(width=10)) +
   theme(axis.text = element_blank(),
         axis.ticks = element_blank(),
