@@ -2,8 +2,8 @@ model {
   eta <- X %*% b ## linear predictor
   for (i in 1:n) { mu[i] <-  ilogit(eta[i]) } ## expected response
   for (i in 1:n) { y[i] ~ dbin(mu[i],w[i]) } ## response 
-  ## Parametric effect priors CHECK tau=1/7.3^2 is appropriate!
-  for (i in 1:1) { b[i] ~ dnorm(0,0.019) }
+  ## Parametric effect priors CHECK tau=1/7.7^2 is appropriate!
+  for (i in 1:1) { b[i] ~ dnorm(0,0.017) }
   ## prior for s(depth)... 
   for (i in c(2:4)) { b[i] ~ dnorm(0, lambda[1]) }
   for (i in c(5)) { b[i] ~ dnorm(0, lambda[2]) }
