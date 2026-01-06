@@ -254,6 +254,27 @@ detect_data_allcet <- detect_data %>%
 
 save(detect_data_allcet, file = "./ProcessedData/detect_data_allcet.RData")
 
+# Lobl
+
+detect_data_lobl <- detect_data %>%
+  filter(BestTaxon == "Lagenorhynchus obliquidens") 
+
+save(detect_data_lobl, file = "./ProcessedData/detect_data_lobl.RData")
+
+# Mnov
+
+detect_data_mnov <- detect_data %>%
+  filter(BestTaxon == "Megaptera novaeangliae") 
+
+save(detect_data_mnov, file = "./ProcessedData/detect_data_mnov.RData")
+
+# Bbai
+
+detect_data_bbai <- detect_data %>%
+  filter(BestTaxon == "Berardius bairdii") 
+
+save(detect_data_bbai, file = "./ProcessedData/detect_data_bbai.RData")
+
 ### Make a "clean" dataset -----------------------------------------------------
 length(unique(detect_data$NWFSCsampleID)) #574 samples, 48,656 rows, 3041 replicates
 
@@ -309,3 +330,5 @@ detect_per_primer_species_clean <- detect_data_clean %>%
 save(detect_data_clean, detect_per_species_clean,
      detect_per_primer_species_clean, mmEcoEvo,
      detect_per_family_clean, file = "./ProcessedData/detect_data_clean.RData")
+
+
