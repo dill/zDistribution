@@ -50,6 +50,21 @@ m <- glm(DetectAny ~ Thaw * primer,
 
 summary(m)
 
+# plot expectation
+
+new.df <- expand.grid("primer" = unique(detect_data_allcet_clean$primer),
+                      "Thaw" = 1:6)
+new.df$pred <- predict(m, newdata = new.df, se.fit = TRUE)$fit
+new.df$se <- predict(m, newdata = new.df, se.fit = TRUE)$se
+new.df$lci <- inv.logit(new.df$pred + )
+### TODO finish calculating confidence intervals, plot
+
+ggplot(new.df) +
+  geom_line(aes(x=Thaw, y = pred, color = primer)) +
+  theme_bw()
+
+# plot expectation on top of observed 
+
 # Function: get model coefficients per primer
 get_primer_coefs <- function(model) {
   coefs <- coef(model)
