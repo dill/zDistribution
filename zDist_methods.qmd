@@ -68,7 +68,7 @@ We implemented this model using nimble [@nimble] in R [@RCoreTeam2016]. We used 
 
 Using the results of this model, we simulated the primer-specific expected probability of detection with increasing technical replication.
 
-Separately, we used a generalized linear model (GLM) to examine the effect of freeze/thaw cycles on probability of detection (POD) across all species. Our binomial model included a single interaction term between the number of freeze/thaw cycles and primer. We generated 95% confidence intervals for model terms by bootstrapping the dataset 10,000 times and extracting the 2.5% and 97.5% quantiles of the model slope. We then determined that the relationship between the number of freeze/thaw cycles and POD for each primer is significant (alpha \< 0.05) if the 95% confidence interval does not include zero.
+Separately, we used a generalized linear model (GLM) to examine the effect of freeze/thaw cycles on probability of detection (POD) across all species. Our binomial model included a single interaction term between the number of freeze/thaw cycles and primer. We generated 95% confidence intervals for model terms by bootstrapping the dataset 10,000 times and extracting the 2.5% and 97.5% quantiles of the model slope. We then determined that the relationship between the number of freeze/thaw cycles and POD for each primer is meaningfully significant if the 95% bootstrap confidence interval does not include zero.
 
 #### Question 2: Does species-specific POD vary with depth?
 
