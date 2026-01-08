@@ -235,45 +235,7 @@ save(detect_data, detect_species_divetime,
      detect_per_primer_species, mmEcoEvo,
      maxDepth_species, file = "./ProcessedData/detect_data.Rdata")
 
-## collapse data to detection/non-detection across all cetaceans
-## (this is for the occupancy models where occupancy is 0/1
-## for all cetaceans)
 
-detect_data_allcet <- detect_data %>%
-  select(SampleUID, Sample_name, run, primer, NWFSCsampleID,
-         dilution, techRep, seqRep, Detected, Plate, Thaw,
-         diluti0n, PopID, sample, station, Niskin, depth, volume,
-         date, year, month, day, transect, lat, lon, water.depth,
-         bathy.bottom.depth, bottom.depth.consensus, utm.lon, utm.lat) %>%
-  group_by(SampleUID, Sample_name, run, primer, NWFSCsampleID,
-           dilution, techRep, seqRep, Plate, Thaw,
-           diluti0n, PopID, sample, station, Niskin, depth, volume,
-           date, year, month, day, transect, lat, lon, water.depth,
-           bathy.bottom.depth, bottom.depth.consensus, utm.lon, utm.lat) %>%
-  summarize(DetectAny = ifelse(sum(Detected) == 0, 0, 1))
-
-save(detect_data_allcet, file = "./ProcessedData/detect_data_allcet.RData")
-
-# Lobl
-
-detect_data_lobl <- detect_data %>%
-  filter(BestTaxon == "Lagenorhynchus obliquidens") 
-
-save(detect_data_lobl, file = "./ProcessedData/detect_data_lobl.RData")
-
-# Mnov
-
-detect_data_mnov <- detect_data %>%
-  filter(BestTaxon == "Megaptera novaeangliae") 
-
-save(detect_data_mnov, file = "./ProcessedData/detect_data_mnov.RData")
-
-# Bbai
-
-detect_data_bbai <- detect_data %>%
-  filter(BestTaxon == "Berardius bairdii") 
-
-save(detect_data_bbai, file = "./ProcessedData/detect_data_bbai.RData")
 
 ### Make a "clean" dataset -----------------------------------------------------
 length(unique(detect_data$NWFSCsampleID)) #574 samples, 48,656 rows, 3041 replicates
@@ -331,4 +293,43 @@ save(detect_data_clean, detect_per_species_clean,
      detect_per_primer_species_clean, mmEcoEvo,
      detect_per_family_clean, file = "./ProcessedData/detect_data_clean.RData")
 
+## collapse data to detection/non-detection across all cetaceans
+## (this is for the occupancy models where occupancy is 0/1
+## for all cetaceans)
 
+detect_data_allcet <- detect_data_clean %>%
+  select(SampleUID, Sample_name, run, primer, NWFSCsampleID,
+         dilution, techRep, seqRep, Detected, Plate, Thaw,
+         diluti0n, PopID, sample, station, Niskin, depth, volume,
+         date, year, month, day, transect, lat, lon, water.depth,
+         bathy.bottom.depth, bottom.depth.consensus, utm.lon, utm.lat) %>%
+  group_by(SampleUID, Sample_name, run, primer, NWFSCsampleID,
+           dilution, techRep, seqRep, Plate, Thaw,
+           diluti0n, PopID, sample, station, Niskin, depth, volume,
+           date, year, month, day, transect, lat, lon, water.depth,
+           bathy.bottom.depth, bottom.depth.consensus, utm.lon, utm.lat) %>%
+  summarize(DetectAny = ifelse(sum(Detected) == 0, 0, 1))
+
+save(detect_data_allcet, file = "./ProcessedData/detect_data_allcet.RData")
+
+
+# Lobl
+
+detect_data_lobl <- detect_data_clean %>%
+  filter(BestTaxon == "Lagenorhynchus obliquidens") 
+
+save(detect_data_lobl, file = "./ProcessedData/detect_data_lobl.RData")
+
+# Mnov
+
+detect_data_mnov <- detect_data_clean %>%
+  filter(BestTaxon == "Megaptera novaeangliae") 
+
+save(detect_data_mnov, file = "./ProcessedData/detect_data_mnov.RData")
+
+# Bbai
+
+detect_data_bbai <- detect_data_clean %>%
+  filter(BestTaxon == "Berardius bairdii") 
+
+save(detect_data_bbai, file = "./ProcessedData/detect_data_bbai.RData")

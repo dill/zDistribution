@@ -56,12 +56,12 @@ m3.0b_pred_grid <- expand_grid(depth = seq(0,500, by = 100),
                                          by = 0.1))
 
 
-m3.0bpreds <- predict.gam(m3.0b, m3.0b_pred_grid, type = "response", se.fit = TRUE)
+m3.0bpreds <- predict.gam(m3.0b, m3.0b_pred_grid, se.fit = TRUE)
 
 m3.0b_sePreds <- data.frame(m3.0b_pred_grid,
-                            mu   = m3.0bpreds$fit,
-                            low  = m3.0bpreds$fit - 1.96 * m3.0bpreds$se.fit,
-                            high = m3.0bpreds$fit + 1.96 * m3.0bpreds$se.fit)
+                            mu   = binomial()$linkinv(m3.0bpreds$fit),
+                            low  = binomial()$linkinv(m3.0bpreds$fit - 1.96 * m3.0bpreds$se.fit),
+                            high = binomial()$linkinv(m3.0bpreds$fit + 1.96 * m3.0bpreds$se.fit))
 
 ### H3.0c: Depth smoothed over xy with shape and intercept variable by species -
 

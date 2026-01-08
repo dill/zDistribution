@@ -1,0 +1,19 @@
+---
+title: "Appendix"
+format: html
+editor: visual
+---
+
+## Appendix
+
+We modeled the presence of cetacean eDNA in a given biological replicate at site $s$ and depth $d$, $z_{s,d}$, as a Bernoulli random variable with occurrence probability $\Psi_d$:
+
+$$ z_{s,d} \sim \text{Bernoulli}(\Psi_{d}) $$
+
+where probability of presence in a sample at depth $\Psi_d$ is a smooth function of sample depth $D_d$:
+
+$$ \text{logit}(\Psi_d) = s(d) \cdot D_d. $$
+
+We then modeled the observed detection of cetacean eDNA in each technical replicate $x_t$ as a Bernoulli random variable with primer-specific detection probability $\Omega_\text{primer}$ conditional on presence in the biological sample $z_{s,d}$:
+
+$$ x_t \sim \text{Bernoulli}({\Omega_\text{primer}} \cdot z_{s,d}). $$

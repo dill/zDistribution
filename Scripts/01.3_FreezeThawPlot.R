@@ -45,9 +45,17 @@ ggsave(plot = last_plot(), file = "./Figures/detectThaw_clean.png",
 
 #### Model effect of freeze/thaw on detection ----------------------------------
 
+# null hypothesis, thaw w/o primer interaction 
+
+m0 <- glm(DetectAny ~ Thaw, family = binomial, data = detect_data_allcet_clean)
+# AIC = 2263.6
+
+m1 <- glm(DetectAny ~ primer + Thaw, family = binomial, data = detect_data_allcet_clean)
+# AIC = 2209
+
 m <- glm(DetectAny ~ Thaw * primer,
            family = binomial, data = detect_data_allcet_clean)
-
+# AIC = 2196.7
 summary(m)
 
 # plot expectation
@@ -56,14 +64,19 @@ new.df <- expand.grid("primer" = unique(detect_data_allcet_clean$primer),
                       "Thaw" = 1:6)
 new.df$pred <- predict(m, newdata = new.df, se.fit = TRUE)$fit
 new.df$se <- predict(m, newdata = new.df, se.fit = TRUE)$se
-new.df$lci <- inv.logit(new.df$pred + )
-### TODO finish calculating confidence intervals, plot
+new.df$exp <- inv.logit(new.df$pred)
+new.df$lci <- inv.logit(new.df$pred - 1.96 * new.df$se)
+new.df$uci <- inv.logit(new.df$pred + 1.96 * new.df$se)
 
 ggplot(new.df) +
-  geom_line(aes(x=Thaw, y = pred, color = primer)) +
+  geom_ribbon(aes(x=Thaw, ymin = lci, ymax = uci, fill = primer), alpha = 0.25)+
+  geom_line(aes(x=Thaw, y = exp, color = primer)) +
+  ylab("Expected Probability of Detection") +
+  xlab("Number of Freeze/Thaw Cycles") +
   theme_bw()
 
-# plot expectation on top of observed 
+ggsave(plot = last_plot(), file = "./Figures/FreezeThawGLM.png",
+       width = 8, height = 6, units = "in")
 
 # Function: get model coefficients per primer
 get_primer_coefs <- function(model) {
