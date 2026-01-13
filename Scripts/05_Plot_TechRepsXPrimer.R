@@ -5,30 +5,31 @@ library(dplyr)
 library(ggplot2)
 library(PNWColors)
 
-load("./Results/post.samples_detectability_m1.0+2LevelOcc.RData")
+load("./Results/post_pdetect_m1.0+2LevelOcc_wThaw.RData")
 
-med.detectability <- post.samples_detectability %>%
+mean.detectability <- post_pdetect %>%
+  filter(Thaw == 1) %>%
   group_by(Primer) %>%
-  summarize(Median = median(Est))
+  summarize(Mean = mean(PDetect))
 
 set.seed(20251112)
 
 rdf <- data.frame()
 
-for (p in 1:4){
+for (p in 1:3){
   
   # simulate tech reps
   
-  One <- rbinom(n = 10000, size = 1, med.detectability$Median[p])
-  Two <- rbinom(n = 10000, size = 1, med.detectability$Median[p])
-  Three <- rbinom(n = 10000, size = 1, med.detectability$Median[p])
-  Four <- rbinom(n = 10000, size = 1, med.detectability$Median[p])
-  Five <- rbinom(n = 10000, size = 1, med.detectability$Median[p])
-  Six <- rbinom(n = 10000, size = 1, med.detectability$Median[p])
+  One <- rbinom(n = 10000, size = 1, mean.detectability$Mean[p])
+  Two <- rbinom(n = 10000, size = 1, mean.detectability$Mean[p])
+  Three <- rbinom(n = 10000, size = 1, mean.detectability$Mean[p])
+  Four <- rbinom(n = 10000, size = 1, mean.detectability$Mean[p])
+  Five <- rbinom(n = 10000, size = 1, mean.detectability$Mean[p])
+  Six <- rbinom(n = 10000, size = 1, mean.detectability$Mean[p])
   
   # store info
   
-  df <- data.frame("Primer" = unique(med.detectability$Primer[p]), 
+  df <- data.frame("Primer" = unique(mean.detectability$Primer[p]), 
                    "One" = One, 
                    "Two" = Two, 
                    "Three" = Three, 
