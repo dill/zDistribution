@@ -44,13 +44,13 @@ After bioinformatic processing of all samples, we removed any additional dilutio
 
 #### Data standardization
 
-We used the complete dataset to investigate the effects of primer and number of freeze/thaw cycles on detectability (see section Q1). Based on our results (see section Results Q1), we chose to standardize the dataset for further analysis (Q2 and Q3), so that the same number and type (primer) of technical replicates were used for each station and depth combination included in the analyses. The standardized dataset included 1 technical replicate using MFU, 3 technical replicates using MV1, and 1 technical replicate using DL.
+Because primer efficacy likely varies, and different numbers and types of technical replicates were sometimes run for different stations, we chose to standardize the dataset for further analysis so that the same number and type of technical replicates were included for each station and depth combination in the dataset. The standardized dataset included 1 technical replicate using MFU, 3 technical replicates using MV1, and 1 technical replicate using DL.
 
 ### Data Analysis
 
 #### Question 1: How does observation bias affect rare DNA detectability?
 
-Because various decisions made during sample collection, processing, and sequencing can introduce observation bias, we first leveraged the information contained in multiple technical replicates from individual biological samples to better understand the detection processes for cetacean eDNA. Here we examine the probability of detecting cetacean DNA from any species, under the assumption that all cetacean DNA is equally capable of being detected if it is present \[cite Shaffer paper here?\]. We used a Bayesian hierarchical occupancy model to separately estimate the probability of occupancy/capture by depth and detectability by primer, based on the model presented by Patin et al. (submitted).
+Because various decisions made during sample collection, processing, and sequencing can introduce observation bias, we first leveraged the information contained in multiple technical replicates from individual biological samples to better understand the detection processes for cetacean eDNA. Here we examine the probability of detecting cetacean DNA from any species, under the assumption that all cetacean DNA is equally capable of being detected if it is present \[cite Shaffer paper here?\]. We used a Bayesian hierarchical occupancy model to separately estimate the probability of occupancy/capture by depth and detectability by primer and number of freeze/thaw cycles, based on the model presented in Patin et al. (submitted).
 
 We modeled the presence of cetacean eDNA in a given biological replicate at site $s$ and depth $d$, $z_{s,d}$, as a Bernoulli random variable with occurrence probability $\Psi_d$:
 
@@ -60,24 +60,30 @@ where probability of presence in a sample at depth $\Psi_d$ is a smooth function
 
 $$ \text{logit}(\Psi_d) = s(d) \cdot D_d. $$
 
-We then modeled the observed detection of cetacean eDNA in each technical replicate $x_t$ as a Bernoulli random variable with primer-specific detection probability $\Omega_\text{primer}$ conditional on presence in the biological sample $z_{s,d}$:
+We then modeled the observed detection of cetacean eDNA in each technical replicate $x_t$ as a Bernoulli random variable with primer- and freeze/thaw-specific detection probability $\Omega_\text{primer*thaw}$ conditional on presence in the biological sample $z_{s,d}$:
 
 $$ x_t \sim \text{Bernoulli}({\Omega_\text{primer}} \cdot z_{s,d}). $$
+
+where detection probability $\Omega$ is a logit-linear function of primer type and number of freeze/thaw cycles that the sample has been subjected to:
+
+$$
+\text{logit}(\Omega_\text{primer*thaw}) = \beta_\text{primer} + \beta_\text{thaw} \cdot F.
+$$
+
+Here, $\beta_\text{primer}$ is a primer-specific intercept and $\beta_\text{thaw}$ is a slope parameter that interacts with $F$, the number of freeze/thaw cycles.
 
 We implemented this model using nimble [@nimble] in R [@RCoreTeam2016]. We used uninformative or weakly informative prior distributions for model parameters and ran four chains, each with 250,000 iterations, 225,000 of which were burnin, and assessed convergence using the Gelman-Rubin diagnostic [@gelman1992].
 
 Using the results of this model, we simulated the primer-specific expected probability of detection with increasing technical replication.
 
-Separately, we used a generalized linear model (GLM) to examine the effect of freeze/thaw cycles on probability of detection (POD) across all species. Our binomial model included a single interaction term between the number of freeze/thaw cycles and primer. We generated 95% confidence intervals for model terms by bootstrapping the dataset 10,000 times and extracting the 2.5% and 97.5% quantiles of the model slope. We then determined that the relationship between the number of freeze/thaw cycles and POD for each primer is meaningfully significant if the 95% bootstrap confidence interval does not include zero.
-
 #### Question 2: Does species-specific POD vary with depth?
 
-To determine whether species-specific POD varies in the z (depth) dimension, we used generalized additive models [GAMs; @Wood2017] implemented using the mgcv package in R [@RCoreTeam2016]. GAMs have previously been demonstrated to be an appropriate tool for modeling spatial use in cetaceans (e.g. @Becker2016; @Becker2019; @Becker2020; @becker_etal22; @abrahms_etal19b). For this analysis, we used the "standardized" version of the dataset, including 1 technical replicate using MFU, 3 technical replicates using MV1, and 1 technical replicate using DL for each station and depth. We fit all GAMs using species-specific 0/1 detections as the response variable with a binomial distribution and logit link function, and estimated model parameters using REML. Models examining depth effect alone were built iteratively, starting with (1) assessing probability of detection (POD) across all species at sampling depths between 1 and 500m, then (2) allowing y-intercept to vary by species, and finally (3) allowing model smooth to vary by species. Although we have determined that primer specificity and technical replication affect POD in our samples, we have excluded these from downstream modeling since primers and technical replication were applied consistently across samples.
+To determine whether species-specific POD varies in the z (depth) dimension, we used generalized additive models [GAMs; @Wood2017] implemented using the mgcv package in R [@RCoreTeam2016]. GAMs have previously been demonstrated to be an appropriate tool for modeling spatial distributions of cetaceans (e.g. @Becker2016; @Becker2019; @Becker2020; @becker_etal22; @abrahms_etal19b). We fit all GAMs using detection or non-detection for each site, depth, and technical replicate as the response variable. We used a binomial distribution with a logit link function, and estimated model parameters using REML. Models examining the effect of depth were built iteratively, starting with (1) assessing probability of detection (POD) across all species at sampling depths, then (2) allowing the y-intercept to vary by species, and finally (3) allowing y-intercept and model smooth to vary by species. Although we have determined that primer specificity, technical replication, and number of freeze/thaw cycles affect POD in our samples, we have excluded these from downstream modeling since primers and technical replication were applied consistently across samples.
 
 In addition to examining depth variability across species-level strata, we examined several other ecological stratification schemes in order to determine whether depth variability in detection probability is driven by (1) evolutionary inertia (i.e. taxonomic family) or (2) preferred prey type. We assessed model fit using AIC, and model performance using standard metrics including the percent of deviance explained, the area under the receiver operating characteristic curve [AUC, @fawcett06], the true skill statistic [TSS, @allouche_etal06], and a visual comparison of predicted vs. observed detection rates across sampling depths. We also visually compared our model-based predictions of probability of detection across depth with estimates of species-specific time-at-depth as reported in [@watwood_buonantony12] and [@u_s_departmentofthenavy17].
 
 #### Question 3: Does depth variability in POD covary with geographic variability?
 
-We also used GAMs to address Question 3, and again built iterative models in order to examine covariability between depth, latitude, and longitude on a per-species basis. We began by examining whether variability in xy (longitude and latitude) explained a significant amount of remaining variability left in the model after depth variability was account for (i.e. POD \~ z + xy), then tested whether x, y, and z covary (i.e. POD \~ xyz). Finally, we allowed the model of xyz covariability to vary idependently by species.
+We also used GAMs to address Question 3, and again built iterative models in order to examine covariability between depth (z), latitude, and longitude on a per-species basis. We began by examining whether variability in longitude and latitude (xy) explained a significant amount of remaining variability left in the model after depth variability was account for (i.e. POD \~ z + xy), then tested whether x, y, and z covary (i.e. POD \~ xyz). Finally, we allowed the model of xyz covariability to vary idependently by species.
 
 We assessed model fit using AIC, and model performance using percent deviance explained, AUC, and TSS, as in Question 1. We then conducted a visual comparison of the predicted depth of maximum POD across and our observed detection depth within the study area for the most frequently observed baleen whale, dolphin, and beaked whale.
