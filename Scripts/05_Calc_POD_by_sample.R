@@ -16,7 +16,8 @@ POD_per_samp <- detect_data_clean %>%
   left_join(mean_post_pdetect, by = c("primer" = "Primer", "Thaw" = "Thaw")) %>% 
   distinct(Sample_name, .keep_all = TRUE) %>% 
   group_by(NWFSCsampleID) %>% 
-  summarise(POD = sum(meanPOD), nReps = n())
+  mutate(POnotD = 1-meanPOD) %>% 
+    summarise(POD = 1-prod(POnotD), nReps = n())
 
 POD_per_primer <- detect_data_clean %>% 
   left_join(mean_post_pdetect, by = c("primer" = "Primer", "Thaw" = "Thaw")) %>% 
