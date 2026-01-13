@@ -33,19 +33,19 @@ plot_grid(plotlist = aligned, ncol = 2, rel_widths = c(3, 1))
 
 #### Question 1: Quantifying the effect of observation bias on POD
 
-Given the presence of cetacean eDNA in a sample, the probability of detecting that DNA is affected by primer specificity. On average across all species and samples, MV1 had the highest predicted POD (XX%), followed by MFU (XX%) and then DL (XX%). Therefore, the rate of increase in POD with technical replication also varies by primer (@fig-H2POD-obsbias). For all three primers, achieving a POD of \>90% given the presence of cetacean DNA in the sample would require a minimum of six technical replicates.
+Given the presence of cetacean eDNA in a sample, the probability of detecting that DNA is affected by primer specificity. Assuming a single freeze/thaw cycle, MV1 had the highest predicted POD (`r round(mean(thaw1_pdetect %>% filter(Primer == "MV1") %>% pull("PDetect")), digits = 2)`), followed by DL (`r round(mean(thaw1_pdetect %>% filter(Primer == "DL1") %>% pull("PDetect")), digits = 2)`) and then MFU (`r round(mean(thaw1_pdetect %>% filter(Primer == "MFU") %>% pull("PDetect")), digits = 2)`). Using the posterior POD for each primer, we also show the expected rate of increase in POD with technical replication by primer (@fig-H2POD-obsbias), again assuming a single freeze/thaw cycle. For all three primers, achieving a POD of \>90% given the presence of cetacean DNA in the sample would require a minimum of six technical replicates.
 
-While increasing the number of technical replicates will increase POD, DNA degradation by freeze/thaw cycles decreased the probability of detecting cetacean DNA in a given sample (@fig-H2POD-obsbias). DL and MV1 had similar predicted POD at thaw = 1 (\~0.25), but predicted POD for DL declined to 0 with increasing freeze/thaw cycles while predicted POD for MV1 declined to \~0.13. The POD for MFU at thaw = 1 was lower than DL and MV1 (\~0.125). There was no significant relationship detected between predicted POD for MFU and freeze/thaw cycles, noting that only 5 of 516 total MFU samples had \> 2 thaw cycles.
+While increasing the number of technical replicates will increase POD, DNA degradation by freeze/thaw cycles decreased the probability of detecting cetacean DNA in a given sample (@fig-H2POD-obsbias). We found a significant relationship between freeze/thaw cycle and posterior estimates of POD for the longest primer in our study (DL, 360 bp), and a weaker and nonsignificant relationship between freeze/thaw cycle and posterior POD for MV1 (202 bp). There was no relationship detected between posterior POD and freeze/thaw cycles for MFU (185 bp), noting that only 5 of 516 total MFU samples sequenced in this study had \> 2 thaw cycles.
 
-Given a per station/depth coverage of 3 MV1, 1 MFU, and 1 DL technical replicates, we estimate a mean POD for each station/depth sample of 0.79 (upper CI = 1, lower CI = 0.37). **Note that these numbers are estimated from the predictions from the GLM but that model does not condition on presence of DNA in the sample. Not sure if it would be better to use numbers from the nimble model.**
+Given our posterior estimates of detection probability by primer and number of freeze/thaw cycles, we calculated a sample-specific probability of detection  for each sample in our study, assuming cetacean DNA is present in the sample. Despite the significant reduction in POD in our DL samples with a high number of freeze/thaw cycles (lowest DL POD = 0.08), including four replicates using primers that were not strongly affected by freeze/thaw cycle ensured a per-sample POD of >1 (range: 1.5-2). **Better here to just say 1?** Averaged across all samples in this study when accounting for freeze/thaw cycles, the mean POD for DL is 0.14, mean POD for MFU is 0.31, and 0.39 for MV1, resulting in a mean POD per-sample POD of 1.61 for cetacean eDNA collected in a water sample.
 
 ```{r}
 #| label: fig-H2POD-obsbias
-#| fig-cap: "Left: Primer-specific detection probability with increasing technical replication for each primer used in this study. MFU = Mifish, MV1 = MarVer1, DL = Dloop. Right: Primer-specific effect of increasing number of freeze/thaw cycles."
+#| fig-cap: "Left: Posterior distribution of primer-specific dectability of cetacean eDNA given its presence in a sample, at nThaw = 1. Middle: Primer-specific detection probability with increasing technical replication for each primer used in this study. Right: Posterior prediction of primer-specific effect of increasing number of freeze/thaw cycles on POD. For all plots, MFU = Mifish, MV1 = MarVer1, DL = Dloop. "
 #| fig-width: 10
 #| fig-height: 6
 
- Q2_TechRepsXPrimer | PODthaw_plot
+ pdetect_primer | Q2_TechRepsXPrimer | ppdetect 
 
  #Replace TechRepsXPrimer with plot excluding DL1/2 split
  #Add Q2_detectability once it's rerun in the new ggplot2
@@ -54,7 +54,7 @@ Given a per station/depth coverage of 3 MV1, 1 MFU, and 1 DL technical replicate
 
 ### Question 2: Does POD vary with depth?
 
-We first negated the null hypothesis of no variation across depth (Supplemental Figure S1), then determined that the best alternative model includes significant smooth terms for depth, species, and depth x species interaction (AIC = `r round(min(modelAIC$AIC))`, @tbl-modelAIC). This model explained 14.3% of variance in eDNA detection probability, with a mean AUC of `r round(mean(AUC_df_clean$AUC), digits = 2)` and a mean optimized TSS of `r round(max(TSS_df_clean$mean), digits = 2)`. Full model TSS for all thresholds, as well as per-species AUC, optimized TSS, TSS values across all thresholds are shown in Supplemental Table S2 and Supplemental Figure S2. Species-specific model predictions generally agreed with the raw detection data.
+We first negated the null hypothesis of no variation across depth and that depth does not interact with primer or freeze/thaw cycle to affect POD (not sure if this is the best way to say this) (Supplemental Figure S1, **add Q2 model of depth POD here??**). We then determined that the best alternative model describing POD includes significant smooth terms for depth, species, and a depth x species interaction (AIC = `r round(min(modelAIC$AIC))`, @tbl-modelAIC). This model explained 14.3% of variance in eDNA detection probability, with a mean AUC of `r round(mean(AUC_df_clean$AUC), digits = 2)` and a mean optimized TSS of `r round(max(TSS_df_clean$mean), digits = 2)`. Full model TSS for all thresholds, as well as per-species AUC, optimized TSS, TSS values across all thresholds are shown in Supplemental Table S2 and Supplemental Figure S2. Species-specific model predictions generally agreed with the raw detection data.
 
 ```{r}
 #| label: tbl-modelAIC

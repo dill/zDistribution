@@ -325,7 +325,9 @@ ppdetect <- ggplot(post_pdetect_4plot) +
                                pnw_palette("Sunset",1, type = "discrete"))) +
   scale_color_manual(values = c(pnw_palette("Cascades",5, type = "discrete")[c(2, 3, 5)],
                                 pnw_palette("Sunset",1, type = "discrete"))) +
-  theme_bw()
+  theme_bw() +
+  theme(legend.position = "none")
+
 save(ppdetect, file = "./Figures/pdetect_primer_thaw.RData")
 
 post_pdetect <- post.samples_intercept %>%
@@ -342,7 +344,7 @@ save(post_pdetect, file = "./Results/post_pdetect_m1.0+2LevelOcc_wThaw.RData")
 thaw1_pdetect <- post_pdetect %>%
   filter(Thaw == 1)
 
-ggplot(thaw1_pdetect) +
+pdetect_primer <- ggplot(thaw1_pdetect) +
   geom_density(aes(x = PDetect, fill = Primer, color = Primer), alpha = 0.25) +
   theme_bw() +
   scale_fill_manual(values = c(pnw_palette("Cascades",5, type = "discrete")[c(2, 3, 5)],
@@ -350,13 +352,15 @@ ggplot(thaw1_pdetect) +
   scale_color_manual(values = c(pnw_palette("Cascades",5, type = "discrete")[c(2, 3, 5)],
                                 pnw_palette("Sunset",1, type = "discrete")))
 
-ggplot(post.samples_thawpar) +
+pdetect_thaw_slope <- ggplot(post_pdetect) +
   geom_density(aes(x=thaw_par, color = Primer, fill = Primer), alpha = 0.25) +
   scale_fill_manual(values = c(pnw_palette("Cascades",5, type = "discrete")[c(2, 3, 5)],
                                pnw_palette("Sunset",1, type = "discrete"))) +
   scale_color_manual(values = c(pnw_palette("Cascades",5, type = "discrete")[c(2, 3, 5)],
                                 pnw_palette("Sunset",1, type = "discrete")))+
   theme_bw()
+
+save(thaw1_pdetect, pdetect_primer, pdetect_thaw_slope, ppdetect, file = "./Figures/Q2_detect_probability_plots.Rdata")
 # 
 # Q2_Detectability <- ggplot(post.samples_detectability) +
 #   geom_density(aes(x=Est, fill = Primer, color = Primer), alpha = 0.75) +

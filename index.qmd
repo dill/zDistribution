@@ -44,7 +44,7 @@ load("ProcessedData/m1.2performance.Rdata")
 load("ProcessedData/m3.0models_preds_0.05degree.Rdata")
 load("ProcessedData/H3.0c_pred_flt_clean.Rdata")
 load("ProcessedData/m3.0cperformance.Rdata")
-load("ProcessedData/PODxThawxPrimer.Rdata")
+#load("ProcessedData/PODxThawxPrimer.Rdata")
 
 # load plots
 load("Figures/sampling_map.Rdata")
@@ -53,6 +53,7 @@ load("Figures/H1PODplots.Rdata")
 load("Figures/H3.0c_map_clean.Rdata")
 load("Figures/Q2_DetectabilityByPrimer.RData")
 load("Figures/Q2_TechRepsXPrimer.RData")
+load("Figures/Q2_detect_probability_plots.Rdata")
 
 metadata <- read.csv("./Data/Hake_2019_metadata.csv")
 ```
