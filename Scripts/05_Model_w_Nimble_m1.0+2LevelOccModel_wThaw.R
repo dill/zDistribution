@@ -350,7 +350,9 @@ pdetect_primer <- ggplot(thaw1_pdetect) +
   scale_fill_manual(values = c(pnw_palette("Cascades",5, type = "discrete")[c(2, 3, 5)],
                                pnw_palette("Sunset",1, type = "discrete"))) +
   scale_color_manual(values = c(pnw_palette("Cascades",5, type = "discrete")[c(2, 3, 5)],
-                                pnw_palette("Sunset",1, type = "discrete")))
+                                pnw_palette("Sunset",1, type = "discrete"))) +
+  xlab("Probability of Detection")+
+  ylab("Density")
 
 pdetect_thaw_slope <- ggplot(post_pdetect) +
   geom_density(aes(x=thaw_par, color = Primer, fill = Primer), alpha = 0.25) +

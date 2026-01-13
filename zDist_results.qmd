@@ -37,15 +37,15 @@ Given the presence of cetacean eDNA in a sample, the probability of detecting th
 
 While increasing the number of technical replicates will increase POD, DNA degradation by freeze/thaw cycles decreased the probability of detecting cetacean DNA in a given sample (@fig-H2POD-obsbias). We found a significant relationship between freeze/thaw cycle and posterior estimates of POD for the longest primer in our study (DL, 360 bp), and a weaker and nonsignificant relationship between freeze/thaw cycle and posterior POD for MV1 (202 bp). There was no relationship detected between posterior POD and freeze/thaw cycles for MFU (185 bp), noting that only 5 of 516 total MFU samples sequenced in this study had \> 2 thaw cycles.
 
-Given our posterior estimates of detection probability by primer and number of freeze/thaw cycles, we calculated a sample-specific probability of detection  for each sample in our study, assuming cetacean DNA is present in the sample. Despite the significant reduction in POD in our DL samples with a high number of freeze/thaw cycles (lowest DL POD = 0.08), including four replicates using primers that were not strongly affected by freeze/thaw cycle ensured a per-sample POD of >1 (range: 1.5-2). **Better here to just say 1?** Averaged across all samples in this study when accounting for freeze/thaw cycles, the mean POD for DL is 0.14, mean POD for MFU is 0.31, and 0.39 for MV1, resulting in a mean POD per-sample POD of 1.61 for cetacean eDNA collected in a water sample.
+Given our posterior estimates of detection probability by primer and number of freeze/thaw cycles, we calculated a sample-specific probability of detection for each sample in our study, assuming cetacean DNA is present in the sample. Despite the significant reduction in POD in our DL samples with a high number of freeze/thaw cycles (lowest DL POD = 0.08), including four replicates using primers that were not strongly affected by freeze/thaw cycle ensured a per-sample POD of \>1 (range: 1.5-2). **Better here to just say 1?** Averaged across all samples in this study when accounting for freeze/thaw cycles, the mean POD for DL is 0.14, mean POD for MFU is 0.31, and 0.39 for MV1, resulting in a mean POD per-sample POD of 1.61 for cetacean eDNA collected in a water sample.
 
 ```{r}
 #| label: fig-H2POD-obsbias
-#| fig-cap: "Left: Posterior distribution of primer-specific dectability of cetacean eDNA given its presence in a sample, at nThaw = 1. Middle: Primer-specific detection probability with increasing technical replication for each primer used in this study. Right: Posterior prediction of primer-specific effect of increasing number of freeze/thaw cycles on POD. For all plots, MFU = Mifish, MV1 = MarVer1, DL = Dloop. "
+#| fig-cap: "Left: Posterior distribution of the probability of detection given presence (vertical axis) by number of freeze/thaw cycles (horizontal axis) and primer (panels). Middle: Posterior distribution of the primer-specific probability of detection of cetacean eDNA given its presence in a sample (horizontal axis) with one freeze-thaw cycle. Right: Posterior mean primer-specific detection probability (vertical axis) with increasing technical replication (horizontal axis) for each primer used in this study (colors). For all plots, MFU = Mifish, MV1 = MarVer1, DL = Dloop. "
 #| fig-width: 10
 #| fig-height: 6
 
- pdetect_primer | Q2_TechRepsXPrimer | ppdetect 
+ ppdetect | pdetect_primer | Q2_TechRepsXPrimer
 
  #Replace TechRepsXPrimer with plot excluding DL1/2 split
  #Add Q2_detectability once it's rerun in the new ggplot2
