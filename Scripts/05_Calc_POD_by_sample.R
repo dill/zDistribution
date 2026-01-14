@@ -45,14 +45,7 @@ df <- data.frame(utm.lon = 700:1000)
 df$pred <- predict(m_lon, newdata = df)
 plot(df$utm.lon, df$pred)
 
-
-
-
-
-
-# check lat
-
-# check lon
+# now to check per sample
 
 POD_per_samp <- detect_data_clean %>% 
   left_join(mean_post_pdetect, by = c("primer" = "Primer", "Thaw" = "Thaw")) %>% 
