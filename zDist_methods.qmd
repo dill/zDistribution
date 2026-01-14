@@ -58,17 +58,17 @@ $$ y_{i,z} \sim \text{Bernoulli}(\Psi_{z}) $$
 
 where probability of presence in a sample at depth $\Psi_z$ is a smooth function of sample depth $z$:
 
-$$ \text{logit}(\Psi_z) = \beta_0 + f(z). $${#eq-1}
+$$ \text{logit}(\Psi_z) = \beta_0 + f(z). $$ {#eq-1}
 
 We then modeled the observed detection of cetacean eDNA in each technical replicate $x_t$ as a Bernoulli random variable with primer- and freeze/thaw-specific detection probability $\Omega_\text{primer*thaw}$ conditional on presence in the biological sample $y_{i,z}$:
 
-$$ x_t \sim \text{Bernoulli}({\Omega_\text{primer}} \cdot z_{i,z}). $${#eq-2}
+$$ x_t \sim \text{Bernoulli}({\Omega_\text{primer}} \cdot z_{i,z}). $$ {#eq-2}
 
 where detection probability $\Omega$ is a logit-linear function of primer type and number of freeze/thaw cycles that the sample used in the technical replicate has been subjected to $F$:
 
 $$
 \text{logit}(\Omega_\text{primer*thaw}) = \beta_\text{primer} + \beta_\text{thaw} \cdot F.
-$${#eq-3}
+$$ {#eq-3}
 
 Here, $\beta_\text{primer}$ is a primer-specific intercept and $\beta_\text{thaw}$ is a slope parameter that interacts with $F$, the number of freeze/thaw cycles.
 
@@ -82,15 +82,15 @@ To determine whether species-specific POD varies in the z (depth) dimension, we 
 
 $$
 \text{logit}(\mu_i) = \beta_0 + f(z_i)
-$${#eq-4}
+$$ {#eq-4}
 
 $$
 \text{logit}(\mu_{i,s}) = \beta_{s} + f(z_i)
-$${#eq-5}
+$$ {#eq-5}
 
 $$
 \text{logit}(\mu_{i,s}) = \beta_{s} + f_s(z_i)
-$${#eq-6}
+$$ {#eq-6}
 
 In these equations, $\mu_i$ is the probability of detecting any cetacean for location $i$ and depth $z_i$ and $\mu_{i,s}$ is the probability of detecting species $s$ at location and depth $i$. $\beta_0$ is a shared intercept parameter and $\beta_{s}$ is a species-specific intercept parameter. $f(d_i)$ denotes a smooth on depth across species and $f_s(d_i)$ denotes a species-specific smooth on depth.
 
@@ -104,11 +104,11 @@ We also used GAMs to address Question 3, and again built iterative models in ord
 
 $$
 \text{logit}(\mu_{i}) = \beta_{0} + f(z_i) + f(x_i,y_i)
-$${#eq-7}
+$$ {#eq-7}
 
 $$
 \text{logit}(\mu_{i}) = \beta_{0} + f(x_i,y_i,z_i)
-$${#eq-8}
+$$ {#eq-8}
 
 $$
 \text{logit}(\mu_{s,i}) = \beta_{s} + f_s(x_i,y_i,z_i)
