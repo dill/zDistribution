@@ -74,7 +74,8 @@ Q2_TechRepsXPrimer <- ggplot(rdf) +
   scale_color_manual(values = c(pnw_palette("Cascades",5, type = "discrete")[c(2, 3, 5)],
                                 pnw_palette("Sunset",1, type = "discrete"))) +
   theme_bw() +
-  xlab("Number of Tech Reps")
+  xlab("Number of Tech Reps") +
+  ylab("Probability of Detection")
 
 ggsave(plot = Q2_TechRepsXPrimer, file = "./Figures/Q2_TechRepsXPrimer.png",
        width = 6, height = 4, units = "in")
