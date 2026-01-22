@@ -1,5 +1,5 @@
 ---
-title: "Species-specific behavior and ecology drive depth distribution of rare species eDNA in pelagic marine environments"
+title: "Using spatially explicit models to improve sampling of rare marine species: behavior and ecology drive depth distribution of rare species eDNA in pelagic marine environments"
 author: "Amy M. Van Cise^1\\*^, Eiren K. Jacobson^2^, Megan R. Shaffer^3^, Pedro F.P. Brandão Dias^3^, David L. Miller^4,5^, Brice X. Semmens^6^, Len Thomas^2^, Ryan P. Kelly^3^, A. Ole Shelton^7^, Krista M. Nichols^7^,  Kim M. Parsons^7^"
 format: html
 editor: visual
@@ -44,7 +44,7 @@ load("ProcessedData/m1.2performance.Rdata")
 load("ProcessedData/m3.0models_preds_0.05degree.Rdata")
 load("ProcessedData/H3.0c_pred_flt_clean.Rdata")
 load("ProcessedData/m3.0cperformance.Rdata")
-#load("ProcessedData/PODxThawxPrimer.Rdata")
+load("ProcessedData/POD_est_per_samp.Rdata")
 
 # load plots
 load("Figures/sampling_map.Rdata")
@@ -60,7 +60,7 @@ metadata <- read.csv("./Data/Hake_2019_metadata.csv")
 
 ## Introduction
 
-Detecting rare species is a longstanding challenge facing many ecological fields, e.g. ecosystem-level studies of biodiversity or community composition (REFS) as well as species-level spatial ecology studies (REFS). Many methodological approaches have been developed to address this problem, both in the experimental design phase (REFS) and in the data analysis phase (REFS). More recently, eDNA is emerging as a viable tool for detecting rare species, with promise to improve spatial distribution models (SDMs) when integrated with existing sampling methods (REFS).
+Detecting rare species is a longstanding challenge facing many ecological fields, e.g. ecosystem-level studies of biodiversity or community composition [e.g. @cao_etal01; @cao_etal01; @queheillalt_etal02; @white_etal23; @jeliazkov_etal22] as well as species-level spatial ecology studies [e.g. @engler_etal04; @lelay_etal10; @guisan_etal06]. Many methodological approaches have been developed to address this problem, both in the experimental design phase [@lelay_etal10; @guisan_etal06] and in the data analysis phase [@engler_etal04; @guelat_kery18; @lyet_etal13]. More recently, eDNA is emerging as a viable tool for detecting rare species, with promise to improve spatial distribution models (SDMs) when integrated with existing sampling methods [e.g. @claver_etal25; @shelton_etal22].
 
 However, detecting rare species in the marine environment presents several unique challenges owing to its vast expanse and extreme depths, most of which is remote and difficult (i.e. costly) to access directly. Within this large environment, the distribution of species in three dimensions is driven by their ecological behaviors, and rare species will be overlooked if their depth distribution is not accounted for in experimental design. This is especially true for mobile species capable of utilizing a broad swath of the water column; some rare species have depth ranges spanning 3km or greater (CITE Greg paper). eDNA-based species detection relies on the collection of relatively small amounts of water (generally 1-10 L) throughout the range of the target species, necessitating careful decision-making regarding where to collect point-samples with the aim of describing x-y distribution, either independently of or alongside z-distribution. Futher, eDNA sampling promises new capability to describe spatiotemporal variability in vertical habitat use that, when combined with variability in x-y habitat use, may provide novel insight into the ecology of these species in three dimensions or temporal shifts in their habitat.
 

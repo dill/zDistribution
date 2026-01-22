@@ -58,6 +58,7 @@ Given our posterior estimates of detection probability by primer and number of f
 
 We first negated the null hypothesis of no variation across depth and that depth does not interact with primer or freeze/thaw cycle to affect POD (not sure if this is the best way to say this) (Supplemental Figure S1, **add Q2 model of depth POD here??**). We then determined that the best alternative model describing POD includes significant smooth terms for depth, species, and a depth x species interaction (AIC = `r round(min(modelAIC$AIC))`, @tbl-modelAIC). This model explained 14.3% of variance in eDNA detection probability, with a mean AUC of `r round(mean(AUC_df_clean$AUC), digits = 2)` and a mean optimized TSS of `r round(max(TSS_df_clean$mean), digits = 2)`. Full model TSS for all thresholds, as well as per-species AUC, optimized TSS, TSS values across all thresholds are shown in Supplemental Table S2 and Supplemental Figure S2. Species-specific model predictions generally agreed with the raw detection data.
 
+
 ```{r}
 #| label: tbl-modelAIC
 #| tbl-cap: "Akaike Information Criterion values for all GAMs tested to characterize the relationship between depth and POD of eDNA."
