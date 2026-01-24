@@ -165,6 +165,11 @@ detect_data <- detect_data_meta %>%
                             "Eumetopias jubatus", "Phoca vitulina",
                             "Zalophus californianus", "Mirounga angustirostris")))  
 
+Delphinidae_filtered <- detect_data_meta %>% 
+  filter(BestTaxon == "Delphinidae" & Detected == 1) %>% 
+  group_by(primer) %>% 
+  summarise
+
 ## Check species are all cetaceans
 unique(detect_data$BestTaxon)
 unique(detect_data$common_name)

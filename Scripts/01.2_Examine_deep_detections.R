@@ -27,6 +27,11 @@ deep_summary <- detect_data_deep %>%
   group_by(Broad_taxa) %>% 
   summarise(nObs = n())
 
+(detect_data_clean %>% filter(depth > 250) %>% summarize(sum(Detected))) / (detect_data_clean %>% filter(depth > 250) %>% nrow()) 
+
+(detect_data_clean %>% filter(depth <= 250) %>% summarize(sum(Detected))) / (detect_data_clean %>% filter(depth <= 250) %>% nrow()) 
+
+
 ggplot(detect_data_deep, aes(x= distToBottom, fill = Broad_taxa)) +
   geom_histogram(binwidth = 50) +
   facet_wrap(~Broad_taxa, scales = "free_x") +
