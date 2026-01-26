@@ -14,7 +14,8 @@ library(cowplot)
 library(ggspatial)
 library(marmap)
 
-load("./ProcessedData/m3.0models_preds_0.05degree.Rdata")
+#load("./ProcessedData/m3.0models_preds_0.05degree.Rdata")
+load("ProcessedData/m3.0models_preds_0.05degree_depthmask.Rdata")
 load("./ProcessedData/detect_data.RData")
 load("./ProcessedData/detect_data_clean.RData")
 mmEcoEvo <- read.csv("./Data/MM_metadata.csv")
@@ -193,9 +194,9 @@ maxPOD_depth_sf_clean <- maxPOD_depth_clean %>%
   st_as_sf(coords = c("lon", "lat"), crs = 4326) 
 
 maxPOD_depth_clipped_clean <- st_join(study_area_clean, maxPOD_depth_sf_clean, left = TRUE) %>% 
-  mutate(depth = case_when(max_mu < 0.02~NA,
+  mutate(depth = case_when(max_mu < 0.016~NA,
                            TRUE~depth)) %>% 
-  mutate(depthWidth = case_when(max_mu < 0.02~NA,
+  mutate(depthWidth = case_when(max_mu < 0.016~NA,
                                 TRUE~depthWidth))
 
 # pull depth of detections

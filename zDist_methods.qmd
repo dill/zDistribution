@@ -16,7 +16,7 @@ DNA was previously extracted using a phase-lock phenol chloroform method as desc
 
 Next, we tested all samples for inhibition by spiking an internal positive control (IPC) of known concentration into each sample and quantifying it using a probe assay with quantitative PCR (qPCR). We identified inhibited samples by examining the IPC concentration, as described in Shelton et al. (2022). For each sample, we selected a dilution that was determined from the qPCR data (described above) to be not inhibited, which was either 1x or 0.2x across all samples.
 
-We then amplified each sample with three different mitochondrial primer sets: MFU targeting fishes using the 12S region [@miya_etal15], MV1 targeting vertebrates using the 12S region, [@valsecchi_etal20] and DL targeting only cetaceans using the control region [@baker_etal06]. For all samples, we ran one technical PCR replicate for MFU, one for DL, and three for MV1. We optimized primer, Taq, and cycling conditions using mock communities [-@shaffer_etal25].
+We then amplified each sample with three different mitochondrial primer sets: MFU targeting fishes using the 12S region [@Miya2015], MV1 targeting vertebrates using the 12S region, [@valsecchi_etal20] and DL targeting only cetaceans using the control region [@baker_etal06]. For all samples, we ran one technical PCR replicate for MFU, one for DL, and three for MV1. We optimized primer, Taq, and cycling conditions using mock communities [-@shaffer_etal25].
 
 Our reaction mixture for amplification (PCR1) consisted of 10 μL of Phusion Master Mix (2X), 0.4 μL of the forward primer (10 μM); 0.4 μL of the reverse primer (10 μM), 0.6 μL of 100% DMSO, 0.5 μL of rAlbumin (20 μg/μL), 4.4 μL of nuclease-free water and 2 μL of DNA template. We ran PCR1 with the following cycling conditions: an initial denaturation of 98°C for 30 sec; followed by cycles of: denaturation (98°C for 10 sec), annealing (60°C for 30 sec), and extension (72°C for 3 sec); with a final extension of 72°C for 10 min and hold at 4°C. We ran 35 cycles for MFU and MV1, and 40 cycles for DL.
 
@@ -50,7 +50,7 @@ Because primer efficacy likely varies, and different numbers and types of techni
 
 #### Question 1: How does observation bias affect rare DNA detectability?
 
-Because various decisions made during sample collection, processing, and sequencing can introduce observation bias, we first leveraged the information contained in multiple technical replicates from individual biological samples to better understand the detection processes for cetacean eDNA. Here we examine the probability of detecting cetacean DNA from any species, under the assumption that all cetacean DNA is equally capable of being detected if it is present \[cite Shaffer paper here?\]. We used a Bayesian hierarchical occupancy model to separately estimate the probability of occupancy/capture by depth and detectability by primer and number of freeze/thaw cycles, based on the model presented in Patin et al. (submitted).
+Because various decisions made during sample collection, processing, and sequencing can introduce observation bias, we first leveraged the information contained in multiple technical replicates from individual biological samples to better understand the detection processes for cetacean eDNA. Here we examine the probability of detecting cetacean DNA from any species, under the assumption that all cetacean DNA is equally capable of being detected if it is present \[cite Shaffer paper here?\]. We used a Bayesian hierarchical occupancy model to separately estimate the probability of occupancy/capture by depth and detectability by primer and number of freeze/thaw cycles, based on the model presented in Patin et al. (*in review*).
 
 We modeled the presence of cetacean eDNA in a given biological replicate at site $i$ and depth $z$, $y_{i,z}$, as a Bernoulli random variable with occurrence probability $\Psi_d$:
 
@@ -72,7 +72,7 @@ $$ {#eq-3}
 
 Here, $\beta_\text{primer}$ is a primer-specific intercept and $\beta_\text{thaw}$ is a slope parameter that interacts with $F$, the number of freeze/thaw cycles.
 
-We implemented this model using nimble [@nimble] in R [@RCoreTeam2016]. We used uninformative or weakly informative prior distributions for model parameters and ran four chains, each with 250,000 iterations, 225,000 of which were burnin, and assessed convergence using the Gelman-Rubin diagnostic [@gelman1992].
+We implemented this model using nimble [@devalpine_etal17; [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17954119.svg)](https://doi.org/10.5281/zenodo.17954119)] in R [@RCoreTeam2016]. We used uninformative or weakly informative prior distributions for model parameters and ran four chains, each with 250,000 iterations, 225,000 of which were burnin, and assessed convergence using the Gelman-Rubin diagnostic [@gelman_rubin92].
 
 Using the results of this model, we simulated the primer-specific expected probability of detection with increasing technical replication.
 
@@ -94,26 +94,18 @@ $$ {#eq-6}
 
 In these equations, $\mu_i$ is the probability of detecting any cetacean for location $i$ and depth $z_i$ and $\mu_{i,s}$ is the probability of detecting species $s$ at location and depth $i$. $\beta_0$ is a shared intercept parameter and $\beta_{s}$ is a species-specific intercept parameter. $f(d_i)$ denotes a smooth on depth across species and $f_s(d_i)$ denotes a species-specific smooth on depth.
 
-Although we have determined that primer specificity, technical replication, and number of freeze/thaw cycles affect POD in our samples, we have excluded these from downstream modeling since primers and technical replication were applied consistently across samples.
+In addition to examining depth variability across species-level strata, we examined several two other stratification schemes in order to determine whether depth variability in detection probability is driven by (1) phylogeny or (2) preferred prey type. Although we have determined that primer specificity, technical replication, and number of freeze/thaw cycles affect POD in our samples, we have excluded these from downstream modeling since primers and technical replication were applied consistently across samples.
 
-In addition to examining depth variability across species-level strata, we examined several other ecological stratification schemes in order to determine whether depth variability in detection probability is driven by (1) evolutionary inertia (i.e. taxonomic family) or (2) preferred prey type. We assessed model fit using AIC, and model performance using standard metrics including the percent of deviance explained, the area under the receiver operating characteristic curve [AUC, @fawcett06], the true skill statistic [TSS, @allouche_etal06], and a visual comparison of predicted vs. observed detection rates across sampling depths. We also visually compared our model-based predictions of probability of detection across depth with estimates of species-specific time-at-depth as reported in [@watwood_buonantony12] and [@u_s_departmentofthenavy17].
+We assessed model fit using AIC, and model performance using standard metrics including the percent of deviance explained, the area under the receiver operating characteristic curve [AUC, @fawcett06], the true skill statistic [TSS, @allouche_etal06], and a visual comparison of predicted vs. observed detection rates across sampling depths. We also visually compared our model-based predictions of probability of detection across depth with estimates of species-specific time-at-depth as reported by Watwood and Buonantony [-@watwood_buonantony12] and the U.S. Department of the Navy [-@u_s_departmentofthenavy17].
 
 #### Question 3: Does depth variability in POD covary with geographic variability?
 
-We also used GAMs to address Question 3, and again built iterative models in order to examine covariability between depth (z), latitude, and longitude on a per-species basis. We began by examining whether variability in longitude and latitude (xy) explained a significant amount of remaining variability left in the model after depth variability was account for (Eq. @eq-7), then tested whether x, y, and z covary (i.e. POD \~ xyz). Finally, we allowed the model of xyz covariability to vary independently by species.
-
-$$
-\text{logit}(\mu_{i}) = \beta_{0} + f(z_i) + f(x_i,y_i)
-$$ {#eq-7}
-
-$$
-\text{logit}(\mu_{i}) = \beta_{0} + f(x_i,y_i,z_i)
-$$ {#eq-8}
+We also used a GAM to examine covariability between depth ($z$), latitude ($y$), and longitude ($x$) on a per-species basis. Using the best-fit model from Question 2 as our starting point (species-specific variability in POD with $z$), we tested covariation in $xyz$ on a species-specific basis with the following:
 
 $$
 \text{logit}(\mu_{s,i}) = \beta_{s} + f_s(x_i,y_i,z_i)
-$$
+$$ {#eq-7}
 
 $f(x_i,y_i,z_i)$ was constructed as tensor product of marginal smoothers of x, y, and z and in the case of the species-specific factor-smooth interaction we used the tensor product of x, y, and z, and a random effect on species. Using the ti() contraction in mgcv enabled us to construct intermediate tensor products on interactions that we were interested in.
 
-We assessed model fit using AIC, and model performance using percent deviance explained, AUC, and TSS, as in Question 1. We then conducted a visual comparison of the predicted depth of maximum POD across and our observed detection depth within the study area for the most frequently observed baleen whale, dolphin, and beaked whale.
+As in Question 2, we assessed model fit using AIC, and model performance using percent deviance explained, AUC, and TSS. We then conducted a visual comparison of the predicted depth of maximum POD across and our observed detection depth within the study area for the most frequently observed baleen whale, dolphin, and beaked whale.
