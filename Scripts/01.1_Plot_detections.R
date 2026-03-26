@@ -34,7 +34,7 @@ detect_by_station <- detect_data_clean %>%
 detectDepth_bubble <- ggplot(detect_by_station, aes(y = common_name, x = depth, 
                               fill = Broad_taxa, color = Broad_taxa)) +
   geom_count(alpha = 0.7) +
-  scale_size_area(max_size = 11) +
+  scale_size_area(max_size = 11, name = "# Detections") +
   facet_wrap(~Broad_taxa, scales = "free_x", ncol = 1) +
   theme_minimal() + 
   coord_flip(clip = "off") +
@@ -46,9 +46,10 @@ detectDepth_bubble <- ggplot(detect_by_station, aes(y = common_name, x = depth,
                                pnw_palette("Sunset",1, type = "continuous"))) +
   scale_color_manual(values = c(pnw_palette("Cascades",5, type = "continuous")[4:5],
                                 pnw_palette("Sunset",1, type = "continuous"))) +
-  theme(legend.position = "none",
-        strip.text = element_text(size = 12),
-        axis.title = element_text(size = 12))
+  guides(fill = "none", color = "none") +
+  theme(strip.text = element_text(size = 12),
+        axis.title = element_text(size = 12),
+        legend.position = "bottom")
 
 detectDepth_bubble
 #### Ridgeplot -----------------------------------------------------------------
