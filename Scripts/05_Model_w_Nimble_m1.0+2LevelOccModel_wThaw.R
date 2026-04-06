@@ -285,6 +285,15 @@ ggsave(plot = p, file = "./Figures/m1.0_nimble2LevOccModel.png",
 
 # plot detectability results
 
+# raw detectability by thaw by primer
+
+raw_thaw_primer <- detect_data_allcet %>%
+  group_by(primer, Thaw) %>%
+  summarize(MeanPOD = sum(DetectAny)/length(DetectAny),
+            NObs = length(DetectAny)) %>%
+  rename(Primer = primer) %>%
+  mutate(Primer = replace(Primer, Primer == "DL", "DL1"))
+
 after_bracket <- function(x) {
   index <- regexpr("[", x, fixed = TRUE) + 1L
   substr(x, index, index)
@@ -318,6 +327,8 @@ post_pdetect_4plot <- post.samples_intercept %>%
 ppdetect <- ggplot(post_pdetect_4plot) +
   geom_ribbon(aes(x=Thaw, ymin  = LCI, ymax = UCI, fill = Primer), alpha = 0.25)+
   geom_line(aes(x = Thaw, y = Med, color = Primer)) +
+  geom_point(data = raw_thaw_primer, 
+             aes(x=Thaw, y = MeanPOD, size = NObs, color = Primer), alpha = 0.5)+
   facet_wrap(~Primer, ncol = 1) +
   xlab("Number of Freeze/Thaw Cycles")+
   ylab("Probability of Detection")+
@@ -326,7 +337,7 @@ ppdetect <- ggplot(post_pdetect_4plot) +
   scale_color_manual(values = c(pnw_palette("Cascades",5, type = "discrete")[c(2, 3, 5)],
                                 pnw_palette("Sunset",1, type = "discrete"))) +
   theme_bw() +
-  theme(legend.position = "none")
+  theme(legend.position = "none") 
 
 save(ppdetect, file = "./Figures/pdetect_primer_thaw.RData")
 
