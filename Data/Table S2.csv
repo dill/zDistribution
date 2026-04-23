@@ -1,0 +1,20 @@
+Variables,symbol
+depth,z
+latitude,y
+longitude,x
+xyz location,i
+cetacean presence,y
+occurrence probabiilty,psi
+smooth function,f
+intercept terms,beta
+slope/rate terms,gamma
+detection,d
+technical replicate,r
+POD primer,m
+thaw cycle POD,t
+POD,omega
+number of thaw cycles ,T
+species,s
+detection rate,mu
+taxonomic family,F
+prey group,e

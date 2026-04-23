@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Amy M. Van Cise1*, Eiren K. Jacobson2, Megan R. Shaffer3, Pedro F.P. Brandão Dias3, David L. Miller4,5, Brice X. Semmens6, Len Thomas2, Ryan P. Kelly3, A. Ole Shelton7, Krista M. Nichols7, Kim M. Parsons7">
+<meta name="author" content="Amy M. Van Cise1*, Eiren K. Jacobson2, Megan R. Shaffer3, Pedro F.P. Brandão-Dias3, David L. Miller4,5, Brice X. Semmens6, Len Thomas2, Ryan P. Kelly3, A. Ole Shelton7, Krista M. Nichols7, Kim M. Parsons7">
 
-<title>Using spatially explicit models to improve sampling of rare marine species: behavior and ecology drive depth distribution of rare species eDNA in pelagic marine environments</title>
+<title>Using spatially explicit models to improve sampling of rare marine species: species-specific behavior and ecology drive depth distribution of cetacean eDNA in pelagic marine environments</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -95,7 +95,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Using spatially explicit models to improve sampling of rare marine species: behavior and ecology drive depth distribution of rare species eDNA in pelagic marine environments</h1>
+<h1 class="title">Using spatially explicit models to improve sampling of rare marine species: species-specific behavior and ecology drive depth distribution of cetacean eDNA in pelagic marine environments</h1>
 </div>
 
 
@@ -105,7 +105,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Amy M. Van Cise<sup>1*</sup>, Eiren K. Jacobson<sup>2</sup>, Megan R. Shaffer<sup>3</sup>, Pedro F.P. Brandão Dias<sup>3</sup>, David L. Miller<sup>4,5</sup>, Brice X. Semmens<sup>6</sup>, Len Thomas<sup>2</sup>, Ryan P. Kelly<sup>3</sup>, A. Ole Shelton<sup>7</sup>, Krista M. Nichols<sup>7</sup>, Kim M. Parsons<sup>7</sup> </p>
+             <p>Amy M. Van Cise<sup>1*</sup>, Eiren K. Jacobson<sup>2</sup>, Megan R. Shaffer<sup>3</sup>, Pedro F.P. Brandão-Dias<sup>3</sup>, David L. Miller<sup>4,5</sup>, Brice X. Semmens<sup>6</sup>, Len Thomas<sup>2</sup>, Ryan P. Kelly<sup>3</sup>, A. Ole Shelton<sup>7</sup>, Krista M. Nichols<sup>7</sup>, Kim M. Parsons<sup>7</sup> </p>
           </div>
   </div>
     
@@ -121,7 +121,7 @@ window.Quarto = {
 <ol type="1">
 <li>School of Aquatic and Fishery Sciences, University of Washington, Seattle, WA, USA</li>
 <li>Centre for Research into Ecological and Environmental Modelling, School of Mathematics and Statistics, University of St Andrews, St Andrews, Scotland</li>
-<li>School of Environmental and Marine Affairs, University of Washington, Seattle, WA, USA</li>
+<li>School of Marine and Environmental Affairs, University of Washington, Seattle, WA, USA</li>
 <li>Biomathematics and Statistics Scotland, Dundee, UK</li>
 <li>UK Centre for Ecology and Hydrology, Lancaster Environment Centre, Lancaster, UK</li>
 <li>Scripps Institution of Oceanography, University of California San Diego, San Diego, CA, USA</li>
@@ -131,331 +131,339 @@ window.Quarto = {
 <p><sup>*</sup>Corresponding author email: avancise@gmail.com</p>
 <p><br></p>
 <p>Running page head: Depth distribution of rare target detections</p>
+<section id="abstract" class="level2">
+<h2 class="anchored" data-anchor-id="abstract">Abstract</h2>
+<p>Detecting rare species is a long-standing challenge in ecological studies that is exacerbated for many marine species due to their remote habitats and elusive behaviors. Environmental DNA (eDNA) sampling is a powerful standalone or complementary solution to improve spatiotemporal models of species’ distribution and abundance, but positive detections of rare species remain difficult to obtain. Targeting optimal sampling depths can improve the detection rates of cetaceans, which are highly mobile and have species-specific depth ranges spanning the surface to 3 km. In this study, we examine the depth distribution of eDNA detections from 16 cetacean species in the California Current Ecosystem using systematic eDNA samples collected from the surface to 500 m. We sequenced five replicates each of 516 samples from 175 unique geographic locations and up to 5 depth strata, obtaining 468 positive cetacean detections across 2,580 sequencing replicates. Given the presence of cetacean eDNA in a sample, we found that the probability of detecting that eDNA using genetic metabarcoding was driven by primer specificity, technical replication, and the number of freeze/thaw cycles a sample was subjected to. Futher, species-specific eDNA detection rate varied with depth and generally reflected known species-specific use of the water column, but could also be modeled using information on taxonomy or diet. Most delphinid and porpoise species had highest predicted detection rates at the surface, whereas most baleen whale species had highest detection rates at the surface in regions close to shore and at 500 m off the continental shelf. Beaked whales had highest detection rates between 300 and 500 m, and were unlikely to be detected on the continental shelf. The depth maximizing detection rate for each species was not geographically consistent, indicating species-specific geographic variability in depth distribution. Our results indicate that the challenge of detecting cetacean species using eDNA can be mitigated in the experimental design phase by using niche-based or spatial distribution models to inform sampling strategies, especially sampling depths. eDNA sampling strategies for cetaceans should account for species-specific depth distributions and habitat use to optimize detection rates; incorporating depth-informed sampling may increase detection rates over non-depth-targeted surveys and strengthen inference on marine mammal distribution and abundance.</p>
+</section>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>Detecting rare species is a longstanding challenge facing many ecological fields, e.g.&nbsp;ecosystem-level studies of biodiversity or community composition <span class="citation" data-cites="cao_etal01 cao_etal01 queheillalt_etal02 white_etal23 jeliazkov_etal22">(e.g. <a href="#ref-cao_etal01" role="doc-biblioref">Cao, Larsen, and Thorne 2001</a>, <a href="#ref-cao_etal01" role="doc-biblioref">2001</a>; <a href="#ref-queheillalt_etal02" role="doc-biblioref">Queheillalt et al. 2002</a>; <a href="#ref-white_etal23" role="doc-biblioref">White et al. 2023</a>; <a href="#ref-jeliazkov_etal22" role="doc-biblioref">Jeliazkov et al. 2022</a>)</span> as well as species-level spatial ecology studies <span class="citation" data-cites="engler_etal04 lelay_etal10 guisan_etal06">(e.g. <a href="#ref-engler_etal04" role="doc-biblioref">Engler, Guisan, and Rechsteiner 2004</a>; <a href="#ref-lelay_etal10" role="doc-biblioref">Le Lay et al. 2010</a>; <a href="#ref-guisan_etal06" role="doc-biblioref">Guisan et al. 2006</a>)</span>. Many methodological approaches have been developed to address this problem, both in the experimental design phase <span class="citation" data-cites="lelay_etal10 guisan_etal06">(<a href="#ref-lelay_etal10" role="doc-biblioref">Le Lay et al. 2010</a>; <a href="#ref-guisan_etal06" role="doc-biblioref">Guisan et al. 2006</a>)</span> and in the data analysis phase <span class="citation" data-cites="engler_etal04 guelat_kery18 lyet_etal13">(<a href="#ref-engler_etal04" role="doc-biblioref">Engler, Guisan, and Rechsteiner 2004</a>; <a href="#ref-guelat_kery18" role="doc-biblioref">Guélat and Kéry 2018</a>; <a href="#ref-lyet_etal13" role="doc-biblioref">Lyet et al. 2013</a>)</span>. More recently, eDNA is emerging as a viable tool for detecting rare species, with promise to improve spatial distribution models (SDMs) and biodiversity monitoring <span class="citation" data-cites="afonso_etal24 valdivia-carrillo_etal25">(e.g. <a href="#ref-afonso_etal24" role="doc-biblioref">Afonso et al. 2024</a>; <a href="#ref-valdivia-carrillo_etal25" role="doc-biblioref">Valdivia-Carrillo et al. 2025</a>)</span>, particularly when integrated with existing sampling methods <span class="citation" data-cites="claver_etal25 shelton_etal22">(e.g. <a href="#ref-claver_etal25" role="doc-biblioref">Claver et al. 2025</a>; <a href="#ref-shelton_etal22" role="doc-biblioref">Shelton et al. 2022</a>)</span>.</p>
-<p>However, detecting rare species in the marine environment presents several unique challenges owing to its vast expanse and extreme depths, most of which is remote and difficult (i.e.&nbsp;costly) to observe directly. Within this large environment, the distribution of species in three dimensions is driven by their ecological behaviors, and rare species will be overlooked if their depth distribution is not accounted for in experimental design. This is especially true for mobile species capable of utilizing a broad swath of the water column; some rare marine species have depth ranges spanning up to 3km <span class="citation" data-cites="schorr_etal14">(<a href="#ref-schorr_etal14" role="doc-biblioref">Schorr et al. 2014</a>)</span>. Using approaches such as niche-based modeling and spatial modeling in the design phase of an experiment can increase sampling efficiency and increase positive detections while reducing the cost of monitoring distributions of rare and/or mobile species <span class="citation" data-cites="guisan_etal06 lelay_etal10">(<a href="#ref-guisan_etal06" role="doc-biblioref">Guisan et al. 2006</a>; <a href="#ref-lelay_etal10" role="doc-biblioref">Le Lay et al. 2010</a>)</span>.</p>
-<p>While eDNA-based species detection is a promising approach to detecting rare species, it relies on the collection of relatively small amounts of water (generally 1-10 L) throughout the range of the target species, necessitating careful decision-making regarding where to collect point-samples with the aim of describing geographic (<span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>) distribution, either independently of or alongside depth (<span class="math inline">\(z\)</span>) distribution. However, sampling across the <span class="math inline">\(z\)</span> dimension will enhance our capability to describe spatiotemporal variability in <span class="math inline">\(z\)</span> habitat use that, when combined with variability in <span class="math inline">\(xy\)</span> habitat use, may provide novel insight into the spatiotemporal ecology of these species in three dimensions. That new insight may be used to improve spatial distribution models that can then be incorporated into the management of rare species, improve our understanding of the ecology of understudied marine species, and be used to improve future sampling designs.</p>
-<p>Marine mammals, and specifically cetaceans, are notably some of the rarest species in the marine environment. Traditionally, their habitat use and distributions are mapped using visual and/or passive acoustic observations <span class="citation" data-cites="dalpaz_etal21 Rankin2008 becker_etal20a fiedler_etal23 Forney1998 Findlay1992 becker_etal22 kanaji_miyashita21">(e.g. <a href="#ref-dalpaz_etal21" role="doc-biblioref">Dalpaz et al. 2021</a>; <a href="#ref-Rankin2008" role="doc-biblioref">Rankin et al. 2008</a>; <a href="#ref-becker_etal20a" role="doc-biblioref">Elizabeth A. Becker et al. 2020a</a>, <a href="#ref-becker_etal22" role="doc-biblioref">2022</a>; <a href="#ref-fiedler_etal23" role="doc-biblioref">Fiedler et al. 2023</a>; <a href="#ref-Forney1998" role="doc-biblioref">Forney and Barlow 1998</a>; <a href="#ref-Findlay1992" role="doc-biblioref">Findlay et al. 1992</a>; <a href="#ref-kanaji_miyashita21" role="doc-biblioref">Kanaji and Miyashita 2021</a>)</span>. Visual line-transect surveys are the most common, in which observers aboard a ship or airplane will record detections of any marine mammals and their distance to the transect line, covering the survey area in a systematic pattern. These surveys are limited to the surface of the ocean, where most cetaceans spend very little of their time, and to daylight hours - and their effectiveness decreases in poor weather or sea state. Ship-board passive acoustic line-transect surveys collect recordings along similar systematic transects, and can often detect species up to XX kilometers away from the ship in any direction. They are not limited to surface or daylight observations, but only detect species that are actively vocalizing. Systematic eDNA surveys, where water samples are collected along transects, do not share limitations related to depth, daylight, weather conditions, or species’ vocal activity and are therefore potentially powerful as standalone or complementary monitoring tools <span class="citation" data-cites="pikitch18">(<a href="#ref-pikitch18" role="doc-biblioref">Pikitch 2018</a>)</span>. However, eDNA sampling notably has a spatial detection range that is much smaller than either of the two previous surveys and strongly affected by diffusion and transport of DNA by oceanographic features <span class="citation" data-cites="yamahara_etal25a">(<a href="#ref-yamahara_etal25a" role="doc-biblioref">Yamahara et al. 2025</a>)</span>.</p>
-<p>Because eDNA samples have a limited radius of detection, and because they are costly both to collect and to process, studies targeting a specific set of rare species may benefit from restricting their range of sampling depths via spatial or niche-based modeling. ere is currently a lack of published data providing guidance regarding the sampling depths to target when cetacean species, taxonomic groups, or ecological groups of rare species, or what ecological or observational processes may drive variability in the probability of detecting specific species across depths.</p>
-<p>Here, use spatial and niche-based modeling to describe the <span class="math inline">\(z\)</span> distribution of cetacean species’ eDNA in the water column and identify broad ecological drivers of the observed patterns. We specifically ask:</p>
+<p>Detecting rare species is a longstanding challenge in many ecological fields, e.g., ecosystem-level studies of biodiversity or community composition <span class="citation" data-cites="cao_etal01 cao_etal01 queheillalt_etal02 white_etal23 jeliazkov_etal22">(e.g., <a href="#ref-cao_etal01" role="doc-biblioref">Cao, Larsen, and Thorne 2001</a>, <a href="#ref-cao_etal01" role="doc-biblioref">2001</a>; <a href="#ref-queheillalt_etal02" role="doc-biblioref">Queheillalt et al. 2002</a>; <a href="#ref-white_etal23" role="doc-biblioref">White et al. 2023</a>; <a href="#ref-jeliazkov_etal22" role="doc-biblioref">Jeliazkov et al. 2022</a>)</span> as well as species-level studies of spatial ecology <span class="citation" data-cites="engler_etal04 lelay_etal10 guisan_etal06">(e.g., <a href="#ref-engler_etal04" role="doc-biblioref">Engler, Guisan, and Rechsteiner 2004</a>; <a href="#ref-lelay_etal10" role="doc-biblioref">Le Lay et al. 2010</a>; <a href="#ref-guisan_etal06" role="doc-biblioref">Guisan et al. 2006</a>)</span>. Many methodological approaches have been developed to address this problem, both in the experimental design phase <span class="citation" data-cites="lelay_etal10 guisan_etal06">(<a href="#ref-lelay_etal10" role="doc-biblioref">Le Lay et al. 2010</a>; <a href="#ref-guisan_etal06" role="doc-biblioref">Guisan et al. 2006</a>)</span> and in the data analysis phase <span class="citation" data-cites="engler_etal04 guelat_kery18 lyet_etal13">(<a href="#ref-engler_etal04" role="doc-biblioref">Engler, Guisan, and Rechsteiner 2004</a>; <a href="#ref-guelat_kery18" role="doc-biblioref">Guélat and Kéry 2018</a>; <a href="#ref-lyet_etal13" role="doc-biblioref">Lyet et al. 2013</a>)</span>. Recently, environmental DNA (eDNA) has emerged as a viable tool for detecting rare species, with promise to improve spatial distribution models (SDMs) and biodiversity monitoring <span class="citation" data-cites="afonso_etal24 valdivia-carrillo_etal25">(e.g., <a href="#ref-afonso_etal24" role="doc-biblioref">Afonso et al. 2024</a>; <a href="#ref-valdivia-carrillo_etal25" role="doc-biblioref">Valdivia-Carrillo et al. 2025</a>)</span>, particularly when integrated with existing survey methods <span class="citation" data-cites="claver_etal25 shelton_etal22">(e.g., <a href="#ref-claver_etal25" role="doc-biblioref">Claver et al. 2025</a>; <a href="#ref-shelton_etal22" role="doc-biblioref">Shelton et al. 2022</a>)</span>.</p>
+<p>While eDNA-based species detection is a promising approach to estimating or predicting the abundance and distribution of rare species, it may be limited by the collection of point samples of relatively small amounts of water (generally 1-10 L) throughout the study area. This necessitates careful consideration of the inferential aims of the study when deciding where to collect samples to determine species presence/absence or describe geographic (<span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>) distribution, either independently of or alongside depth (<span class="math inline">\(z\)</span>) distribution. On the other hand, explicity sampling across the <span class="math inline">\(z\)</span> dimension, which is often ignored in marine mammal monitoring programs, will enhance our capability to describe spatiotemporal variability in <span class="math inline">\(z\)</span> habitat use that, when combined with variability in <span class="math inline">\(xy\)</span> habitat use, may provide novel insight into the spatiotemporal ecology of these species in three dimensions to inform both the management of rare species and future sampling designs based on 3D ecological behaviors.</p>
+<p>Marine mammals, and specifically cetaceans, are notably some of the rarest species in the marine environment in terms of in terms of their relative abundance and the patchiness of their distribution, with estimates of cetacean density <span class="citation" data-cites="Becker2020 paiu_etal24">(e.g., <a href="#ref-Becker2020" role="doc-biblioref">Elizabeth A. Becker et al. 2020</a>; <a href="#ref-paiu_etal24" role="doc-biblioref">Paiu et al. 2024</a>)</span> several orders of magnitude smaller than that of fishes, plankton, or microbes <span class="citation" data-cites="bar-on_etal18 irigoien_etal14 whitman_etal98">(e.g., <a href="#ref-bar-on_etal18" role="doc-biblioref">Bar-On, Phillips, and Milo 2018</a>; <a href="#ref-irigoien_etal14" role="doc-biblioref">Irigoien et al. 2014</a>; <a href="#ref-whitman_etal98" role="doc-biblioref">Whitman, Coleman, and Wiebe 1998</a>)</span> and scaling with individual biomass as predicted by ecological theory <span class="citation" data-cites="jennings_etal08">(<a href="#ref-jennings_etal08" role="doc-biblioref">Jennings et al. 2008</a>)</span>. Traditionally, cetacean habitat use and distributions are mapped using observations from visual and/or passive acoustic surveys <span class="citation" data-cites="dalpaz_etal21 fiedler_etal23 Forney1998 Findlay1992 becker_etal22 kanaji_miyashita21">(e.g., <a href="#ref-dalpaz_etal21" role="doc-biblioref">Dalpaz et al. 2021</a>; <a href="#ref-fiedler_etal23" role="doc-biblioref">Fiedler et al. 2023</a>; <a href="#ref-Forney1998" role="doc-biblioref">Forney and Barlow 1998</a>; <a href="#ref-Findlay1992" role="doc-biblioref">Findlay et al. 1992</a>; <a href="#ref-becker_etal22" role="doc-biblioref">Elizabeth A. Becker et al. 2022</a>; <a href="#ref-kanaji_miyashita21" role="doc-biblioref">Kanaji and Miyashita 2021</a>)</span>. Visual line transect surveys are the most common, in which observers aboard a ship or airplane record detected marine mammals and their distance to the transect line, covering the survey area in a systematic pattern. These surveys are limited to surface (typically &lt;10 m) observations, where most cetaceans spend very little of their time, made in a relatively small radius from the observation platform [e.g., approximaely 11 km from a typical NOAA survey vessel; <span class="citation" data-cites="Barlow2016">Barlow (<a href="#ref-Barlow2016" role="doc-biblioref">2016</a>)</span>], and during daylight hours - and their effectiveness decreases in poor weather or sea state. Ship-based passive acoustic line-transect surveys tow hydrophones along similar systematic transects, and can detect mid-to-high frequency signals within a radius of 10 km, and lower frequency signals in a radius of 10s-100s of km. Static passive acoustic data collection employs hydrophones mounted to surface buoys or the seafloor, with similar detection frequencies and sensitivies. Passive acoustic surveys are not limited to surface or daylight observations, but only detect species that are actively vocalizing.</p>
+<p>Systematic eDNA surveys, where water samples are collected along transects, do not share limitations related to depth, daylight, weather conditions, or species’ vocal activity and are therefore potentially powerful as standalone or complementary monitoring tools <span class="citation" data-cites="pikitch18">(<a href="#ref-pikitch18" role="doc-biblioref">Pikitch 2018</a>)</span>. However, it is important to consider the unique limitations of eDNA surveys when using this approach independently or jointly with other method. Because eDNA survives for several hours to days <span class="citation" data-cites="brandao-dias_etal25">(<a href="#ref-brandao-dias_etal25" role="doc-biblioref">Brandão-Dias et al. 2025</a>)</span>, an eDNA sample represents a longer temporal integration of species’ occurrence at a given location than visual or acoustic snapshots. Additionally, the distribution of eDNA is influenced by diffusion and transport associated with oceanographic processes <span class="citation" data-cites="yamahara_etal25a brasseale_etal25 xiong_etal25">(<a href="#ref-yamahara_etal25a" role="doc-biblioref">Yamahara et al. 2025</a>; <a href="#ref-brasseale_etal25" role="doc-biblioref">Brasseale et al. 2025</a>; <a href="#ref-xiong_etal25" role="doc-biblioref">Xiong et al. 2025</a>)</span>, as well as sinking rates, and therefore eDNA detected in a sample may have a provenance up to 10s of km from the sample site <span class="citation" data-cites="Andruszkiewicz2019">(<a href="#ref-Andruszkiewicz2019" role="doc-biblioref">Elizabeth A. Andruszkiewicz et al. 2019</a>)</span>. Despite this temporal persistence and potential for movement, eDNA has been previously shown to reflect geographic distributions and depth patterns of marine species <span class="citation" data-cites="canals_etal21 guri_etal25 shelton_etal22">(<a href="#ref-canals_etal21" role="doc-biblioref">Canals et al. 2021</a>; <a href="#ref-guri_etal25" role="doc-biblioref">Guri et al. 2025</a>; <a href="#ref-shelton_etal22" role="doc-biblioref">Shelton et al. 2022</a>)</span>.</p>
+<p>Marine surveys are expensive and logistically challenging, and eDNA samples represent a small volume of water (typically &lt;3 L per sample) compared to the survey area. They are also costly to process, so studies targeting a specific set of rare species may benefit from restricting their range of sampling depths via spatial or niche-based modeling. There is currently a lack of published data regarding optimal sampling depths to target rare taxa, or what ecological and observational processes may drive variability in the probability of detecting those taxa across depths.</p>
+<p>Here, we use spatial and niche-based modeling to describe the <span class="math inline">\(z\)</span> distribution of cetacean species’ eDNA in the water column and identify broad ecological drivers of the observed patterns. We specifically ask:</p>
 <ol type="1">
-<li>Does cetacean eDNA distribution vary in the depth dimension? If so, can this variabilty be predicted by preferred prey or phylogeny?</li>
-<li>Does latitudinal and longitudinal variability in eDNA distribution interact with depth variability to affect species-specific probability of detection in three dimensions?</li>
+<li>Does probability of detection (POD) of cetacean eDNA vary in response to technical replication <span class="citation" data-cites="ficetola_etal15">(<a href="#ref-ficetola_etal15" role="doc-biblioref">Ficetola et al. 2015</a>)</span>, primer specificity <span class="citation" data-cites="shaffer_etal25">(<a href="#ref-shaffer_etal25" role="doc-biblioref">Shaffer et al. 2025</a>)</span>, or post-extraction DNA degradation <span class="citation" data-cites="brandao-dias_etal25">(<a href="#ref-brandao-dias_etal25" role="doc-biblioref">Brandão-Dias et al. 2025</a>)</span> due to laboratory freeze/thaw cycles?</li>
+<li>Does detection rate of cetacean eDNA vary in the depth (<span class="math inline">\(z\)</span>) dimension? If so, can this variabilty be predicted by preferred prey categories or phylogeny (e.g.&nbsp;taxonomic family)?</li>
+<li>Does latitudinal and longitudinal variability in eDNA distribution interact with depth variability to affect species-specific detection rate in three dimensions?</li>
 </ol>
-<p>In addition to these ecological questions, we quantify the effect of common sources of observational bias on our detection of rare species, including technical replication <span class="citation" data-cites="ficetola_etal15">(<a href="#ref-ficetola_etal15" role="doc-biblioref">Ficetola et al. 2015</a>)</span> and primer specificity <span class="citation" data-cites="shaffer_etal25">(<a href="#ref-shaffer_etal25" role="doc-biblioref">Shaffer et al. 2025</a>)</span>. We also consider the effect of DNA degradation on detection rates; while DNA degradation has been shown to decay over time <span class="citation" data-cites="brandao-dias_etal25">(e.g. <a href="#ref-brandao-dias_etal25" role="doc-biblioref">Brandão-Dias et al. 2025</a>)</span>, we specifically consider the effect of freeze/thaw cycles on DNA decay and downstream detection probability.</p>
-<p>To answer these questions, we utilize eDNA (water) samples collected in the California Current in 2019 in order to assess the abundance of North Pacific hake (<em>Merluccius productus</em>). We leverage this opportunistic dataset to examine cetacean detections generated via genetic metabarcoding of three mitochondrial target regions. By collapsing eDNA detections from these three primers across latitude and longitude (<span class="math inline">\(xy\)</span>) and focusing only on the depth (<span class="math inline">\(z\)</span>) distribution of sampling effort (0-500 m), we aim to determine (1) how detection probability varies with primer specificity, technical replication, or freezing and thawing samples; and (2) whether species- or taxon-specific detection probability varies with depth. Finally, we explicitly incorporate spatial (<span class="math inline">\(xy\)</span>) distributions to determine (3) whether depth-dependent detection probability varies with latitude and longitude.</p>
+<p>To answer these questions, we utilize eDNA samples collected from seawater in the California Current in 2019 in order to assess the abundance of North Pacific hake (<em>Merluccius productus</em>). We leverage this opportunistic dataset to examine cetacean detections generated via genetic metabarcoding of three mitochondrial target regions. We first use a hierarchical Bayesian framework to examine the POD of cetacean DNA given it’s presence in an eDNA sample. Next, we use a GAM framework to examine species-specific detection rate across sampling depth (0-500 m), then incorporate spatial location information to examine species-specific variability in detection rate in three dimensions.</p>
 </section>
 <section id="methods" class="level2">
 <h2 class="anchored" data-anchor-id="methods">Methods</h2>
 <section id="sample-collection" class="level3">
 <h3 class="anchored" data-anchor-id="sample-collection">Sample Collection</h3>
-<p>We used eDNA samples collected on the 2019 US-Canada Integrated Ecosystems and Acoustics-Trawl Survey for Pacific hake from 2 July to 19 August 2019. The study area is encompassed by the California Current System, which is 500-800km wide, extends from 43°N to 23°N, and comprises an equatorward surface current and a subsurface poleward current that is concentrated mainly on the continental shelf <span class="citation" data-cites="hickey79">(<a href="#ref-hickey79" role="doc-biblioref">Hickey 1979</a>)</span>. The system is characterized by strong alongshore advection, inshore upwelling concentrated primarily along the continental shelf break, and multiple terrestrial and oceanic water sources <span class="citation" data-cites="mcclatchie14">Auad, Roemmich, and Gilson (<a href="#ref-auad_etal11" role="doc-biblioref">2011</a>)</span>. These complex oceanographic processes support a highly productive and diverse assemblage of plankton and fishes, and form a rich prey base for at least 25 cetacean species that inhabit the study area <span class="citation" data-cites="carretta_etal23">(<a href="#ref-carretta_etal23" role="doc-biblioref">Carretta et al. 2023</a>)</span>.</p>
-<p>A full description of field sampling and DNA extraction are provided in Shelton et al.&nbsp;(2022). Briefly, we used water samples that were previously collected from seawater at 175 stations in the study area, spanning south-north from latitudes 37.89499°N to 48.39881°N and west-east 126.4298°W to 122.8638°W. We targeted six depths, so that our sample set of 516 samples included 148 samples collected at 0 m, 147 samples collected at 50 m, 74 samples collected at 150 m, 73 samples collected at 300 m, and 74 samples collected at 500 m. The field team collected water using Niskin bottles attached to a CTD rosette and filtered 2.5 L of water from each station and depth using a 47-mm diameter mixed cellulose ester (MCE) filter with a 1-µm pore size and a vacuum filtration manifold connected to a vacuum pump, then immediately preserved the filters in Longmire’s buffer and stored them at room temperature until extraction.</p>
+<p>We used eDNA samples collected on the 2019 US-Canada Integrated Ecosystems and Acoustics-Trawl Survey for Pacific hake from 2 July to 19 August 2019. The study area is within the California Current System, which is 500-800 km wide, extends from 43°N to 23°N, and comprises an equatorward surface current and a subsurface poleward current that is concentrated mainly on the continental shelf <span class="citation" data-cites="hickey79">(<a href="#ref-hickey79" role="doc-biblioref">Hickey 1979</a>)</span>. The system is characterized by strong alongshore advection, inshore upwelling concentrated primarily along the continental shelf break, and multiple terrestrial and oceanic water sources <span class="citation" data-cites="mcclatchie14 auad_etal11">(e.g., <a href="#ref-mcclatchie14" role="doc-biblioref">McClatchie 2014</a>; <a href="#ref-auad_etal11" role="doc-biblioref">Auad, Roemmich, and Gilson 2011</a>)</span>. These complex oceanographic processes support a highly productive and diverse assemblage of plankton and fishes, and form a rich prey base for at least 25 cetacean species that inhabit the study area <span class="citation" data-cites="carretta_etal23">(<a href="#ref-carretta_etal23" role="doc-biblioref">Carretta et al. 2023</a>)</span>.</p>
+<p>A full description of field sampling and DNA extraction methods are provided in Shelton et al.&nbsp;(2022). Briefly, we used seawater samples collected at 175 stations in the study area, spanning south-north from latitudes 37.89499°N to 48.39881°N and west-east from longitudes 126.4298°W to 122.8638°W. We targeted five depths for sample collection, so that our sample set of 516 samples included 148 samples collected at the surface (~3 m), 147 samples collected at 50 m, 74 samples collected at 150 m, 73 samples collected at 300 m, and 74 samples collected at 500 m. Where the bottom was shallow, we did not collect deeper water samples. The field team collected water using Niskin bottles attached to a CTD rosette and filtered 2.5 L of water from each station and depth using a 47-mm diameter mixed cellulose ester (MCE) filter with a 1-µm pore size and a vacuum filtration manifold connected to a vacuum pump, then immediately preserved the filters in Longmire’s buffer and stored them at room temperature until extraction.</p>
 </section>
 <section id="sample-processing" class="level3">
 <h3 class="anchored" data-anchor-id="sample-processing">Sample Processing</h3>
-<p>DNA was previously extracted using a phase-lock phenol chloroform method as described in Ramón-Laca et al.&nbsp;(2021). Using this extracted DNA, we randomized stations and depths across 96-well working plates, removed one plate at a time for PCR amplification and library preparation, and stored samples in a -20°C freezer when not in use. Each time we removed a plate from the freezer, we recorded a freeze/thaw cycle for that plate in order to examine the effect of expected DNA degradation due to freeze/thaw cycles on downstream probability of detecting rare species.</p>
-<p>Next, we tested all samples for inhibition by spiking an internal positive control (IPC) of known concentration into each sample and quantifying it using a probe assay with quantitative PCR (qPCR). We identified inhibited samples by examining the IPC concentration, as described in Shelton et al.&nbsp;(2022). For each sample, we selected a dilution that was determined from the qPCR data (described above) to be not inhibited, which was either 1x or 0.2x across all samples.</p>
-<p>We then amplified each sample with three different mitochondrial primer sets: MFU targeting fishes using the 12S region <span class="citation" data-cites="Miya2015">(<a href="#ref-Miya2015" role="doc-biblioref">Miya et al. 2015</a>)</span>, MV1 targeting vertebrates using the 12S region, <span class="citation" data-cites="valsecchi_etal20">(<a href="#ref-valsecchi_etal20" role="doc-biblioref">Valsecchi et al. 2020</a>)</span> and DL targeting only cetaceans using the control region <span class="citation" data-cites="baker_etal06">(<a href="#ref-baker_etal06" role="doc-biblioref">Baker et al. 2006</a>)</span>. For all samples, we ran one technical PCR replicate for MFU, one for DL, and three for MV1. We optimized primer, Taq, and cycling conditions using mock communities <span class="citation" data-cites="shaffer_etal25">(<a href="#ref-shaffer_etal25" role="doc-biblioref">2025</a>)</span>.</p>
+<p>DNA was extracted using a phase-lock phenol chloroform method as described in Ramón-Laca et al. <span class="citation" data-cites="ramon-laca_etal21a">(<a href="#ref-ramon-laca_etal21a" role="doc-biblioref">2021</a>)</span>. We randomized stations and depths across 96-well working plates, removed one plate at a time from the freezer for PCR amplification and library preparation, and stored samples in a -20°C freezer when not in use. Each time we removed a plate from the freezer, we recorded a freeze/thaw cycle for that plate in order to examine the effect of expected DNA degradation due to freeze/thaw cycles on downstream probability of detecting rare species.</p>
+<p>We tested all samples for inhibition with quantitative PCR (qPCR) using a Taqman probe assay that included an internal positive control (IPC) of known concentration. We identified inhibited samples by examining the IPC concentration, as described in Shelton et al.&nbsp;(2022). For each sample, we selected a dilution that was determined from the qPCR data (described above) to be not inhibited, which was either 1x or 0.2x across all samples.</p>
+<p>We then amplified each sample with three different mitochondrial metabarcode primer sets: MiFish-U (MFU) targeting fishes using the mitochondrial 12S region <span class="citation" data-cites="Miya2015">(<a href="#ref-Miya2015" role="doc-biblioref">Miya et al. 2015</a>)</span>, MarVer1 (MV1) targeting all vertebrates using the mitochondrial 12S region, <span class="citation" data-cites="valsecchi_etal20">(<a href="#ref-valsecchi_etal20" role="doc-biblioref">Valsecchi et al. 2020</a>)</span>, and Dlp1.5/Oordlp4 (DL) targeting only cetaceans using the mitochondrial control region <span class="citation" data-cites="baker_etal18">(<a href="#ref-baker_etal18" role="doc-biblioref">Baker et al. 2018</a>)</span>. For all samples, we ran one technical PCR replicate for MFU, one for DL, and three for MV1. We optimized primer, Taq, and cycling conditions using mock communities <span class="citation" data-cites="shaffer_etal25">(<a href="#ref-shaffer_etal25" role="doc-biblioref">Shaffer et al. 2025</a>)</span>.</p>
 <p>Our reaction mixture for amplification (PCR1) consisted of 10 μL of Phusion Master Mix (2X), 0.4 μL of the forward primer (10 μM); 0.4 μL of the reverse primer (10 μM), 0.6 μL of 100% DMSO, 0.5 μL of rAlbumin (20 μg/μL), 4.4 μL of nuclease-free water and 2 μL of DNA template. We ran PCR1 with the following cycling conditions: an initial denaturation of 98°C for 30 sec; followed by cycles of: denaturation (98°C for 10 sec), annealing (60°C for 30 sec), and extension (72°C for 3 sec); with a final extension of 72°C for 10 min and hold at 4°C. We ran 35 cycles for MFU and MV1, and 40 cycles for DL.</p>
 <p>If a sample failed to produce a band at the previously determined optimal dilution when amplified using MV1 or MFU, we diluted the sample and reran it until a visible band was produced. We could not do the same for DL, which targets only cetaceans, because the rarity of our target made it prohibitively difficult to distinguish between an inhibited sample and a negative sample. Here we assumed that the optimal dilution selected by qPCR was not inhibited and treated samples without bands as negative detections.</p>
-<p>Any MFU and MV1 samples that returned fewer than 100 total reads after sequencing were rerun in an effort to complete the dataset to include one successful MFU replicate and three successful MV1 replicates. This required up to six replicate sequencing runs in some cases.</p>
+<p>Any MFU and MV1 samples that returned fewer than 1000 classified non-human reads after sequencing were rerun in an effort to complete the dataset to include one successful MFU replicate and three successful MV1 replicates. This required up to six replicate sequencing runs in some cases.</p>
 </section>
 <section id="library-preparation-and-sequencing" class="level3">
 <h3 class="anchored" data-anchor-id="library-preparation-and-sequencing">Library Preparation and Sequencing</h3>
-<p>We then cleaned the amplified PCR product using Ampure Beads (1.2x beads:product ratio, with two 70% ethanol washes) and then indexed each sample in a second PCR reaction (PCR2) using the following reaction mixture: 12.5 μL of KAPA HiFi HotStart ReadyMix (Roche Diagnostics), 1.25 μL of IDT for Illumina DNA/RNA UD Indexes (Sets A-D), as well as primer-specific volumes of PCR1 product and nuclease free water. We added 5 μL PCR1 product, and 6.25 μL of nuclease free water for all MFU and MV1 samples, and added 11.25 μL PCR1 product and no nuclease free water to all DL samples. We ran PCR2 using the following cycling conditions: an initial denaturation of 95°C for 5 min; cycles of: 98°C for 20 sec, 56°C for 30 sec, 72°C for 1 min; and a final extension of 72°C for 5 min. We ran <strong>35 [IS THIS RIGHT?]</strong> cycles for MiFish-U and MarVer1, and 12 cycles for D-loop.</p>
-<p>After indexing, we visualized the PCR product on a 2% agarose gel and quantified DNA concentration using Quant-iT™ dsDNA Assay Kit (Thermo Fisher Scientific, USA) with Fluoroskan™ Microplate Fluorometer (Thermo Fisher Scientific, USA). We then normalized all indexed products to a concentration of <strong>5ng/ul [IS THIS RIGHT?]</strong>, pooled the normalized product into 96-sample libraries for sequencing, and then extracted the target band using the E-Gel™ SizeSelect™ II Agarose Gels (Thermo Fisher Scientific, USA). Finally, we loaded our pooled libraries, in 6-8 pM concentrations with a 20% PhiX spike-in, onto an Illumina MiSeq platform at the University of Washington with a v3 600 cycle kit. In total, we ran 36 sequencing runs between May 2023 and July 2025.</p>
-<p>For every sequencing run, we added a sample with nuclease-free water (negative control) and genomic DNA from kangaroo (positive control) to PCR1 and carried it through the rest of the library preparation workflow. If anything other than human or NA was found in the negative control, or if kangaroo appeared in any other eDNA sample, we omitted that plate from the final analysis. This occurred for only one plate <strong>of technical replicates, which was later re-run without contamination [IS THIS RIGHT?]</strong>.</p>
+<p>We then cleaned the amplified PCR product using Ampure Beads (1.2x beads:product ratio, with two 70% ethanol washes) and indexed each sample in a second PCR reaction (PCR2) using the following reaction mixture: 12.5 μL of KAPA HiFi HotStart ReadyMix (Roche Diagnostics), 1.25 μL of IDT for Illumina DNA/RNA UD Indexes (Sets A-D), as well as primer-specific volumes of PCR1 product and nuclease free water. We added 5 μL PCR1 product, and 6.25 μL of nuclease free water for all MFU and MV1 samples, and added 11.25 μL PCR1 product and no nuclease free water to all DL samples. We ran PCR2 using the following cycling conditions: an initial denaturation of 95°C for 5 min; cycles of: 98°C for 20 sec, 56°C for 30 sec, 72°C for 1 min; and a final extension of 72°C for 5 min. We ran eight cycles for MFU and MV1, and 12 cycles for DL.</p>
+<p>After indexing, we visualized the PCR product on a 2% agarose gel and quantified DNA concentration using Quant-iT™ dsDNA Assay Kit (Thermo Fisher Scientific, USA) with Fluoroskan™ Microplate Fluorometer (Thermo Fisher Scientific, USA). We then pooled equal quantities of DNA product from each sample into 96-sample libraries for sequencing, and extracted the target band using the E-Gel™ SizeSelect™ II Agarose Gels (Thermo Fisher Scientific, USA). Finally, we loaded our pooled libraries, in 6-8 pM concentrations with a 20% PhiX spike-in, onto an Illumina MiSeq platform at the University of Washington with a v3 600 cycle kit. In total, we ran 36 sequencing runs between May 2023 and July 2025.</p>
+<p>For every sequencing run, we added a sample with nuclease-free water (negative control) and genomic DNA from kangaroo (positive control) to PCR1 and carried it through the rest of the library preparation workflow. If anything other than human or NA was found in the negative control, or if kangaroo appeared in any other eDNA sample, we omitted that plate from the final analysis. This occurred for only one plate of technical replicates, which were removed from downstream analyses.</p>
 </section>
 <section id="bioinformatic-processing" class="level3">
 <h3 class="anchored" data-anchor-id="bioinformatic-processing">Bioinformatic Processing</h3>
-<p>We analyzed all sequencing data using the bioinformatics workflow established in Guri et al.&nbsp;(2025). We trimmed Illumina-demultiplexed reads with Cutadapt v4.9 to remove primer and adapter sequences, allowing a maximum mismatch rate of 0.1 (Martin, 2011). We then conducted quality filtering and minimum-length truncation using DADA2, and inferred amplicon sequence variants (ASVs) using default denoising settings <span class="citation" data-cites="Callahan2016">(<a href="#ref-Callahan2016" role="doc-biblioref">Callahan et al. 2016</a>)</span>.</p>
+<p>We analyzed all sequencing data using the bioinformatics workflow established in Guri et al. <span class="citation" data-cites="guri_etal25">(<a href="#ref-guri_etal25" role="doc-biblioref">2025</a>)</span>. We trimmed Illumina-demultiplexed reads with Cutadapt v4.9 to remove primer and adapter sequences, allowing a maximum mismatch rate of 0.1 (Martin, 2011). We then conducted quality filtering and minimum-length truncation using DADA2, and inferred amplicon sequence variants (ASVs) using default denoising settings <span class="citation" data-cites="Callahan2016">(<a href="#ref-Callahan2016" role="doc-biblioref">Callahan et al. 2016</a>)</span>.</p>
 <p>Following initial QAQC of the raw sequence data, we queried each unique ASV against a vertebrate mitochondrial subset of the January 2025 NCBI nr eukaryote database using standalone BLAST configured with “-word_size 20 -evalue 1e-30 -max_target_seqs 100” (Altschul et al., 1990), supplemented with a negative-taxid file to remove taxa that are not known to occur in the North Pacific Ocean. We made taxonomic assignments using a least-common-ancestor procedure in TaxonKit v0.17 (Shen &amp; Ren, 2021), prioritizing exact-identity matches and otherwise applying a stepwise identity threshold (&gt;99.3%, &gt;98%). We manually reviewed all cetacean identifications to ensure consistency with regional species distributions.</p>
 </section>
 <section id="detection-data-qaqc" class="level3">
 <h3 class="anchored" data-anchor-id="detection-data-qaqc">Detection Data QAQC</h3>
-<p>After bioinformatic processing of all samples, we removed any additional dilutions of MFU or MV1 samples that were run to maximize sequencing success, keeping only the iteration with the greatest total read count. We then defined a sample as a station/depth/technical replicate combination. To obtain positive detections for each sample, we kept any species with &gt; 1 sequencing read. We filtered out any non-target (non-cetacean) species, and also removed detections of bottlenose dolphins, which we considered likely contamination from concurrent labwork and/or captive animals, and unidentified Balaenopterids or Delphinids. Across all samples, we define non-detection as 0 reads for a given cetacean species in a station/depth location that was positive for non-target species (e.g.&nbsp;fish) in either MFU or MV1 sequence data.</p>
-<section id="data-standardization" class="level4">
-<h4 class="anchored" data-anchor-id="data-standardization">Data standardization</h4>
-<p>Because primer efficacy likely varies, and different numbers and types of technical replicates were sometimes run for different stations, we chose to standardize the dataset for further analysis so that the same number and type of technical replicates were included for each station and depth combination in the dataset. The standardized dataset included 1 technical replicate using MFU, 3 technical replicates using MV1, and 1 technical replicate using DL.</p>
-</section>
+<p>After bioinformatic processing of all samples, we removed any additional dilutions of MFU or MV1 samples that were run to maximize sequencing success, keeping only the iteration with the greatest total read count. We then defined a sample as a station/depth/technical replicate combination. To obtain positive detections for each sample, we kept any species with &gt; 1 sequencing read. We filtered out any non-target (non-cetacean) species, and also removed detections of bottlenose dolphins, which we considered likely contamination from concurrent labwork focused on this species, and unidentified Balaenopterids or Delphinids. Across all samples, we define non-detection as 0 reads for a given cetacean species in a station/depth location that was positive for non-target species (e.g.&nbsp;fish) in either MFU or MV1 sequence data.</p>
 </section>
 <section id="data-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="data-analysis">Data Analysis</h3>
-<section id="question-1-how-does-observation-bias-affect-rare-dna-detectability" class="level4">
-<h4 class="anchored" data-anchor-id="question-1-how-does-observation-bias-affect-rare-dna-detectability">Question 1: How does observation bias affect rare DNA detectability?</h4>
-<p>Because various decisions made during sample collection, processing, and sequencing can introduce observation bias, we first leveraged the information contained in multiple technical replicates from individual biological samples to better understand the detection processes for cetacean eDNA. Here we examine the probability of detecting cetacean DNA from any species, under the assumption that all cetacean DNA is equally capable of being detected if it is present [cite Shaffer paper here?]. We used a Bayesian hierarchical occupancy model to separately estimate the probability of occupancy/capture by depth and detectability by primer and number of freeze/thaw cycles, based on the model presented in Patin et al.&nbsp;(<em>in review</em>).</p>
-<p>We modeled the presence of cetacean eDNA in a given biological replicate at site <span class="math inline">\(i\)</span> and depth <span class="math inline">\(z\)</span>, <span class="math inline">\(y_{i,z}\)</span>, as a Bernoulli random variable with occurrence probability <span class="math inline">\(\Psi_d\)</span>:</p>
-<p><span class="math display">\[ y_{i,z} \sim \text{Bernoulli}(\Psi_{z}) \]</span></p>
-<p>where probability of presence in a sample at depth <span class="math inline">\(\Psi_z\)</span> is a smooth function of sample depth <span class="math inline">\(z\)</span>:</p>
+<section id="question-1-how-does-observation-error-affect-pod-of-cetacean-dna" class="level4">
+<h4 class="anchored" data-anchor-id="question-1-how-does-observation-error-affect-pod-of-cetacean-dna">Question 1: How does observation error affect POD of cetacean DNA?</h4>
+<p>The decisions made during sample collection, processing, and sequencing can introduce observation error. We therefore used the information contained in multiple technical replicates from individual biological samples to better understand the detection processes for cetacean eDNA. Here we estimate the probability of detection (POD) of cetacean DNA from any species, under the assumption of an equal POD across all cetacean species’ DNA if it is present in the sample, which approximates empirical resuls for the primers used in this study <span class="citation" data-cites="shaffer_etal25">(<a href="#ref-shaffer_etal25" role="doc-biblioref">Shaffer et al. 2025</a>)</span>. We used a Bayesian hierarchical occupancy model to separately estimate the probability of occupancy/capture by depth and POD by primer and number of freeze/thaw cycles, based on the model presented in Patin et al.&nbsp;(<em>in review</em>).</p>
+<p>We modeled the presence of cetacean eDNA at site <span class="math inline">\(i\)</span> and depth <span class="math inline">\(z\)</span>, <span class="math inline">\(w_{i,z}\)</span>, as a Bernoulli random variable with occurrence probability <span class="math inline">\(\Psi_z\)</span>:</p>
+<p><span class="math display">\[ w_{i,z} \sim \text{Bernoulli}(\Psi_{z}) \]</span></p>
+<p>where probability of presence in a sample at depth (<span class="math inline">\(\Psi_z\)</span>) is given as the logistic transform of an intercept (_0) plus a smooth function, <span class="math inline">\(f\)</span>, of sample depth <span class="math inline">\(z\)</span>:</p>
 <p><span id="eq-1"><span class="math display">\[ \text{logit}(\Psi_z) = \beta_0 + f(z).  \tag{1}\]</span></span></p>
-<p>We then modeled the observed detection of cetacean eDNA in each technical replicate <span class="math inline">\(x_t\)</span> as a Bernoulli random variable with primer- and freeze/thaw-specific detection probability <span class="math inline">\(\Omega_\text{primer*thaw}\)</span> conditional on presence in the biological sample <span class="math inline">\(y_{i,z}\)</span>:</p>
-<p><span id="eq-2"><span class="math display">\[ x_t \sim \text{Bernoulli}({\Omega_\text{primer}} \cdot z_{i,z}).  \tag{2}\]</span></span></p>
-<p>where detection probability <span class="math inline">\(\Omega\)</span> is a logit-linear function of primer type and number of freeze/thaw cycles that the sample used in the technical replicate has been subjected to <span class="math inline">\(F\)</span>:</p>
+<p>We then modeled the observed detection of cetacean eDNA in each technical replicate <span class="math inline">\(d_r\)</span> as a Bernoulli random variable with primer-specific (<span class="math inline">\(m\)</span>) and freeze/thaw-specific (<span class="math inline">\(t\)</span>) POD <span class="math inline">\(\Omega_\text{m*t}\)</span> conditional on presence in the biological sample <span class="math inline">\(w_{i,z}\)</span>:</p>
+<p><span id="eq-2"><span class="math display">\[ d_r \sim \text{Bernoulli}({\Omega_\text{m*t}} \cdot w_{i,z}).  \tag{2}\]</span></span></p>
+<p>where POD (<span class="math inline">\(\Omega\)</span>) is a logit-linear function of primer type (<span class="math inline">\(m\)</span>) and number of freeze/thaw cycles (<span class="math inline">\(T\)</span>) that the sample used for the technical replicate <span class="math inline">\(r\)</span> has been subjected to:</p>
 <p><span id="eq-3"><span class="math display">\[
-\text{logit}(\Omega_\text{primer*thaw}) = \beta_\text{primer} + \beta_\text{thaw} \cdot F.
+\text{logit}(\Omega_{m*t}) = \gamma_m + \gamma_t \cdot T_r.
 \tag{3}\]</span></span></p>
-<p>Here, <span class="math inline">\(\beta_\text{primer}\)</span> is a primer-specific intercept and <span class="math inline">\(\beta_\text{thaw}\)</span> is a slope parameter that interacts with <span class="math inline">\(F\)</span>, the number of freeze/thaw cycles.</p>
-<p>We implemented this model using nimble [<span class="citation" data-cites="devalpine_etal17">de Valpine et al. (<a href="#ref-devalpine_etal17" role="doc-biblioref">2017</a>)</span>; <a href="https://doi.org/10.5281/zenodo.17954119"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17954119.svg" class="img-fluid" alt="DOI"></a>] in R <span class="citation" data-cites="RCoreTeam2016">(<a href="#ref-RCoreTeam2016" role="doc-biblioref">R Core Team 2016</a>)</span>. We used uninformative or weakly informative prior distributions for model parameters and ran four chains, each with 250,000 iterations, 225,000 of which were burnin, and assessed convergence using the Gelman-Rubin diagnostic <span class="citation" data-cites="gelman_rubin92">(<a href="#ref-gelman_rubin92" role="doc-biblioref">Gelman and Rubin 1992</a>)</span>.</p>
-<p>Using the results of this model, we simulated the primer-specific expected probability of detection with increasing technical replication.</p>
+<p>Here, <span class="math inline">\(\gamma_\text{m}\)</span> is a primer-specific intercept and <span class="math inline">\(\gamma_\text{t}\)</span> is a slope parameter that interacts with <span class="math inline">\(T\)</span>, the number of freeze/thaw cycles.</p>
+<p>We implemented this model using nimble [<span class="citation" data-cites="devalpine_etal17">de Valpine et al. (<a href="#ref-devalpine_etal17" role="doc-biblioref">2017</a>)</span>; zenodo.17954119] in R <span class="citation" data-cites="RCoreTeam2016">(<a href="#ref-RCoreTeam2016" role="doc-biblioref">R Core Team 2016</a>)</span>. We used uninformative or weakly informative prior distributions for model parameters and ran four chains, each with 250,000 iterations, 225,000 of which were burnin, and assessed convergence using the Gelman-Rubin diagnostic <span class="citation" data-cites="gelman_rubin92">(<a href="#ref-gelman_rubin92" role="doc-biblioref">Gelman and Rubin 1992</a>)</span>.</p>
+<p>Using the posterior mean estimates of detectability after one freeze-thaw cycle, we simulated the primer-specific expected detectability with increasing technical replication while holding freeze-thaw cycles constant.</p>
+<p>We were not able to model species-specific <span class="math inline">\(z\)</span>-distribution of eDNA detectability using the occupancy model because models with species-specific smooths on depth did not converge; we hypothesize that this was due to model overparameterization relative to the amount of data available per species (particularly the number of positive detections). We therefore visually compared the predicted <span class="math inline">\(z\)</span>-distribution of cetacean eDNA in an occupancy framework vs.&nbsp;a generalized additive model (GAM) framework to confirm that both models produced qualitatively similar estimates of the <span class="math inline">\(z\)</span>-distribution of cetacean DNA, and used GAM models for Questons 2 and 3 in our study.</p>
 </section>
 <section id="question-2-does-species-specific-pod-vary-with-depth" class="level4">
 <h4 class="anchored" data-anchor-id="question-2-does-species-specific-pod-vary-with-depth">Question 2: Does species-specific POD vary with depth?</h4>
-<p>To determine whether species-specific POD varies in the z (depth) dimension, we used generalized additive models [GAMs; <span class="citation" data-cites="Wood2017">S. N. Wood (<a href="#ref-Wood2017" role="doc-biblioref">2017</a>)</span>] implemented using the mgcv package in R <span class="citation" data-cites="RCoreTeam2016">(<a href="#ref-RCoreTeam2016" role="doc-biblioref">R Core Team 2016</a>)</span>. GAMs have previously been demonstrated to be an appropriate tool for modeling spatial distributions of cetaceans (e.g. <span class="citation" data-cites="Becker2016">Elizabeth A. Becker et al. (<a href="#ref-Becker2016" role="doc-biblioref">2016</a>)</span>; <span class="citation" data-cites="Becker2019">Elizabeth A. Becker et al. (<a href="#ref-Becker2019" role="doc-biblioref">2019</a>)</span>; <span class="citation" data-cites="Becker2020">Elizabeth A. Becker et al. (<a href="#ref-Becker2020" role="doc-biblioref">2020b</a>)</span>; <span class="citation" data-cites="becker_etal22">Elizabeth A. Becker et al. (<a href="#ref-becker_etal22" role="doc-biblioref">2022</a>)</span>; <span class="citation" data-cites="abrahms_etal19b">Abrahms et al. (<a href="#ref-abrahms_etal19b" role="doc-biblioref">2019</a>)</span>). We fit all GAMs using detection or non-detection for each site, depth, and technical replicate as the response variable. We used a binomial distribution with a logit link function, and estimated model parameters using REML. Models examining the effect of depth were built iteratively, starting by modelling the probability of detection (POD) of any cetacean species as a smooth function of sampling depths (Eq. <a href="#eq-4" class="quarto-xref">Equation&nbsp;4</a>), then allowing the intercept to vary by species (Eq. <a href="#eq-5" class="quarto-xref">Equation&nbsp;5</a>), and finally allowing both intercept and model smooth to vary by species (Eq. <a href="#eq-6" class="quarto-xref">Equation&nbsp;6</a>).</p>
+<p>For all following analyses, we define probability of detection (POD) as the probability of detecting cetacean eDNA in a sample without the assumption of its presence in the sample, so that species-specific POD comprises both the probability of that species’ occurrence at a site as well as the probability of capturing and detecting the species’ eDNA in a sample. Because cetacean DNA detectability varies only minimally across cetacean species for the primer sets used in this study <span class="citation" data-cites="shaffer_etal25">(<a href="#ref-shaffer_etal25" role="doc-biblioref">Shaffer et al. 2025</a>)</span>, we interpret variability in POD here to be driven primarily by variability in the distribution of species-specific eDNA. Similarly, we have excluded primer specificity, technical replication, and number of freeze/thaw cycle from downstream analyses to ensure model convergence, but were applied consistently across biological samples, and samples were randomized across sequencing plates to minimize bias in observation error.</p>
+<p>To determine whether species-specific POD varies in the <span class="math inline">\(z\)</span> dimension, we used generalized additive models [GAMs; <span class="citation" data-cites="Wood2017">S. N. Wood (<a href="#ref-Wood2017" role="doc-biblioref">2017</a>)</span>] implemented using the mgcv package in R <span class="citation" data-cites="RCoreTeam2016">(<a href="#ref-RCoreTeam2016" role="doc-biblioref">R Core Team 2016</a>)</span>. GAMs have previously been demonstrated to be an appropriate tool for modeling spatial distributions of cetaceans <span class="citation" data-cites="becker_etal22 abrahms_etal19b">(e.g. <a href="#ref-becker_etal22" role="doc-biblioref">Elizabeth A. Becker et al. 2022</a>; <a href="#ref-abrahms_etal19b" role="doc-biblioref">Abrahms et al. 2019</a>)</span>. We fit all GAMs using detection or non-detection for each site, depth, and technical replicate as the response variable. We used a binomial distribution with a logit link function, and estimated model parameters using REML. Models examining the effect of depth were built iteratively, starting by modelling the probability of detection (POD) of any cetacean species as a smooth function of sampling depths (Eq. <a href="#eq-4" class="quarto-xref">Equation&nbsp;4</a>), then allowing the intercept to vary by species (Eq. <a href="#eq-5" class="quarto-xref">Equation&nbsp;5</a>), and finally allowing both intercept and model smooth to vary by species (Eq. <a href="#eq-6" class="quarto-xref">Equation&nbsp;6</a>).</p>
 <p><span id="eq-4"><span class="math display">\[
-\text{logit}(\mu_i) = \beta_0 + f(z_i)
+\text{logit}(\mu_z) = \beta_0 + f(z)
 \tag{4}\]</span></span></p>
 <p><span id="eq-5"><span class="math display">\[
-\text{logit}(\mu_{i,s}) = \beta_{s} + f(z_i)
+\text{logit}(\mu_{z,s}) = \beta_{s} + f(z)
 \tag{5}\]</span></span></p>
 <p><span id="eq-6"><span class="math display">\[
-\text{logit}(\mu_{i,s}) = \beta_{s} + f_s(z_i)
+\text{logit}(\mu_{z,s}) = \beta_{s} + f_s(z_i)
 \tag{6}\]</span></span></p>
-<p>In these equations, <span class="math inline">\(\mu_i\)</span> is the probability of detecting any cetacean for location <span class="math inline">\(i\)</span> and depth <span class="math inline">\(z_i\)</span> and <span class="math inline">\(\mu_{i,s}\)</span> is the probability of detecting species <span class="math inline">\(s\)</span> at location and depth <span class="math inline">\(i\)</span>. <span class="math inline">\(\beta_0\)</span> is a shared intercept parameter and <span class="math inline">\(\beta_{s}\)</span> is a species-specific intercept parameter. <span class="math inline">\(f(d_i)\)</span> denotes a smooth on depth across species and <span class="math inline">\(f_s(d_i)\)</span> denotes a species-specific smooth on depth.</p>
-<p>In addition to examining depth variability across species-level strata, we examined several two other stratification schemes in order to determine whether depth variability in detection probability is driven by (1) phylogeny or (2) preferred prey type. Although we have determined that primer specificity, technical replication, and number of freeze/thaw cycles affect POD in our samples, we have excluded these from downstream modeling since primers and technical replication were applied consistently across samples.</p>
-<p>We assessed model fit using AIC, and model performance using standard metrics including the percent of deviance explained, the area under the receiver operating characteristic curve <span class="citation" data-cites="fawcett06">(AUC, <a href="#ref-fawcett06" role="doc-biblioref">Fawcett 2006</a>)</span>, the true skill statistic <span class="citation" data-cites="allouche_etal06">(TSS, <a href="#ref-allouche_etal06" role="doc-biblioref">Allouche, Tsoar, and Kadmon 2006</a>)</span>, and a visual comparison of predicted vs.&nbsp;observed detection rates across sampling depths. We also visually compared our model-based predictions of probability of detection across depth with estimates of species-specific time-at-depth as reported by Watwood and Buonantony <span class="citation" data-cites="watwood_buonantony12">(<a href="#ref-watwood_buonantony12" role="doc-biblioref">2012</a>)</span> and the U.S. Department of the Navy <span class="citation" data-cites="u_s_departmentofthenavy17">(<a href="#ref-u_s_departmentofthenavy17" role="doc-biblioref">2017</a>)</span>.</p>
+<p><span id="eq-7"><span class="math display">\[
+\text{logit}(\mu_{z,s}) = \beta_{s} + f_F(z_i)
+\tag{7}\]</span></span></p>
+<p><span id="eq-8"><span class="math display">\[
+\text{logit}(\mu_{z,s}) = \beta_{s} + f_e(z_i)
+\tag{8}\]</span></span></p>
+<p>In these equations, <span class="math inline">\(\mu_z\)</span> is the detection rate for any cetacean at depth <span class="math inline">\(z\)</span> and <span class="math inline">\(\mu_{z,s}\)</span> is the detection rate for species <span class="math inline">\(s\)</span> at depth <span class="math inline">\(z\)</span>. <span class="math inline">\(\beta_0\)</span> is a shared intercept parameter and <span class="math inline">\(\beta_{s}\)</span> is a species-specific intercept parameter. <span class="math inline">\(f(z)\)</span> denotes a smooth on depth across species and <span class="math inline">\(f_s(z)\)</span> denotes a species-specific factor-smooth on depth <span class="citation" data-cites="Pedersen2019a">(<a href="#ref-Pedersen2019a" role="doc-biblioref">Pedersen et al. 2019</a>)</span>. In Equations 6-8 we compare three factor-smooth stratification schemes: (1) species (<span class="math inline">\(f_s(z)\)</span>), (2) taxonomic family (<span class="math inline">\(f_F(z)\)</span>), and (3) preferred prey type (<span class="math inline">\(f_e(z_i)\)</span>).</p>
+<p>We assessed model fit using AIC, and model performance using standard metrics including the percent of deviance explained, the area under the receiver operating characteristic curve <span class="citation" data-cites="fawcett06">(AUC, <a href="#ref-fawcett06" role="doc-biblioref">Fawcett 2006</a>)</span>, the true skill statistic <span class="citation" data-cites="allouche_etal06">(TSS, <a href="#ref-allouche_etal06" role="doc-biblioref">Allouche, Tsoar, and Kadmon 2006</a>)</span>, and a visual comparison (i.e.&nbsp;via plotting) of predicted vs.&nbsp;observed detection rates across sampling depths. We also visually compared our model-based predictions of probability of detection across depth with estimates of species-specific time-at-depth as reported by Watwood and Buonantony <span class="citation" data-cites="watwood_buonantony12">(<a href="#ref-watwood_buonantony12" role="doc-biblioref">2012</a>)</span> and the U.S. Department of the Navy <span class="citation" data-cites="u_s_departmentofthenavy17">(<a href="#ref-u_s_departmentofthenavy17" role="doc-biblioref">2017</a>)</span>.</p>
 </section>
 <section id="question-3-does-depth-variability-in-pod-covary-with-geographic-variability" class="level4">
 <h4 class="anchored" data-anchor-id="question-3-does-depth-variability-in-pod-covary-with-geographic-variability">Question 3: Does depth variability in POD covary with geographic variability?</h4>
-<p>We also used a GAM to examine covariability between depth (<span class="math inline">\(z\)</span>), latitude (<span class="math inline">\(y\)</span>), and longitude (<span class="math inline">\(x\)</span>) on a per-species basis. Using the best-fit model from Question 2 as our starting point (species-specific variability in POD with <span class="math inline">\(z\)</span>), we tested covariation in <span class="math inline">\(xyz\)</span> on a species-specific basis with the following:</p>
-<p><span id="eq-7"><span class="math display">\[
+<p>We also used a GAM to examine covariability in the effects of depth (<span class="math inline">\(z\)</span>), latitude (<span class="math inline">\(y\)</span>), and longitude (<span class="math inline">\(x\)</span>) on species-specific detection rate. Using the best-fit model from Question 2 as our starting point (Eq 6: species-specific variability in detection rate with <span class="math inline">\(z\)</span>), we tested covariation in <span class="math inline">\(xyz\)</span> on a species-specific basis with the following:</p>
+<p><span id="eq-9"><span class="math display">\[
 \text{logit}(\mu_{s,i}) = \beta_{s} + f_s(x_i,y_i,z_i)
-\tag{7}\]</span></span></p>
-<p><span class="math inline">\(f(x_i,y_i,z_i)\)</span> was constructed as tensor product of marginal smoothers of x, y, and z and in the case of the species-specific factor-smooth interaction we used the tensor product of x, y, and z, and a random effect on species. Using the ti() contraction in mgcv enabled us to construct intermediate tensor products on interactions that we were interested in.</p>
-<p>As in Question 2, we assessed model fit using AIC, and model performance using percent deviance explained, AUC, and TSS. We then conducted a visual comparison of the predicted depth of maximum POD across and our observed detection depth within the study area for the most frequently observed baleen whale, dolphin, and beaked whale.</p>
+\tag{9}\]</span></span></p>
+<p><span class="math inline">\(f_s(x_i,y_i,z_i)\)</span> was constructed as tensor product of marginal smoothers of <span class="math inline">\(x\)</span>, <span class="math inline">\(y\)</span>, and <span class="math inline">\(z\)</span> and in the case of the species-specific factor-smooth interaction we used the tensor product of <span class="math inline">\(x\)</span>, <span class="math inline">\(y\)</span>, and <span class="math inline">\(z\)</span>, and a random effect on species. We constructed intermediate tensor products on interactions among all three spatial variables and species (using the ti() constructor in mgcv; some citation[DLM]).</p>
+<p>As in Question 2, we assessed model fit using AIC, and model performance using percent deviance explained, AUC, and TSS. We then conducted a visual comparison of the predicted depth of maximum detection rate across and observed detection depths within the study area for the most frequently observed baleen whale, dolphin/porpoise, and beaked whale.</p>
+<p>A table of all variables used in both the occupancy model and the GAM framework is included in the Supplementary Materials (Supplemental Table S2).</p>
 </section>
 </section>
 </section>
 <section id="results" class="level2">
 <h2 class="anchored" data-anchor-id="results">Results</h2>
-<p>We selected 516 water samples collected at 175 unique locations during the 2019 NOAA hake abundance survey (<a href="#fig-bubble" class="quarto-xref">Figure&nbsp;1</a>), targeting 0, 50, 150, 300, and 500 m sampling depths at each station. Where the bottom was less than 500 m deep, we did not collect a sample at 500 m. We amplified and sequenced these samples in 1 technical replicate using MFU, 3 technical replicates using MV1, and 1 technical replicate using DL, resulting in a final total of 1548 amplified and sequenced samples.</p>
+<p>We selected 516 water samples collected at 175 unique locations during the 2019 NOAA hake abundance survey (<a href="#fig-bubble" class="quarto-xref">Figure&nbsp;1</a>), targeting surface, 50, 150, 300, and 500 m sampling depths at each station. We amplified and sequenced these samples in 1 technical replicate using MFU, 3 technical replicates using MV1, and 1 technical replicate using DL, resulting in a final total of 1548 successfully amplified and sequenced samples.</p>
 <div class="cell">
 <div id="tbl-sp-detects" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-sp-detects-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;1: Scientific names, common names, abbrevation, taxonomic family, broad prey category, and total number of detections for each cetacean species detected in our study area.
+Table&nbsp;1: Scientific names, common names, taxonomic family, broad prey category, and detections for each cetacean species detected in our study area. Detections are split by primer, and MV1 detections are split by whether a species was detected in 1, 2, or 3 of the 3 total technical replicates for that primer.
 </figcaption>
 <div aria-describedby="tbl-sp-detects-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 18%">
 <col style="width: 19%">
+<col style="width: 20%">
 <col style="width: 11%">
-<col style="width: 11%">
-<col style="width: 11%">
-<col style="width: 8%">
+<col style="width: 12%">
 <col style="width: 9%">
 <col style="width: 3%">
 <col style="width: 3%">
-<col style="width: 3%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 6%">
 </colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: center;">Species</th>
 <th style="text-align: center;">Common name</th>
-<th style="text-align: center;">Sp. abbrevation</th>
 <th style="text-align: center;">Family</th>
 <th style="text-align: center;">Broad taxon</th>
 <th style="text-align: center;">Prey family</th>
-<th style="text-align: center;"># Detections</th>
 <th style="text-align: center;">DL</th>
 <th style="text-align: center;">MFU</th>
-<th style="text-align: center;">MV1</th>
+<th style="text-align: center;">MV1 1/3</th>
+<th style="text-align: center;">MV1 2/3</th>
+<th style="text-align: center;">MV1 3/3</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;">Lagenorhynchus obliquidens</td>
-<td style="text-align: center;">Pacific white-sided dolphin</td>
-<td style="text-align: center;">Lobl</td>
-<td style="text-align: center;">Delphinidae</td>
-<td style="text-align: center;">Dolphin/Porpoise</td>
-<td style="text-align: center;">fish</td>
-<td style="text-align: center;">95</td>
-<td style="text-align: center;">4</td>
-<td style="text-align: center;">20</td>
-<td style="text-align: center;">71</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">Phocoenoides dalli</td>
-<td style="text-align: center;">Dall’s porpoise</td>
-<td style="text-align: center;">Pdal</td>
-<td style="text-align: center;">Phocoenidae</td>
-<td style="text-align: center;">Dolphin/Porpoise</td>
-<td style="text-align: center;">fish</td>
-<td style="text-align: center;">74</td>
-<td style="text-align: center;">6</td>
-<td style="text-align: center;">5</td>
-<td style="text-align: center;">63</td>
-</tr>
-<tr class="odd">
 <td style="text-align: center;">Megaptera novaeangliae</td>
 <td style="text-align: center;">humpback whale</td>
-<td style="text-align: center;">Mnov</td>
 <td style="text-align: center;">Balaenopteridae</td>
-<td style="text-align: center;">Baleen whale</td>
+<td style="text-align: center;">baleen whale</td>
 <td style="text-align: center;">invert</td>
-<td style="text-align: center;">73</td>
 <td style="text-align: center;">9</td>
 <td style="text-align: center;">14</td>
-<td style="text-align: center;">50</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">Balaenoptera physalus</td>
-<td style="text-align: center;">fin whale</td>
-<td style="text-align: center;">Bphy</td>
-<td style="text-align: center;">Balaenopteridae</td>
-<td style="text-align: center;">Baleen whale</td>
-<td style="text-align: center;">invert</td>
-<td style="text-align: center;">60</td>
-<td style="text-align: center;">4</td>
-<td style="text-align: center;">16</td>
-<td style="text-align: center;">40</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">Stenella coeruleoalba</td>
-<td style="text-align: center;">striped dolphin</td>
-<td style="text-align: center;">Scoe</td>
-<td style="text-align: center;">Delphinidae</td>
-<td style="text-align: center;">Dolphin/Porpoise</td>
-<td style="text-align: center;">fish</td>
-<td style="text-align: center;">33</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">31</td>
+<td style="text-align: center;">17</td>
+<td style="text-align: center;">12</td>
+<td style="text-align: center;">3</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">Phocoena phocoena</td>
 <td style="text-align: center;">harbor porpoise</td>
-<td style="text-align: center;">Ppho</td>
 <td style="text-align: center;">Phocoenidae</td>
-<td style="text-align: center;">Dolphin/Porpoise</td>
+<td style="text-align: center;">dolphin/porpoise</td>
 <td style="text-align: center;">fish</td>
-<td style="text-align: center;">32</td>
 <td style="text-align: center;">2</td>
 <td style="text-align: center;">4</td>
-<td style="text-align: center;">26</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">Grampus griseus</td>
-<td style="text-align: center;">Risso’s dolphin</td>
-<td style="text-align: center;">Ggris</td>
-<td style="text-align: center;">Delphinidae</td>
-<td style="text-align: center;">Dolphin/Porpoise</td>
-<td style="text-align: center;">fish</td>
-<td style="text-align: center;">26</td>
-<td style="text-align: center;">5</td>
-<td style="text-align: center;">3</td>
-<td style="text-align: center;">18</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">Orcinus orca</td>
-<td style="text-align: center;">killer whale</td>
-<td style="text-align: center;">Oorc</td>
-<td style="text-align: center;">Delphinidae</td>
-<td style="text-align: center;">Dolphin/Porpoise</td>
-<td style="text-align: center;">fish</td>
-<td style="text-align: center;">16</td>
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">3</td>
 <td style="text-align: center;">11</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">Berardius bairdii</td>
-<td style="text-align: center;">northern giant bottlenose whale</td>
-<td style="text-align: center;">Bbai</td>
-<td style="text-align: center;">Ziphiidae</td>
-<td style="text-align: center;">Beaked whale</td>
-<td style="text-align: center;">squid</td>
-<td style="text-align: center;">14</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">12</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">Ziphius cavirostris</td>
-<td style="text-align: center;">goose-beaked whale</td>
-<td style="text-align: center;">Zcav</td>
-<td style="text-align: center;">Ziphiidae</td>
-<td style="text-align: center;">Beaked whale</td>
-<td style="text-align: center;">squid</td>
-<td style="text-align: center;">12</td>
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">2</td>
-<td style="text-align: center;">8</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">Eschrichtius robustus</td>
-<td style="text-align: center;">gray whale</td>
-<td style="text-align: center;">Erob</td>
-<td style="text-align: center;">Eschrichtiidae</td>
-<td style="text-align: center;">Baleen whale</td>
-<td style="text-align: center;">invert</td>
-<td style="text-align: center;">11</td>
-<td style="text-align: center;">0</td>
-<td style="text-align: center;">3</td>
-<td style="text-align: center;">8</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">Balaenoptera musculus</td>
-<td style="text-align: center;">blue whale</td>
-<td style="text-align: center;">Bmus</td>
-<td style="text-align: center;">Balaenopteridae</td>
-<td style="text-align: center;">Baleen whale</td>
-<td style="text-align: center;">invert</td>
-<td style="text-align: center;">8</td>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">1</td>
 <td style="text-align: center;">6</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Stenella coeruleoalba</td>
+<td style="text-align: center;">striped dolphin</td>
+<td style="text-align: center;">Delphinidae</td>
+<td style="text-align: center;">dolphin/porpoise</td>
+<td style="text-align: center;">fish</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">22</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Lagenorhynchus obliquidens</td>
+<td style="text-align: center;">Pacific white-sided dolphin</td>
+<td style="text-align: center;">Delphinidae</td>
+<td style="text-align: center;">dolphin/porpoise</td>
+<td style="text-align: center;">fish</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">20</td>
+<td style="text-align: center;">40</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">5</td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">Balaenoptera acutorostrata</td>
 <td style="text-align: center;">minke whale</td>
-<td style="text-align: center;">Bacu</td>
 <td style="text-align: center;">Balaenopteridae</td>
-<td style="text-align: center;">Baleen whale</td>
+<td style="text-align: center;">baleen whale</td>
 <td style="text-align: center;">invert</td>
-<td style="text-align: center;">7</td>
 <td style="text-align: center;">1</td>
 <td style="text-align: center;">1</td>
-<td style="text-align: center;">5</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">0</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">Lissodelphis borealis</td>
-<td style="text-align: center;">northern right whale dolphin</td>
-<td style="text-align: center;">Lbor</td>
-<td style="text-align: center;">Delphinidae</td>
-<td style="text-align: center;">Dolphin/Porpoise</td>
-<td style="text-align: center;">fish</td>
-<td style="text-align: center;">4</td>
-<td style="text-align: center;">4</td>
-<td style="text-align: center;">0</td>
+<td style="text-align: center;">Ziphius cavirostris</td>
+<td style="text-align: center;">goose-beaked whale</td>
+<td style="text-align: center;">Ziphiidae</td>
+<td style="text-align: center;">beaked whale</td>
+<td style="text-align: center;">squid</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">1</td>
 <td style="text-align: center;">0</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">Mesoplodon stejnegeri</td>
-<td style="text-align: center;">saber-toothed whale</td>
-<td style="text-align: center;">Mste</td>
-<td style="text-align: center;">Ziphiidae</td>
-<td style="text-align: center;">Beaked whale</td>
-<td style="text-align: center;">squid</td>
+<td style="text-align: center;">Phocoenoides dalli</td>
+<td style="text-align: center;">Dall’s porpoise</td>
+<td style="text-align: center;">Phocoenidae</td>
+<td style="text-align: center;">dolphin/porpoise</td>
+<td style="text-align: center;">fish</td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">44</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Eschrichtius robustus</td>
+<td style="text-align: center;">gray whale</td>
+<td style="text-align: center;">Eschrichtiidae</td>
+<td style="text-align: center;">baleen whale</td>
+<td style="text-align: center;">invert</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Balaenoptera physalus</td>
+<td style="text-align: center;">fin whale</td>
+<td style="text-align: center;">Balaenopteridae</td>
+<td style="text-align: center;">baleen whale</td>
+<td style="text-align: center;">invert</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">16</td>
+<td style="text-align: center;">26</td>
+<td style="text-align: center;">4</td>
 <td style="text-align: center;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Berardius bairdii</td>
+<td style="text-align: center;">northern giant bottlenose whale</td>
+<td style="text-align: center;">Ziphiidae</td>
+<td style="text-align: center;">beaked whale</td>
+<td style="text-align: center;">squid</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Balaenoptera musculus</td>
+<td style="text-align: center;">blue whale</td>
+<td style="text-align: center;">Balaenopteridae</td>
+<td style="text-align: center;">baleen whale</td>
+<td style="text-align: center;">invert</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">6</td>
 <td style="text-align: center;">0</td>
 <td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Orcinus orca</td>
+<td style="text-align: center;">killer whale</td>
+<td style="text-align: center;">Delphinidae</td>
+<td style="text-align: center;">dolphin/porpoise</td>
+<td style="text-align: center;">fish</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Grampus griseus</td>
+<td style="text-align: center;">Risso’s dolphin</td>
+<td style="text-align: center;">Delphinidae</td>
+<td style="text-align: center;">dolphin/porpoise</td>
+<td style="text-align: center;">fish</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">10</td>
+<td style="text-align: center;">1</td>
 <td style="text-align: center;">2</td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">Balaena mysticetus</td>
 <td style="text-align: center;">bowhead whale</td>
-<td style="text-align: center;">Bmys</td>
 <td style="text-align: center;">Balaenidae</td>
-<td style="text-align: center;">Baleen whale</td>
+<td style="text-align: center;">baleen whale</td>
 <td style="text-align: center;">invert</td>
-<td style="text-align: center;">1</td>
 <td style="text-align: center;">0</td>
 <td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Lissodelphis borealis</td>
+<td style="text-align: center;">northern right whale dolphin</td>
+<td style="text-align: center;">Delphinidae</td>
+<td style="text-align: center;">dolphin/porpoise</td>
+<td style="text-align: center;">fish</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Mesoplodon stejnegeri</td>
+<td style="text-align: center;">saber-toothed whale</td>
+<td style="text-align: center;">Ziphiidae</td>
+<td style="text-align: center;">beaked whale</td>
+<td style="text-align: center;">squid</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">0</td>
 <td style="text-align: center;">0</td>
 </tr>
 </tbody>
@@ -465,7 +473,8 @@ Table&nbsp;1: Scientific names, common names, abbrevation, taxonomic family, bro
 </figure>
 </div>
 </div>
-<p>Across all samples, we observed 468 positive detections of 16 cetacean species, including 6 baleen whale species, 5 dolphin species, 2 porpoise species, and 3 beaked whale species (<a href="#tbl-sp-detects" class="quarto-xref">Table&nbsp;1</a>). 11 species were observed more than 10 times, and and additional 5 were observed fewer than 10 or fewer times. Notably, this includes one detection of a bowhead whale (<em>Balaena mysticetus</em>), as well as three detections of saber-toothed whales (<em>Mesoplodon stejnegeri</em>). <a href="#fig-bubble" class="quarto-xref">Figure&nbsp;1</a> illustrates the distribution of detections across sampling depths z, ignoring xy distribution, for all cetacean species included in the study.</p>
+<p>Across all samples, we observed 468 positive detections of 16 cetacean species, including 6 baleen whale species, 5 dolphin species, 2 porpoise species, and 3 beaked whale species (<a href="#tbl-sp-detects" class="quarto-xref">Table&nbsp;1</a>). 11 species were observed more than 10 times, and and additional 5 were observed fewer than 10 or fewer times. We also detected bottlenose dolphins (<em>Tursiops truncatus</em>) a total of eight times in the dataset; of these, seven occurred north of the known range of this species in the California Current <span class="citation" data-cites="carretta_etal24">(<a href="#ref-carretta_etal24" role="doc-biblioref">Carretta, Oleson, and Forney 2024</a>)</span>. As noted in the methods section, we consider these likely to have resulted from lab contamination and removed these observations before downstream processing.</p>
+<p><a href="#fig-bubble" class="quarto-xref">Figure&nbsp;1</a> illustrates the distribution of detections across sampling depths <span class="math inline">\(z\)</span>, ignoring <span class="math inline">\(xy\)</span> distribution, for all cetacean species included in the study. Notably, our dataset includes one unexpected detection of a bowhead whale (<em>Balaena mysticetus</em>), not generally observed south of 63 N latitude in the Bering Sea since the end of commercial whaling and not known to ever inhabit the California Current [@rugh_etal03], as well as three detections of extremely rare saber-toothed whales (<em>Mesoplodon stejnegeri</em>), a cold-water beaked whale observed only twice, in the Gulf of Alaska, in 1986-2005 [@Hamilton2009a]. This is the first direct observation of this species in the California Current to date; it previously was only known to inhabit the region based on two stranding events from May 2015 in Oregon and Washington [@Hamilton2009a; @moore_barlow17; @Becker2020].</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-bubble" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -474,17 +483,17 @@ Table&nbsp;1: Scientific names, common names, abbrevation, taxonomic family, bro
 <img src="index_files/figure-html/fig-bubble-1.png" class="img-fluid figure-img" width="768">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bubble-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Left: Distribution of detections across sampling depths for all species included in the study. Species are grouped as follows: Baleen whales includes the Balaenopteridae, Balaenidae, and Eschericthidae; Dolphins/Porpoises includes all Delphinidae and Phocoenidae; Beaked whales includes all Ziphiidae. Right: Geographic distribution of samples used in this study, acquired from water collected during a 2019 survey of hake distribution in the California Current.
+Figure&nbsp;1: Left: Distribution of detections across sampling depths for all species included in the study. Species are grouped as follows: baleen whales includes species in Mysticeti (Balaenopteridae, Balaenidae, and Eschericthidae); dolphins/porpoises includes species in Delphinoidea (Delphinidae and Phocoenidae); beaked whales includes species in Ziphiidae. Right: Geographic distribution of samples used in this study, acquired from water collected during a 2019 survey of hake distribution in the California Current.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<section id="question-1-quantifying-the-effect-of-observation-bias-on-pod" class="level4">
-<h4 class="anchored" data-anchor-id="question-1-quantifying-the-effect-of-observation-bias-on-pod">Question 1: Quantifying the effect of observation bias on POD</h4>
-<p>Given the presence of cetacean eDNA in a sample, the probability of detecting that DNA is significantly affected by primer specificity (<a href="#fig-H2POD-obsbias" class="quarto-xref">Figure&nbsp;2</a>, left). Assuming a single freeze/thaw cycle, MV1 had the highest predicted POD (0.44), followed by DL (0.35) and then MFU (0.31). Using the posterior POD for each primer, we estimated the expected rate of increase in POD with technical replication by primer (<a href="#fig-H2POD-obsbias" class="quarto-xref">Figure&nbsp;2</a>, middle), again assuming a single freeze/thaw cycle. Achieving a POD of &gt;90% for cetacean DNA collected in a sample would require four technical replicates of MV1, ~5-6 technical replicates of DL, or 7 technical replicates of MFU.</p>
-<p>While increasing the number of technical replicates increases POD, we found that DNA degradation by freeze/thaw cycles can decrease the POD of DNA in a sample (<a href="#fig-H2POD-obsbias" class="quarto-xref">Figure&nbsp;2</a>, right). We found a significant relationship between freeze/thaw cycle and posterior estimates of POD for the longest primer in our study (DL, 360 bp), and a weaker and nonsignificant relationship between freeze/thaw cycle and posterior POD for MV1 (202 bp). There was no relationship detected between posterior POD and freeze/thaw cycles for MFU (185 bp), noting that only 5 of 516 total MFU samples sequenced in this study had &gt; 2 thaw cycles.</p>
-<p>Given our posterior estimates of detection probability by primer and number of freeze/thaw cycles, we calculated a sample-specific probability of detection for each sample in our study, assuming cetacean DNA is present in the sample. Despite the significant reduction in POD in our DL samples with a high number of freeze/thaw cycles (lowest DL POD = 0.08), including four replicates using primers that were not strongly affected by freeze/thaw cycle ensured a high overall probability of detecting cetacean eDNA in a sample, conditional on its presence. Mean POD across all samples in the study was 0.87 (range: 0.85 - 0.92). Averaged across all samples in this study when accounting for freeze/thaw cycles, the mean POD for DL is 0.14, mean POD for MFU is 0.31, and 0.39 for MV1.</p>
+<section id="question-1-quantifying-the-effect-of-observation-bias-on-detectability" class="level4">
+<h4 class="anchored" data-anchor-id="question-1-quantifying-the-effect-of-observation-bias-on-detectability">Question 1: Quantifying the effect of observation bias on detectability</h4>
+<p>Given the presence of cetacean eDNA in a sample, its POD is affected by primer use (<a href="#fig-H2POD-obsbias" class="quarto-xref">Figure&nbsp;2</a>, left). Assuming a single freeze/thaw cycle and technical replicate, MV1 had the highest expected POD (<span class="math inline">\(\Omega_\text{primer*thaw}\)</span>, 0.44), followed by DL (0.35) and then MFU (0.31). Using the mean posterior POD for each primer at one freeze/thaw cycle (<span class="math inline">\(\Omega_{primer*1}\)</span>), we estimated the expected rate of increase in POD with increasing technical replication by primer (<a href="#fig-H2POD-obsbias" class="quarto-xref">Figure&nbsp;2</a>, middle). Based on our results, achieving a POD &gt;90% for cetacean DNA collected in a sample would require four technical replicates of MV1, ~5-6 technical replicates of DL, or seven technical replicates of MFU.</p>
+<p>While increasing the number of technical replicates increases POD, the number of freeze/thaw cycles decreases POD (<a href="#fig-H2POD-obsbias" class="quarto-xref">Figure&nbsp;2</a>, right), consistent with increased degradation with increasing freeze/thaw cycles. We found a relationship between freeze/thaw cycle and posterior estimates of POD for the longest primer in our study (DL, 360 bp), and a weaker relationship between freeze/thaw cycle and posterior POD for MV1 (202 bp). There was no relationship detected between posterior POD and freeze/thaw cycles for MFU (185 bp), noting limited power to detect the effect of freeze/thaw as only 5 of 516 total MFU samples sequenced in this study had &gt; 2 thaw cycles.</p>
+<p>Given our posterior estimates of POD by primer and number of freeze/thaw cycles, we calculated a sample-specific POD for each sample in our study, assuming cetacean DNA is present in the biological sample. Averaged across all samples in this study when accounting for freeze/thaw cycles, the mean detectability for cetacean DNA in a single technical replicate of DL is 0.14, for MFU is 0.31, and for MV1 is 0.39. Despite the significant reduction in POD in our DL sequence with increasing degradation caused by increasing freeze/thaw cycles (lowest DL POD = 0.08), including an additional four replicates using primers targeting shorter DNA fragments that were not as strongly affected by freeze/thaw cycle (MV1 and MFU) ensured a high overall POD for cetacean eDNA in a biological sample, conditional on its presence. We estimated the sample-specific predicted DNA POD for each sample in the study using the true number of freeze/thaw cycles for each of our primers and technical replicates, and determined that mean predicted POD across all samples in the study was 0.87 (range: 0.85 - 0.92).</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-H2POD-obsbias" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -493,7 +502,7 @@ Figure&nbsp;1: Left: Distribution of detections across sampling depths for all s
 <img src="index_files/figure-html/fig-H2POD-obsbias-1.png" class="img-fluid figure-img" width="960">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-H2POD-obsbias-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: Left: Posterior distribution of primer-specific probability of detecting cetacean eDNA given its presence in a sample (horizontal axis) with one freeze-thaw cycle. Middle: Posterior mean primer-specific detection probability (vertical axis) with increasing technical replication (horizontal axis) for each primer used in this study. Right: Posterior distribution of the probability of detection given presence (vertical axis) by number of freeze/thaw cycles (horizontal axis) and primer (panels). For all plots, MFU = Mifish, MV1 = MarVer1, DL = Dloop.
+Figure&nbsp;2: Left: Posterior distribution of primer-specific POD (vertical axis) for cetacean eDNA given its presence in a sample (horizontal axis) assuming one freeze-thaw cycle. Middle: Posterior mean primer-specific POD (vertical axis) with increasing technical replication (horizontal axis) for each primer used in this study. Right: Posterior distribution of POD given presence (vertical axis) by number of freeze/thaw cycles (horizontal axis) and primer (panels).
 </figcaption>
 </figure>
 </div>
@@ -502,60 +511,54 @@ Figure&nbsp;2: Left: Posterior distribution of primer-specific probability of de
 </section>
 <section id="question-2-does-pod-vary-with-depth" class="level3">
 <h3 class="anchored" data-anchor-id="question-2-does-pod-vary-with-depth">Question 2: Does POD vary with depth?</h3>
-<p>We first negated the null hypothesis of no variation across depth and that depth does not interact with primer or freeze/thaw cycle to affect POD (not sure if this is the best way to say this) (Supplemental Figure S1, <strong>add Q2 model of depth POD here??</strong>). We then determined that the best alternative model describing POD includes significant smooth terms for depth, species, and a depth x species interaction (AIC = 4547, <a href="#tbl-modelAIC" class="quarto-xref">Table&nbsp;2</a>). This model explained 14.3% of variance in eDNA detection probability, with a mean AUC of 0.73 and a mean optimized TSS of 0.38. Full model TSS for all thresholds, as well as per-species AUC, optimized TSS, TSS values across all thresholds are shown in Supplemental Table S2 and Supplemental Figure S2. Species-specific model predictions generally agreed with the raw detection data.</p>
+<p>In the next two sections we switch to considering detection rate of cetacean DNA in the ocean using five technical replicates per sample (3 MV1, 1 DL, 1 MFU), without assuming its presence in a biological sample. Detection rate varies with depth (p &lt;&lt; 0.001, deviance explained = 0.7%; Supplemental Figure S1). The model that best describes POD variance with depth includes significant smooth terms for depth, species, and a depth x species interaction (AIC = 4547, <a href="#tbl-modelAIC" class="quarto-xref">Table&nbsp;2</a>). This model explained 14.3% of variance in eDNA detection probability, with a mean AUC of 0.73 and a mean optimized TSS of 0.38. Per-species AUC and TSS values are shown in Supplemental Table S3 and Supplemental Figure S2. Finally, we found general agreement between species-specific model predictions and raw detection data via visual comparison (Supplemental Figure S3).</p>
 <div class="cell">
 <div id="tbl-modelAIC" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-modelAIC-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2: Akaike Information Criterion values for all GAMs tested to characterize the relationship between depth and POD of eDNA.
+Table&nbsp;2: Akaike Information Criterion values for all GAMs tested to characterize the relationship between depth and detection rate of eDNA. Models and stratification schemes from Eqns. 4-6.
 </figcaption>
 <div aria-describedby="tbl-modelAIC-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 30%">
-<col style="width: 23%">
-<col style="width: 11%">
-<col style="width: 15%">
-</colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: center;">model</th>
-<th style="text-align: center;">stratification</th>
-<th style="text-align: center;">df</th>
-<th style="text-align: center;">deltaAIC</th>
+<th style="text-align: left;">Model</th>
+<th style="text-align: left;">Stratification</th>
+<th style="text-align: right;"><span class="math inline">\(df\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(Δ AIC\)</span></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;">depth, s(species)</td>
-<td style="text-align: center;">species</td>
-<td style="text-align: center;">48</td>
-<td style="text-align: center;">0</td>
+<td style="text-align: left;"><span class="math inline">\(β_s + f_s(z_i)\)</span> (Eq. 6)</td>
+<td style="text-align: left;">species</td>
+<td style="text-align: right;">48.0</td>
+<td style="text-align: right;">0.0</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">depth + species</td>
-<td style="text-align: center;">species</td>
-<td style="text-align: center;">19.28</td>
-<td style="text-align: center;">141.6</td>
+<td style="text-align: left;"><span class="math inline">\(β_s + f(z_i)\)</span> (Eq. 5)</td>
+<td style="text-align: left;">species</td>
+<td style="text-align: right;">19.3</td>
+<td style="text-align: right;">141.6</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">depth, s(family)</td>
-<td style="text-align: center;">family</td>
-<td style="text-align: center;">19.72</td>
-<td style="text-align: center;">307.4</td>
+<td style="text-align: left;"><span class="math inline">\(β_s + f_F(z_i)\)</span> (Eq. 7)</td>
+<td style="text-align: left;">family</td>
+<td style="text-align: right;">19.7</td>
+<td style="text-align: right;">307.4</td>
 </tr>
 <tr class="even">
-<td style="text-align: center;">depth, s(prey type)</td>
-<td style="text-align: center;">prey</td>
-<td style="text-align: center;">13.16</td>
-<td style="text-align: center;">412.5</td>
+<td style="text-align: left;"><span class="math inline">\(β_s + f_e(z_i)\)</span> (Eq. 8)</td>
+<td style="text-align: left;">prey</td>
+<td style="text-align: right;">13.2</td>
+<td style="text-align: right;">412.5</td>
 </tr>
 <tr class="odd">
-<td style="text-align: center;">depth</td>
-<td style="text-align: center;">none</td>
-<td style="text-align: center;">3.734</td>
-<td style="text-align: center;">549.4</td>
+<td style="text-align: left;"><span class="math inline">\(β_0 + f(z_i)\)</span> (Eq. 4)</td>
+<td style="text-align: left;">none</td>
+<td style="text-align: right;">3.7</td>
+<td style="text-align: right;">549.4</td>
 </tr>
 </tbody>
 </table>
@@ -564,8 +567,8 @@ Table&nbsp;2: Akaike Information Criterion values for all GAMs tested to charact
 </figure>
 </div>
 </div>
-<p>Broadly, delphinids were more likely to be detected at the surface, beaked whales at depths &gt; 200m, and baleen whales either at the surface or at depths &gt; 400m (<a href="#fig-H1POD-species" class="quarto-xref">Figure&nbsp;3</a>). Note that although detection data from the five species detected fewer than 10 times were included in our model input, we did not make predictions for any of these species.</p>
-<p>Among the delphinids, species-specific trends in POD generally reflected model estimates of time-at-depth. Conversely, most beaked whale and baleen whale species in the study were very likely to be detected outside depths where they spend most of their time (<a href="#fig-H1POD-species" class="quarto-xref">Figure&nbsp;3</a>). Most notably, predicted POD-at-depth plots for two of the three baleen whales indicated a high probability of detection at 500 m, while these two species spend most of their time above ~200 m. Per-species model predictions are shown alongside observed detections in Supplemental Figure S5.</p>
+<p>Broadly, delphinid detection rate was highest at the surface, beaked whale detection rate was highest at depths &gt; 200 m, and baleen whale detection rate was highest either at the surface or at depths &gt; 400 m (<a href="#fig-H1POD-species" class="quarto-xref">Figure&nbsp;3</a>). Note that although detection data from the five species detected fewer than 10 times were included in our model input, we did not make predictions for any of these species.</p>
+<p>Among the delphinids, species-specific trends in detection rate generally reflected previously developed estimates of time-at-depth <span class="citation" data-cites="watwood_buonantony12 u_s_departmentofthenavy17">(<a href="#ref-watwood_buonantony12" role="doc-biblioref">Watwood and Buonantony 2012</a>; <a href="#ref-u_s_departmentofthenavy17" role="doc-biblioref">U.S. Department of the Navy 2017</a>)</span>. Conversely, most beaked whale and baleen whale species in the study were very likely to be detected outside depths where they were estimated to spend most of their time (<a href="#fig-H1POD-species" class="quarto-xref">Figure&nbsp;3</a>). Most notably, predicted detection rate depth distribuitons for two of the three baleen whales indicated a high detection rate at 500 m, while these two species spend most of their time above ~200 m depth. Per-species model predictions are shown alongside observed detections in Supplemental Figure S5.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-H1POD-species" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -574,13 +577,13 @@ Table&nbsp;2: Akaike Information Criterion values for all GAMs tested to charact
 <img src="index_files/figure-html/fig-H1POD-species-1.png" class="img-fluid figure-img" width="960">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-H1POD-species-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3: Species-specific probability of detection across all depths sampled in this study. Solid line shows POD; shaded regions show 95%, 75%, and 50% confidence intervals. Dashed line shows proportional time at depth. Species abbreviation codes can be found in Table 1; plots are colored by taxonomic category as outlined in Table 1.
+Figure&nbsp;3: Species-specific detection rate predictions across all depths sampled in this study. Solid line shows detection rates; shaded regions show 95%, 75%, and 50% confidence band. Dashed line shows proportional time at depth. Y-axis scale is the same for detection rate (solid line) and proportional time at depth (dashed line). Plots are colored by broad taxonomic category as described in Table 1.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>Models stratifying detections by taxonomic Family and preferred prey type both had lower AIC values than the model stratified by species (AIC = 4854 and 4960, respectively); however, these models still had significant terms for Family and depth x Family interactions (taxonomic model) and for depth, prey type, and depth x prey type interactions (prey type model). Predicted POD curves for each model illustrate varying trends in POD with depth across strata (<a href="#fig-H1POD-family-prey" class="quarto-xref">Figure&nbsp;4</a>). Similar to the model stratified by species, we did not make predictions for Families with fewer than 10 detections using the taxonomic model, which excluded the Balaenidae (bowhead whale family).</p>
+<p>Models stratifying detections by taxonomic family and preferred prey type both had lower AIC values than the model stratified by species (AIC = 4854 and 4960, respectively); however, these models still had significant terms for family and depth-by-family interactions (taxonomic model) and for depth, prey type, and depth-by-prey type interactions (prey type model). Predicted detection rate curves for each model illustrate varying trends in detection rate with depth across strata (<a href="#fig-H1POD-family-prey" class="quarto-xref">Figure&nbsp;4</a>). Similar to the model stratified by species, we did not make predictions for families with fewer than 10 detections using the taxonomic model, which excluded the Balaenidae (bowhead whale family).</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-H1POD-family-prey" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -589,7 +592,7 @@ Figure&nbsp;3: Species-specific probability of detection across all depths sampl
 <img src="index_files/figure-html/fig-H1POD-family-prey-1.png" class="img-fluid figure-img" width="960">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-H1POD-family-prey-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4: Left: POD by depth for species stratified by taxonomic Family. Right: POD by depth for species stratified based on broad prey categories.
+Figure&nbsp;4: Left: Detection rate by depth for species stratified by taxonomic family. Right: Detection rate by depth for species stratified based on broad prey categories.
 </figcaption>
 </figure>
 </div>
@@ -597,11 +600,11 @@ Figure&nbsp;4: Left: POD by depth for species stratified by taxonomic Family. Ri
 </div>
 <section id="question-3-does-depth-variability-in-pod-covary-with-geographic-variability-1" class="level4">
 <h4 class="anchored" data-anchor-id="question-3-does-depth-variability-in-pod-covary-with-geographic-variability-1">Question 3: Does depth variability in POD covary with geographic variability?</h4>
-<p>Adding xy covariates to the best fit model from Q2 improved overall model performance. Our model included terms for species, lat/lon, and depth, as well as species x lat/lon, species x depth, and species x depth x lat/lon (AIC = 4201), and explained 25.3% of the variability in eDNA detection. Although terms for depth and lat/lon were not significant, removing these terms increased model AIC to 4947. Mean AUC across a 10-fold validation test was 0.78 and mean optimized TSS was 0.45. Full model TSS for all thresholds are shown in Supplemental Table S2 and Supplemental Figure S2.</p>
-<p>Although <span class="math inline">\(xy\)</span> predictor variables improved model performance, the predicted <span class="math inline">\(z\)</span> distribution of POD for the most frequently detected delphinid, baleen whale, and beaked whale exhibited minimal variability across <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>, largely adhering to the broad trends identified in Q2 (<a href="#fig-H3PODxy" class="quarto-xref">Figure&nbsp;5</a>).</p>
-<p>The Pacific white-side dolphin is most likely to be detected near the surface, with max POD varying between depths of 0 m and 220 m, and deeper max POD depths toward the southeast corner of the study area. POD was considered 0 (less than 1%) in the region off the shelf break between Point Conception and San Fransisco Bay (<a href="#fig-H3PODxy" class="quarto-xref">Figure&nbsp;5</a>).</p>
-<p>Depths of highest POD for Baird’s beaked whales varied between 130 m and 470 m, with minimal spatial variability in depth of max POD across the study area. Notably, POD was considered 0 (less than 1%) along most of the continental shelf.</p>
-<p>Depths of highest POD for humpback whales had two disparate peaks, at 0 m and 500 m, with almost no intermediate depths at max POD. The two peaks in depth of greatest POD for humpback whales were roughly distributed so that higher probabilities of detection at the surface occurred along the continental shelf, and higher probabilities of detection at depth occured on the shelf break or in deeper water. POD was considered 0 (less than 1%) along the coast near Point Conception, as well as off the shelf in the same region.</p>
+<p>Adding covariates for latitude (<span class="math inline">\(y\)</span>) and longitude (<span class="math inline">\(x\)</span>) to the best fit model from Q2 improved overall model performance. Our model included terms for species, lat/lon, and depth, as well as interaction terms for species-by-lat/lon, species-by-depth, and species-by-depth-by-lat/lon (AIC = 4201), and explained 25.3% of the variability in eDNA detection rate. Although terms for depth and lat/lon were not significant, removing these terms increased model AIC to 4947. Mean AUC across a 10-fold validation test was 0.78 and mean optimized TSS was 0.45. Full model TSS for all thresholds are shown in Supplemental Table S3 and Supplemental Figure S2.</p>
+<p>Although <span class="math inline">\(xy\)</span> improved model performance, the predicted <span class="math inline">\(z\)</span> distribution of detection rate for the most frequently detected delphinid (Pacific white-sided dolphin, <em>Aethalodelphis obliquidens</em>), baleen whale (humpback whale, <em>Megaptera novaeangliae</em>), and beaked whale (northern giant bottlenose whale, <em>Berardius bairdii</em>) exhibited only marginal variability across <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>, largely adhering to the broad trends identified in Q2 (<a href="#fig-H3PODxy" class="quarto-xref">Figure&nbsp;5</a>).</p>
+<p>The Pacific white-side dolphin detection rate is maximized near the surface throughout the study area, with maximum detection rate between depths of 0 m and 220 m. The depth that maximizes detection rate increased toward the southeast corner of the study area. Detection rate was less than 1% in the region off the shelf break between Point Conception and San Francisco Bay.</p>
+<p>Depths that maximized highest detection rate for northern giant bottlenose whales varied between 130 m and 470 m, with no observable trends in spatial variability in across the study area. Notably, detection rate was less than 1% along most of the continental shelf.</p>
+<p>Depths that maximized detection rate for humpback whales had two disparate peaks, at 0 m and 500 m, with almost no intermediate depths that maximized detection rate. The two peaks were roughly distributed so that detection rate was maximized at the surface along the continental shelf, and detection rate was maximize at depth on the shelf break or in deeper water. Detection rate was considered less than 1% along the coast near Point Conception, as well as off the shelf in the same region.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-H3PODxy" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -610,53 +613,52 @@ Figure&nbsp;4: Left: POD by depth for species stratified by taxonomic Family. Ri
 <img src="index_files/figure-html/fig-H3PODxy-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-H3PODxy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5: Depth of maximum probability of detection (POD; top) and range of depths falling within 50% CI of the depth of maximum detection (bottom) for three species: Baird’s beaked whale (<em>B. bairdii</em>), max POD ~ 0.3; Pacific white-sided dolphin (<em>L. obliquidens</em>), max POD ~ 0.35; humpback whale (<em>M. novaegliae</em>), max POD ~ 0.54. Regions with max POD &lt; 0.01 were masked in light grey.
+Figure&nbsp;5: Top: Depths that maximize detection rates for three species: northern giant bottlenose whale, max detecton rate ~ 0.3; Pacific white-sided dolphin, max detection rate ~ 0.35; humpback whale, max detection rate ~ 0.54. Bottom: Width of the depth range falling withing the 50% CI for maximum detecion rate of the same three species. Regions with detection rate &lt; 0.01 throughout the water column were masked in light grey.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>In addition to examining geographic patterns in the depth of maximum POD, we examined uncertainty around these values by mapping the range of depths that fell within the 50% confidence interval of maximum POD (<a href="#fig-H3PODxy" class="quarto-xref">Figure&nbsp;5</a>, bottom). In the northern portion of the study area, where Pacific white-sided dolphins are most likely to be observed near the surface, the range of depths within the 50% CI of maximum POD is neglgible (minimum depth range = 0 m). That range increases toward the south and east (maximum depth range = 500 m), with the greatest variability in the south and east of the study area, near the region where POD is close to 0. Baird’s beaked whales exhibited minimal variability in 50% CI width of maximum depth (minimum depth range = 0 m), except for a small portion of the northwestern edge of the study area (maximum depth range = 470 m) near the edge of the prediction grid.</p>
-<p>The bimodal peak of maximum POD observed in humpback whale eDNA was mirrored in the range of depths within the 50% CI of maximum POD: the depth range was largest in the transition zones between the two peaks (maximum depth range = 500 m), and small outside of the transition zones (minimum depth range = 0 m).</p>
+<p>In addition to examining geographic patterns in the depths that maximize detection rate, we examined uncertainty around these values by calculating the range of depths that fell within the 50% confidence interval for maximum detecion rate (<a href="#fig-H3PODxy" class="quarto-xref">Figure&nbsp;5</a>, bottom). In the northern portion of the study area, where Pacific white-sided dolphins are most likely to be observed near the surface, uncertainty around depth maximum detection rate is negligible (minimum range = 0 m wide). That uncertainty increases toward the south and east (maximum range = 500 m wide), with the greatest uncertainty near the region where detection rate is close to 0. Uncertainty around the depths maximizing detection rate for northern giant bottlenose whales was minimal in most of the study area (minimum range = 0 m wide), except for a small portion of the northwestern edge of the study area (maximum range = 470 m wide).</p>
+<p>The bimodal peak in depths that maximize detection rate that we observed in humpback whale eDNA was mirrored in the patterns we observed in uncertainty: the depth range was largest in the transition zones between the two peaks (maximum range = 500 m wide), and small outside of the transition zones (minimum range = 0 m wide).</p>
 </section>
 </section>
 </section>
 <section id="discussion" class="level2">
 <h2 class="anchored" data-anchor-id="discussion">Discussion</h2>
-<p>In addition to being extremely rare targets, cetaceans are highly mobile in <span class="math inline">\(xy\)</span> space, and their <span class="math inline">\(z\)</span> distributions span 100s to 1,000s of meters. Mapping the <span class="math inline">\(z\)</span> distribution of their eDNA can provide new insight regarding their 3D spatial use, including seasonal or geographic variability in <span class="math inline">\(z\)</span> distribution. Additionally, eDNA monitoring has the potential to improve our understanding of <span class="math inline">\(xy\)</span> spatial distribution, especially for visually or acoustically elusive species, when used in joint species distribution models. Here we show that the use of occupancy models and niche-based models can inform and optimize eDNA sample collection and processing. For cetaceans and other highly mobile rare marine species, tailoring experimental design based on the results of this study could increase detection rates and improve distributional models while minimizing cost.</p>
+<p>Cetaceans are highly mobile and rare among marine species in abundance and density. Moreover, the distribution of cetaceans throughout the water column (their z distributions), spanning 100s to 1000s of meteres, is challenging to characterize, often limited by traditional survey approaches. eDNA sampling at depth addresses this data gap. Mapping the <span class="math inline">\(z\)</span> distribution of cetacean eDNA has the potential to provide new insight regarding their 3D spatial use and improve estimates of abundance or distribution, especially for visually or acoustically elusive species. Here we show that the use of occupancy models and niche-based GAMs can inform and optimize eDNA sample collection and processing. For cetaceans and other highly mobile rare marine species, tailoring experimental design based on the results of this study could increase detection rates and improve distributional models while minimizing cost.</p>
 <section id="question-1" class="level4">
 <h4 class="anchored" data-anchor-id="question-1">Question 1:</h4>
-<p>We began with an occupancy model to explicitly separate the effects of eDNA presence at the sampling site/in the bottle and downstream detection in the sequence data. By implementing this framework we observed an increase in POD with increased primer specificity. Similarly, increasing technical replication increases POD, except that increasing freeze/thaw cycles decreases POD and may counteract the effect of technical replication for longer target regions, as was observed with DL in this study. Shorter regions (MFU and MV1) more robust to decay from freeze/thaw cycles but lower genetic variability in cetacean DNA in each of those regions hinders the ability to classify sequences to species, which necessitated heavy manual curation of the reference database for each of these primers. Within the Delphinidae family, several sequences could not be resolved to species, resulting in the loss of 1 DL species-level detection, 2 MFU species-level detections, and 17 MV1 species-level detections. These family-level detections could not be included in downstream species-specific models of eDNA distribution.</p>
-<p>Similar studies have found that observation bias and rare species dropout in eDNA sampling are affected by a number of parameters in the sample collection and processing protocols <span class="citation" data-cites="shelton_etal23 gold_etal23">(e.g. <a href="#ref-shelton_etal23" role="doc-biblioref">Shelton et al. 2023</a>; <a href="#ref-gold_etal23" role="doc-biblioref">Gold et al. 2023</a>)</span>, including sampling volume (Patin et al.&nbsp;<em>in review</em>), filter type and pore size <span class="citation" data-cites="liu_etal24">(<a href="#ref-liu_etal24" role="doc-biblioref">Liu et al. 2024</a>)</span>, primer specificity <span class="citation" data-cites="shaffer_etal25">(<a href="#ref-shaffer_etal25" role="doc-biblioref">Shaffer et al. 2025</a>)</span>, and technical replication <span class="citation" data-cites="ficetola_etal15">(<a href="#ref-ficetola_etal15" role="doc-biblioref">Ficetola et al. 2015</a>)</span>, among others. The results of our study indicate that rare species in a sample can be detected more efficiently using primers with higher specificity and targeting regions with greater variability among the taxa of interest; further, the samples should be subjected to a limited number of freeze/thaw cycles in order to preserve the integrity of longer DNA fragments. Because increased technical replication is adviseable to increase POD of rare species, the best practice would be to conduct all technical replicates for a given sample set concurrently, thus only needing to thaw the DNA 0-1 times before amplification and sequencing.</p>
-<p>After accounting for observation bias in our detection rates, we found that species-specific patterns of cetacean eDNA presence with depth were qualitatively similar in shape when fitted in an occupancy model context vs GAM models used in the remainder of the study. Estimates of POD from the occupancy model were higher overall than POD estimates from GAM models, with confidence intervals approaching 1. This makes sense since the Bayesian hierarchical occupancy model was estimates the POD conditional on the presence of target eDNA in the sample, whereas the GAM collapse conditional POD with the probability of target species’ occurence at a sampling site, which will lower overall POD.</p>
-<p>While the occupancy model produced qualitatively similar estimates of the depth distribution of cetcean POD, we were not able to produce similar models of species-specific POD using the occupancy model. We hypothesize that this is due to overpartitioning of the detection data amongst strata, and used GAM models for Questons 2 and 3 in our study. While the GAM models do not explicitly account for the sources of observation bias identified in this study, our cetacean-wide occupancy model results indicate that the results would be qualitatively similar, with additional resolution between species-specific conditional POD and the probability of a species’ presence at a site. Continue eDNA sampling at these locations will facilitate the convergence of these models in the future.</p>
+<p>We began with an occupancy model to explicitly separate the effects of cetacean eDNA presence at the sampling site/in the bottle and downstream detection in the sequence data. By implementing this framework we observed an increase in POD with increased primer specificity. Similarly, increasing technical replication increases POD, except that increasing freeze/thaw cycles decreases POD and may counteract the effect of technical replication for longer target regions if technical replicates are not processed concurrently, as was observed with DL in this study. Shorter regions (MFU and MV1) are more robust to decay from freeze/thaw cycles but lower genetic variability in cetacean DNA in each of those regions hinders the ability to classify sequences to species, which necessitated manual curation of the reference database for each of these primers. Within the Delphinidae family, several sequences could not be resolved to species, resulting in the loss of 1 DL species-level detection, 2 MFU species-level detections, and 17 MV1 species-level detections. These family-level detections could not be included in downstream species-specific models of eDNA distribution.</p>
+<p>Similar studies have found that observation bias and rare species dropout in eDNA sampling are affected by a number of parameters in the sample collection and processing protocols <span class="citation" data-cites="shelton_etal23 gold_etal23">(e.g. <a href="#ref-shelton_etal23" role="doc-biblioref">Shelton et al. 2023</a>; <a href="#ref-gold_etal23" role="doc-biblioref">Gold et al. 2023</a>)</span>, including sampling volume (Patin et al.&nbsp;<em>in review</em>), filter type and pore size <span class="citation" data-cites="liu_etal24">(<a href="#ref-liu_etal24" role="doc-biblioref">Liu et al. 2024</a>)</span>, primer specificity <span class="citation" data-cites="shaffer_etal25">(<a href="#ref-shaffer_etal25" role="doc-biblioref">Shaffer et al. 2025</a>)</span>, and technical replication <span class="citation" data-cites="ficetola_etal15">(<a href="#ref-ficetola_etal15" role="doc-biblioref">Ficetola et al. 2015</a>)</span>, among others. The results of our study indicate that when present in a sample, rare species can be detected more efficiently using primers with higher specificity and targeting regions with greater variability among the taxa of interest; further, the samples should be subjected to a limited number of freeze/thaw cycles in order to preserve the integrity of longer DNA fragments. Because increased technical replication is advisable to increase detection of rare species DNA in a sample, the best practice would be to conduct all technical replicates for a given sample set concurrently, thus only needing to thaw the extracted DNA 0-1 times before amplification and sequencing.</p>
+<p>After accounting for observation bias in our detection rates, we found that predicted cetacean eDNA distribution across depth was qualitatively similar when fitted in an occupancy model context (Eq 1-3) as compared to the non-species specific GAM (Eq 4) in Question 2. Estimates of cetacean POD from the occupancy model were higher overall than detection rate estimates from GAM models, with confidence intervals approaching 1. This is logical given that the Bayesian hierarchical occupancy model estimates POD conditional on the presence of target eDNA in the sample, whereas the GAM did not distinguish POD from the probability of a target species’ occurrence at a sampling site, leading to lower overall detection rate. Continued eDNA sampling at these locations will facilitate the convergence of a fully hierarchical occupancy model with species-specific splines on depth; improving our ability to delineate the effects of observation error (eDNA POD) from ecological processes (eDNA occurrence) in detection rate.</p>
 </section>
 <section id="question-2" class="level4">
 <h4 class="anchored" data-anchor-id="question-2">Question 2:</h4>
-<p>POD across all cetaceans varied significantly with sampling depth (Supplemental Figure S1). This variability was best described at a species-specific level, and broadly reflected our current understanding of species-specific variability in use of the water column (<a href="#fig-H1POD-species" class="quarto-xref">Figure&nbsp;3</a>). This was especially true among the delphinids and porpoises; on the other hand, we observed some noticeable deviations from expected trends in both the baleen whales and the beaked whales. These trends could be inherent to the behavior of the animals themselves, or more likely may reflect the “behavior” of eDNA.</p>
-<p>For example, baleen whales are generally thought to be shallow divers, and while some dives up to approximately 500 m have been recorded in a few species <span class="citation" data-cites="panigada_etal99">(e.g.&nbsp;fin whales, <a href="#ref-panigada_etal99" role="doc-biblioref">Panigada et al. 1999</a>)</span>, recent reports of time-at-depth for cetacean species indicates that baleen whales spend the vast majority of their time within the top 100-200 m of the ocean <span class="citation" data-cites="watwood_buonantony12 u_s_departmentofthenavy17">(<a href="#ref-watwood_buonantony12" role="doc-biblioref">Watwood and Buonantony 2012</a>; <a href="#ref-u_s_departmentofthenavy17" role="doc-biblioref">U.S. Department of the Navy 2017</a>)</span>. However, we observe a sharp spike in detection probability at 500 m for two of the three baleen whale species included in our model predictions. Gray whale eDNA was not likely to be observed at 500 m; this is most likely because they are a nearshore coastal species that is rarely observed in deep water. Humpback and fin whales both have pelagic distributions, and both species’ eDNA was as likely to be observed at 500 m as at the surface, with low POD at intermediate depths.</p>
-<p>This observed pattern has several possible explanations. It is possible that some of these deeper eDNA detections, especially those of deeper-diving fin whales, are detections of deep dives made by animals foraging for krill at depth. However, based on our current knowledge of the diving limits of baleen whales, we consider it highly unlikely that most of the deep detections are indicative of the presence of the detected species at that depth. We considered the possibility that the large spike in deep detections was driven by whalefall or predation (i.e.&nbsp;whole or parts of animals sinking in the water column). In total, baleen whales were detected below 250 m at 28 locations; of those, 8 detections (28.5%) were within 100 m of the ocean floor and could be potential detections of whalefall. A map of potential whalefall locations is included in Supplemental Figure S2. In addition to this, a single baleen whale detection coincided with the detection of killer whale eDNA, and therefore could be attributed to predation. No eDNA detections of baleen whales coincided with the detection of shark eDNA.</p>
-<p>The remaining 19 deep-water detections of baleen whale eDNA (68%) may be attributed to whale poop. While sinking rates and depths of baleen whale poop are generally unknown, we know from expert observations that fecal material from baleen whales is quite large and can sink rapidly from the surface (<strong>WHO CAN I PERS COMM FOR THIS?!? KIM?!?!</strong>). Larger clumps of eDNA can be detectable for up to 2-4 days at the surface <span class="citation" data-cites="brandao-dias_etal25 wood_etal20">(<a href="#ref-brandao-dias_etal25" role="doc-biblioref">Brandão-Dias et al. 2025</a>; <a href="#ref-wood_etal20" role="doc-biblioref">S. A. Wood et al. 2020</a>)</span>, and likely longer at depth where it is colder, darker, and there are fewer microbes digesting cellular material <span class="citation" data-cites="andruszkiewicz_etal17">(<a href="#ref-andruszkiewicz_etal17" role="doc-biblioref">Andruszkiewicz, Sassoubre, and Boehm 2017</a>)</span>. Research on oceanic particle sinking rate indicates that smaller particles (up to 6 mm) can sink at rates of ~50-300 m day, and that sinking rates increase rapidly with particle size while degradation rates decrease with increasing particle size, with maximum sinking depths in the range of ~800-5,000 m <span class="citation" data-cites="giering_etal20 mcdonnell_etal15 iversen_ploug10">(<a href="#ref-giering_etal20" role="doc-biblioref">Giering et al. 2020</a>; <a href="#ref-mcdonnell_etal15" role="doc-biblioref">McDonnell, Boyd, and Buesseler 2015</a>; <a href="#ref-iversen_ploug10" role="doc-biblioref">Iversen and Ploug 2010</a>)</span>.</p>
-<p>Based on this, the maximum sinking depth of larger poop particles may far exceed the <span class="math inline">\(z\)</span> range of our study area. It is possible that baleen whale detection rates will continue to increase with increasing depth in some regions due to rapid particle sinking and longer eDNA residency times at depth <span class="citation" data-cites="andruszkiewicz_etal17">(<a href="#ref-andruszkiewicz_etal17" role="doc-biblioref">Andruszkiewicz, Sassoubre, and Boehm 2017</a>)</span>. Similarly, detections made near the ocean floor that may be whalefall could also be signals of accumulated whale poop. Genearlly, eDNA is thought to travel less than 10 horizontal km before it is no longer detectable; therefore on a broad scale these detections are likely to reflect the <span class="math inline">\(xy\)</span> distribution of these species but the temporal resolution of detections may be decreased from days to months in samples from deeper environments.</p>
-<p>Beaked whales were also generally detected deeper than where they are thought to spend most of their time (<a href="#fig-H1POD-species" class="quarto-xref">Figure&nbsp;3</a>), although still within their normal range of vertical habitat use. Beaked whales spend less of their time near the surface than either baleen whales or delphinids; time-at-depth models estimate that they spend approximately 70% of their time below 100 m <span class="citation" data-cites="watwood_buonantony12 u_s_departmentofthenavy17">(<a href="#ref-watwood_buonantony12" role="doc-biblioref">Watwood and Buonantony 2012</a>; <a href="#ref-u_s_departmentofthenavy17" role="doc-biblioref">U.S. Department of the Navy 2017</a>)</span>, with depth ranges spanning down as far as 3,000 m <span class="citation" data-cites="schorr_etal14">(<a href="#ref-schorr_etal14" role="doc-biblioref">Schorr et al. 2014</a>)</span>. While below the surface, beaked whales generally make deep (500+ m) foraging dives interspersed with several shallow (200-300 m) “resting” dives <span class="citation" data-cites="baird_etal06">(<a href="#ref-baird_etal06" role="doc-biblioref">Baird et al. 2006</a>)</span>. We found that goose-beaked whales, considered the most common beaked whale in the Pacific Ocean, were most likely to be detected between 200 and 300 m, in the range of their resting dives. Baird’s beaked whales were most likely to be detected at 400-500 m; as 500 m was the extent of our sampling range, it is possible that this species or other beaked whales have higher detection probabilities at depths greater than 500 m. While we did not make predictions of POD by depth for the saber-toothed whale, all three detections of this species were at 300 m (n = 1) and 500 m (n =2).</p>
-<p>Finally, for both baleen whales and beaked whales, high POD at depth may be caused by either slower decay/longer residency times or decreased abundance of highly prevalent taxa such as microbes, plankton, fishes, etc <span class="citation" data-cites="robinson_etal24 pinfield_etal19">(<a href="#ref-robinson_etal24" role="doc-biblioref">Robinson et al. 2024</a>; <a href="#ref-pinfield_etal19" role="doc-biblioref">Pinfield et al. 2019</a>)</span>.</p>
-<p>In general, sampling near the surface will prioritize detections of delphinids and porpoises, and sampling at 300+ m will prioritize detection rates of beaked whales, with baleen whales detectable at both the surface and depths &gt;300 m. While we found that POD varies by species, we also observed significant trends in POD with depth when species were grouped by phylogenetic family or by broad prey category. This indicates some degree of similarity in habitat use across the <span class="math inline">\(z\)</span> axis within these groups, such that researchers wanting to design an eDNA monitoring study targeting a species for which there is little informaton could stratify their sampling according to phylogenic or niche-based distribution models.</p>
+<p>Detection rate across all cetaceans varied with sampling depth (Supplemental Figure S1) and was best described at a species-specific level, broadly reflecting our current understanding of species-specific variability in use of the water column (<a href="#fig-H1POD-species" class="quarto-xref">Figure&nbsp;3</a>). This was especially evident among the delphinids and porpoises, with some noticeable deviations from expected trends in both the baleen whales and the beaked whales. These trends could be inherent to the behavior of the animals themselves, or more likely may reflect the “behavior” of eDNA.</p>
+<p>For example, baleen whales are generally thought to be shallow divers, and while some dives up to approximately 500 m have been recorded in a few species <span class="citation" data-cites="panigada_etal99">(e.g.&nbsp;fin whales, <a href="#ref-panigada_etal99" role="doc-biblioref">Panigada et al. 1999</a>)</span>, recent reports of time-at-depth for cetacean species indicates that baleen whales spend the vast majority of their time within the top 100-200 m of the ocean <span class="citation" data-cites="watwood_buonantony12 u_s_departmentofthenavy17">(<a href="#ref-watwood_buonantony12" role="doc-biblioref">Watwood and Buonantony 2012</a>; <a href="#ref-u_s_departmentofthenavy17" role="doc-biblioref">U.S. Department of the Navy 2017</a>)</span>. We observe a sharp spike in detection rate at 500 m for two of the three baleen whale species included in our model predictions. Gray whale eDNA was not likely to be observed at 500 m; this is most likely because they are a nearshore coastal species that is rarely observed in deep water. Humpback and fin whales both have pelagic distributions, and both species’ eDNA was as likely to be observed at 500 m as at the surface, with low detection rate at intermediate depths.</p>
+<p>We considered several possible explanations for this observed pattern. We first considered the possibility that some of these deeper eDNA detections, especially those of deeper-diving fin whales, are detections of deep dives made by animals foraging for krill at depth. However, based on our current knowledge of the diving limits of baleen whales, we consider it highly unlikely that most of the deep detections are indicative of the presence of the detected species at that depth. We then considered the possibility that the large spike in deep detections was driven by whale fall or predation (i.e.&nbsp;whole or parts of animals sinking in the water column). In total, baleen whales were detected below 250 m at 28 locations; of those, 8 detections (28.5%) were within 100 m of the ocean floor and might be considered potential detections of whalefall. A map of these detection locations is included in Supplemental Figure S4. In addition to this, a single baleen whale detection coincided with the detection of killer whale eDNA. No eDNA detections of baleen whales coincided with the detection of shark eDNA in the data generated from MFU or MV1 sequencing runs.</p>
+<p>Finally, we considered the possibility that these deep-water detections are attributable to sinking whale feces. Even after accounting for whale fall or predation events as possible explanations, there remain 19 deep-water detections of baleen whale eDNA (68% of deep-water detections) that are unexplainable. While sinking rates and depths of baleen whale feces are generally unknown, we know from expert observations that fecal material from baleen whales is quite large and can sink rapidly from the surface (<strong>WHO CAN I PERS COMM FOR THIS?!? KIM?!?!</strong>). eDNA can be detectable for up to 2-4 days at the surface <span class="citation" data-cites="brandao-dias_etal25 wood_etal20">(<a href="#ref-brandao-dias_etal25" role="doc-biblioref">Brandão-Dias et al. 2025</a>; <a href="#ref-wood_etal20" role="doc-biblioref">S. A. Wood et al. 2020</a>)</span>, and likely longer at depth where it is colder, darker, and there are fewer microbes digesting cellular material <span class="citation" data-cites="andruszkiewicz_etal17">(<a href="#ref-andruszkiewicz_etal17" role="doc-biblioref">Elizabeth A. Andruszkiewicz, Sassoubre, and Boehm 2017</a>)</span>. Research on oceanic particle sinking rate indicates that smaller particles (up to 6 mm) can sink at rates of ~50-300 m day<sup>-1</sup>, and that sinking rates increase rapidly with particle size while degradation rates decrease with increasing particle size, with maximum sinking depths in the range of ~800-5,000 m day<sup>-1</sup> <span class="citation" data-cites="giering_etal20 mcdonnell_etal15 iversen_ploug10">(<a href="#ref-giering_etal20" role="doc-biblioref">Giering et al. 2020</a>; <a href="#ref-mcdonnell_etal15" role="doc-biblioref">McDonnell, Boyd, and Buesseler 2015</a>; <a href="#ref-iversen_ploug10" role="doc-biblioref">Iversen and Ploug 2010</a>)</span>.</p>
+<p>Based on this, the maximum sinking depth of larger poop particles may far exceed the <span class="math inline">\(z\)</span> range of our study area. It is possible that baleen whale detection rates will continue to increase with increasing depth in some regions due to rapid particle sinking and longer eDNA residency times at depth <span class="citation" data-cites="andruszkiewicz_etal17">(<a href="#ref-andruszkiewicz_etal17" role="doc-biblioref">Elizabeth A. Andruszkiewicz, Sassoubre, and Boehm 2017</a>)</span>. Generally, eDNA is thought to travel 2-20 horizontal km before it is no longer detectable <span class="citation" data-cites="Andruszkiewicz2019 baker_etal18 silva_etal25">(<a href="#ref-Andruszkiewicz2019" role="doc-biblioref">Elizabeth A. Andruszkiewicz et al. 2019</a>; <a href="#ref-baker_etal18" role="doc-biblioref">Baker et al. 2018</a>; <a href="#ref-silva_etal25" role="doc-biblioref">Silva et al. 2025</a>)</span>; therefore on a broad scale these detections are likely to reflect the <span class="math inline">\(xy\)</span> distribution of these species but the temporal resolution of detections may decrease from days to weeks in samples from deeper environments.</p>
+<p>Beaked whales were also generally detected deeper than where they are thought to spend most of their time (<a href="#fig-H1POD-species" class="quarto-xref">Figure&nbsp;3</a>), although still within their range of vertical habitat use. Beaked whales spend less of their time near the surface than either baleen whales or delphinids; time-at-depth models estimate that they spend approximately 70% of their time below 100 m <span class="citation" data-cites="watwood_buonantony12 u_s_departmentofthenavy17">(<a href="#ref-watwood_buonantony12" role="doc-biblioref">Watwood and Buonantony 2012</a>; <a href="#ref-u_s_departmentofthenavy17" role="doc-biblioref">U.S. Department of the Navy 2017</a>)</span>, with depth ranges spanning down as far as 3,000 m <span class="citation" data-cites="schorr_etal14">(<a href="#ref-schorr_etal14" role="doc-biblioref">Schorr et al. 2014</a>)</span>. While below the surface, beaked whales generally make deep (500+ m) foraging dives interspersed with several shallow (200-300 m) “resting” dives <span class="citation" data-cites="baird_etal06">(<a href="#ref-baird_etal06" role="doc-biblioref">Baird et al. 2006</a>)</span>. We found that goose-beaked whales, considered the most common beaked whale in the Pacific Ocean, were most likely to be detected between 200 and 300 m, in the range of their resting dives. Northern giant bottlenose whales were most likely to be detected at 400-500 m; as 500 m was the extent of our sampling range, it is possible that this species or other beaked whales have higher detection probabilities at depths greater than 500 m. While we did not make predictions of detection rate by depth for the saber-toothed whale, the three detections of this species were at 300 m (n = 1) and 500 m (n =2).</p>
+<p>Finally, for both baleen whales and beaked whales, high detection rates at depth may be caused by either slower decay and therefore longer residency times or decreased abundance of highly prevalent taxa such as microbes, plankton, fishes, etc <span class="citation" data-cites="robinson_etal24 pinfield_etal19">(<a href="#ref-robinson_etal24" role="doc-biblioref">Robinson et al. 2024</a>; <a href="#ref-pinfield_etal19" role="doc-biblioref">Pinfield et al. 2019</a>)</span> that can “swamp out” the signal from rarer taxa at shallower depths. This latter issue is likely to be exacerbated when using general primers; in our study, we expect that our cetacean detections from MV1 and MFU primers were more susceptable to a swamping effect than DL, which is designed to exclude non-cetacean DNA and preferentially amplify cetaceans.</p>
+<p>In general, sampling near the surface will target delphinids and porpoises, and sampling at 300+ m will target beaked whales, with baleen whales detectable at both the surface and depths &gt;300 m. While we found that detection rate varies by species, we also observed significant trends in detection with depth when species were grouped by phylogenetic family or by broad prey category. This indicates some degree of similarity in habitat use across the <span class="math inline">\(z\)</span> axis within these groups, such that researchers wanting to design an eDNA monitoring study targeting a species for which there is little information could stratify their sampling according to phylogenic or niche-based distribution models.</p>
 </section>
 <section id="question-3" class="level4">
 <h4 class="anchored" data-anchor-id="question-3">Question 3:</h4>
-<p>Trends in POD by depth varied geographically by species, as illustrated by the three example species for which we made predictions of depth of maximum POD (<a href="#fig-H3PODxy" class="quarto-xref">Figure&nbsp;5</a>). At the broad scale of this study, we expect that this at least partially reflects geographic variability in species-specific use of the water column. That may reflect geographic shifts in the depth distribution of prey or preferred prey items of a given predator, which may in turn reflect geographic variability in oceanographic conditions.</p>
-<p>Alternatively, it is likely that at least a portion of this observed variability is directly linked to oceanographic variability, and its effect on the fate and transport of eDNA once deposited in the water column. eDNA degradation and residence time will be affected by water temperature, pH, and microbial density. During that time, horizontal transport will be affected by currents, eddies, etc. Vertical transport will be affected by particle size, stratification, upwelling, mixed layer depth, etc. This study is relatively insensitive to horizontal transport of eDNA, which is expected to travel up to XX km on average before it is no longer detectable <span class="citation" data-cites="xiong_etal25 brasseale_etal25 brandao-dias_etal25">(e.g., <a href="#ref-xiong_etal25" role="doc-biblioref">Xiong et al. 2025</a>; <a href="#ref-brasseale_etal25" role="doc-biblioref">Brasseale et al. 2025</a>; <a href="#ref-brandao-dias_etal25" role="doc-biblioref">Brandão-Dias et al. 2025</a>)</span>, our samples were collected at 10 km intervals throughout the study area. Given this high level resolution, our predictions of the <span class="math inline">\(z\)</span> distribution in probability of detecting rare species eDNA is most likely to be affected by oceanographic processes that change sinking rates or residence time.</p>
-<p>It is likely that variability in the <span class="math inline">\(z\)</span> distribution of species-specific POD represents a combination of both <span class="math inline">\(xy\)</span> variability in species-specific use of the water column, as well as <span class="math inline">\(xy\)</span> variability in eDNA sinking and residency times. In both cases, underlying oceanographic processes are an important driver of the observed patterns. To assess these links between oceanography and 3D spatial distribution, our next study will explicitly focus on the development of 3D spatial distribution models using eDNA and using these models to determine the important oceanographic drivers of cetacean eDNA in 3D space.</p>
+<p>Species-specific maximum detection rate depths varied geographically, as illustrated by the three example species used in this study (<a href="#fig-H3PODxy" class="quarto-xref">Figure&nbsp;5</a>). At the broad scale, we expect that this pattern partially reflects geographic variability in species-specific use of the water column. That may reflect geographic shifts in the depth distribution of prey or preferred prey items of a given predator, which may in turn reflect geographic variability in oceanographic conditions.</p>
+<p>It is also likely that some of the observed variability is directly linked to oceanographic conditions, and its effect on the fate and transport of eDNA once deposited in the water column. eDNA is generally considered observable at the surface for 2-4 days <span class="citation" data-cites="brandao-dias_etal25 wood_etal20">(<a href="#ref-brandao-dias_etal25" role="doc-biblioref">Brandão-Dias et al. 2025</a>; <a href="#ref-wood_etal20" role="doc-biblioref">S. A. Wood et al. 2020</a>)</span>, and degradation and residence time will be affected by water temperature, pH, and microbial density <span class="citation" data-cites="lamb_etal22 jo26">(<a href="#ref-lamb_etal22" role="doc-biblioref">Lamb et al. 2022</a>; <a href="#ref-jo26" role="doc-biblioref">Jo 2026</a>)</span>. During that time, horizontal transport will be affected by currents and other mesoscale processes, ane vertical transport will be affected by particle size, stratification, upwelling, mixed layer depth, etc <span class="citation" data-cites="Andruszkiewicz2019">(<a href="#ref-Andruszkiewicz2019" role="doc-biblioref">Elizabeth A. Andruszkiewicz et al. 2019</a>)</span>. This study is relatively insensitive to horizontal transport of eDNA, which is expected to travel 2-20 km before it is no longer detectable <span class="citation" data-cites="xiong_etal25 brasseale_etal25 brandao-dias_etal25 silva_etal25">(e.g., <a href="#ref-xiong_etal25" role="doc-biblioref">Xiong et al. 2025</a>; <a href="#ref-brasseale_etal25" role="doc-biblioref">Brasseale et al. 2025</a>; <a href="#ref-brandao-dias_etal25" role="doc-biblioref">Brandão-Dias et al. 2025</a>; <a href="#ref-silva_etal25" role="doc-biblioref">Silva et al. 2025</a>)</span>. Our samples were collected along transects set at 10 km intervals throughout the study area. Given this spatial resolution, our predictions of the detection rate rare species eDNA is most likely to be affected by eDNA sinking rates or residence time than horizontal transport.</p>
+<p>It is likely that variability in the <span class="math inline">\(z\)</span> distribution of species-specific detection rate represents a combination of both <span class="math inline">\(xy\)</span> variability in species-specific use of the water column, as well as <span class="math inline">\(xy\)</span> variability in eDNA sinking and residency times. In both cases, underlying oceanographic processes are an important driver of the observed patterns. To assess these links between oceanography and 3D spatial distribution, our future work will explicitly focus on the development of 3D spatial distribution models using eDNA and using these models to determine the important oceanographic drivers of cetacean eDNA in 3D space.</p>
 </section>
 <section id="considerations-for-beaked-whales" class="level4">
 <h4 class="anchored" data-anchor-id="considerations-for-beaked-whales">Considerations for beaked whales</h4>
-<p>Among cetaceans, beaked whales were the most rarely observed in our dataset, echoing the results of previous visual and acoustic data collection efforts in the California Current, resulting in poor performance metrics for SDMs and density estimates for this clade <span class="citation" data-cites="Becker2020">(e.g. <a href="#ref-Becker2020" role="doc-biblioref">Elizabeth A. Becker et al. 2020b</a>)</span>. For example, during regular surveys of the U.S. EEZ portion of the California Current ecosystem, <em>Berardius bairdii</em> were observed approximately 45 times between 1991 and 2018 <span class="citation" data-cites="carretta_etal23">(<a href="#ref-carretta_etal23" role="doc-biblioref">Carretta et al. 2023</a>)</span> across a study area roughly double the latitudinal width of our study area.</p>
-<p>We observed the same species 14 times using eDNA, and note that all but one of these detections were made below the surface. Most detections were made below 100 m, and the highest predicted POD for any beaked whales species was at depths &gt; 200 m both with and without <span class="math inline">\(xy\)</span> model covariates. Incorporating <span class="math inline">\(xy\)</span> covariates illustrated that beaked whales are not likely to be observed on the continental shelf, supporting previous SDMs showing their absence near the coast <span class="citation" data-cites="Becker2020">(<a href="#ref-Becker2020" role="doc-biblioref">Elizabeth A. Becker et al. 2020b</a>)</span>, and that their offshore eDNA detections are most likely to be at depths &gt; 300 m throughout the Califonia Current. In the context of beaked whale ecology, this result is not surprising, but it illustrates the promise of eDNA to supplement our current database of positive detections in the case of extremely rarely sighted species such as beaked whales, which may improve SDMs considerably. eDNA can also be used to refine our understanding of habitat use in the <span class="math inline">\(z\)</span> dimension for these deepwater species.</p>
+<p>Among cetaceans, beaked whales were the most rarely observed in our dataset, echoing the results of previous visual and acoustic data collection efforts in the California Current, resulting in poor performance metrics for SDMs and density estimates for this clade <span class="citation" data-cites="Becker2020">(e.g. <a href="#ref-Becker2020" role="doc-biblioref">Elizabeth A. Becker et al. 2020</a>)</span>. For example, during regular visual surveys of the U.S. EEZ portion of the California Current ecosystem, northern giant bottlenose whales were observed approximately 45 times between 1991 and 2018 across a study area roughly double the latitudinal width of our study area <span class="citation" data-cites="carretta_etal23">(<a href="#ref-carretta_etal23" role="doc-biblioref">Carretta et al. 2023</a>)</span>.</p>
+<p>We observed the same species 14 times in a single survey using eDNA, and note that all but one of these detections were made below the surface (Figure1). Most detections were made below 100 m, and predicted detection rate for this species was highest at 300+ m both with and without <span class="math inline">\(xy\)</span> model covariates. Across all beaked whales, the highest predicted detection rate was at depths &gt; 200 m (Figure 4). Incorporating <span class="math inline">\(xy\)</span> covariates illustrated that beaked whales are not likely to be observed on the continental shelf, supporting previous SDMs showing their absence near the coast <span class="citation" data-cites="Becker2020">(<a href="#ref-Becker2020" role="doc-biblioref">Elizabeth A. Becker et al. 2020</a>)</span>, and that their offshore eDNA detections are most likely to be at depths &gt; 300 m throughout the California Current. In the context of beaked whale ecology, this result is not surprising, but it illustrates the promise of eDNA to supplement our current database of positive detections in the case of extremely rarely sighted species such as beaked whales, which may improve SDMs considerably. eDNA can also be used to refine our understanding of habitat use in the <span class="math inline">\(z\)</span> dimension for these deepwater species.</p>
 </section>
 <section id="marine-mammal-monitoring-lessons-for-edna-experimental-design" class="level4">
 <h4 class="anchored" data-anchor-id="marine-mammal-monitoring-lessons-for-edna-experimental-design">Marine Mammal monitoring: lessons for eDNA experimental design</h4>
-<p>Species-specific spatial models, niche-based modeling, or phylogeny-based distribution models can be used to stratify eDNA sampling designs in order to increase sampling efficiency and positive detections of target taxa, especially for rare and mobile marine species, while reducing sampling costs. While eDNA sampling is promising as a complementary or standalone approach to characterizing the distributions of marine mammals, its efficacy will be greatest for species with SDMs that are low resolution or have high confidence intervals due to a paucity of visual or acoustic observations. These are generally deeper-diving species such as beaked whales. Future marine mammal surveys may consider integrating nighttime collection of eDNA samples from depths &gt;300 m to increase positive detections of these species. Increasing positive detections for these or any rare species will increase spatiotemporal resolution of SDMs and habitat use models, which can then be fed back into experimental design for future eDNA sampling surveys.</p>
-<p>Once samples are collected, primer specificity, DNA degradation associated with freeze–thaw cycles, and the level of technical replication all influence the probability of detecting eDNA in each sample. Increasing primer specificity and technical replication increases probability of detecting rare species in the sample. While targeting shorter fragments that are robust to DNA decay from freeze/thaw cycles may be a useful way to increase technical replication, it may also decrease the ability to classify sequence data down to species-level resolution. Therefore, sequencing longer and more specific fragments first, using as few freeze/thaw cycles as possible, and conducting all technical replicates simultaneously will increase POD of DNA that is rare in the sample.</p>
+<p>Species-specific spatial models, niche-based modeling, or phylogeny-based distribution models can be used to stratify eDNA sampling designs in order to increase sampling efficiency and positive detections of target taxa, especially for rare and mobile marine species, thus improving our capacity to generate accurate estimates of cetacean abundance and distribution for ue in management decisions. While eDNA sampling is promising as a complementary or standalone approach to characterizing the distributions of marine mammals in general, its efficacy will be greatest for species with SDMs that are low resolution or have large confidence intervals due to a paucity of visual or acoustic observations. These are generally deeper-diving species such as beaked whales. Future marine mammal surveys may consider integrating collection of eDNA samples from depths &gt;300 m to increase positive detections of these species. Increasing positive detections for these or any rare species will increase spatiotemporal resolution of SDMs and habitat use models, which can then be fed back into experimental design for future eDNA sampling surveys.</p>
+<p>Once samples are collected, primer specificity, DNA degradation associated with freeze–thaw cycles, and the level of technical replication all influence eDNA POD in each sample when using a metabarcoding approach. Increasing primer specificity and technical replication increases POD of rare species in a sample. While targeting shorter fragments that are robust to DNA decay from freeze/thaw cycles may be a useful way to increase technical replication, it may also decrease the ability to classify sequence data down to species-level resolution. Therefore, sequencing longer and more specific fragments first, using as few freeze/thaw cycles as possible, and conducting all technical replicates simultaneously will increase the POD of DNA that is rare in the sample.</p>
 <p>Integrating optimized eDNA sampling design with strategies that maximize DNA capture has the potential to substantially expand the utility of eDNA for modeling the distribution of rare marine species, including cetaceans. The framework developed here provides practical guidance for tailoring eDNA sample collection and processing to single or multiple taxa in accordance with study objectives, increasing detection efficiency while reducing sampling effort and cost.</p>
 </section>
 </section>
@@ -666,15 +668,16 @@ Figure&nbsp;5: Depth of maximum probability of detection (POD; top) and range of
 </section>
 <section id="acknowledgements" class="level2">
 <h2 class="anchored" data-anchor-id="acknowledgements">Acknowledgements</h2>
-<p>We are grateful to the many people who supported eDNA sample collection and processing, including XXXX, and the crew of the R/V XXXX. Funding for this research came from ONR Grant XXXX.</p>
+<p>The authors gratefully acknowledge the survey expertise and support of NOAA’s Pacific hake survey team and the personnel of the NOAA Ship Bell M. Shimada for supporting the collection of eDNA samples on the US West Coast Hake Survey 2019. Thanks to Ana Ramon-Laca and Abi Wells in their coordination for the collection and extraction of environmental DNA samples during this survey. This material is based upon research supported by the Office of Naval Research under Award Number (N00014-22-1-2719). The authors acknowledge Research Computing at the James Hutton Institute for providing computational resources and technical support for the “UK’s Crop Diversity Bioinformatics HPC” (BBSRC grants BB/S019669/1 and BB/X019683/1), use of which has contributed to the results reported within this paper <span class="citation" data-cites="percival-alwyn_etal25a">(<a href="#ref-percival-alwyn_etal25a" role="doc-biblioref">Percival-Alwyn et al. 2025</a>)</span>. Any use of trade, firm, or product names is for descriptive purposes only and does not imply endorsement by the U.S. Government.</p>
 </section>
 <section id="supplemental-materials" class="level2">
 <h2 class="anchored" data-anchor-id="supplemental-materials">Supplemental Materials</h2>
 <p>Table S1. Sample metadata.</p>
+<p>Table S2. Mathmatic notation for all variables included in the occupancy model and GAM framework in this study.</p>
 <div id="tbl-m12AUC" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-m12AUC-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;3: Table S2. Per-species AUC, optimized TSS, and optimized TSS threshold for Q1 and Q3 models.
+Table&nbsp;3: Table S3. Per-species AUC, optimized TSS, and optimized TSS threshold for Q1 and Q3 models.
 </figcaption>
 <div aria-describedby="tbl-m12AUC-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
@@ -713,13 +716,13 @@ Figure&nbsp;7: Supplemental Figure S2. TSS plots for the best-fit Q@ model (top)
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-S3-whalefall" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="fig-SuppH1POD_obs" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-S3-whalefall-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="index_files/figure-html/fig-S3-whalefall-1.png" class="img-fluid figure-img" width="672">
+<div aria-describedby="fig-SuppH1POD_obs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-SuppH1POD_obs-1.png" class="img-fluid figure-img" width="1440">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-S3-whalefall-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8: Supplemental Figure S3. Locations of eDNA detections within 100 m of the ocean floor, which may represent nearby whalefall.
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-SuppH1POD_obs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: Supplemental Figure S3. Q1 best fit model with observed detections.
 </figcaption>
 </figure>
 </div>
@@ -727,13 +730,13 @@ Figure&nbsp;8: Supplemental Figure S3. Locations of eDNA detections within 100 m
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-SuppH1POD_obs" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="fig-S3-whalefall" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-SuppH1POD_obs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="index_files/figure-html/fig-SuppH1POD_obs-1.png" class="img-fluid figure-img" width="1440">
+<div aria-describedby="fig-S3-whalefall-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-S3-whalefall-1.png" class="img-fluid figure-img" width="672">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-SuppH1POD_obs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9: Supplemental Figure S5. Q1 best fit model with observed detections.
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-S3-whalefall-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: Supplemental Figure S4. Locations of eDNA detections within 100 m of the ocean floor, which may represent nearby whalefall.
 </figcaption>
 </figure>
 </div>
@@ -752,6 +755,9 @@ Afonso, Luís, Joana Costa, Ana Mafalda Correia, Raul Valente, Eva Lopes, Maria 
 <div id="ref-allouche_etal06" class="csl-entry" role="listitem">
 Allouche, Omri, Asaf Tsoar, and Ronen Kadmon. 2006. <span>“Assessing the Accuracy of Species Distribution Models: Prevalence, Kappa and the True Skill Statistic (<span>TSS</span>).”</span> <em>Journal of Applied Ecology</em> 43 (6): 1223–32. <a href="https://doi.org/10.1111/j.1365-2664.2006.01214.x">https://doi.org/10.1111/j.1365-2664.2006.01214.x</a>.
 </div>
+<div id="ref-Andruszkiewicz2019" class="csl-entry" role="listitem">
+Andruszkiewicz, Elizabeth A, Jeffrey R Koseff, Oliver B Fringer, Nicholas T Ouellette, Anna B Lowe, Christopher A Edwards, and Alexandria B Boehm. 2019. <span>“Modeling Environmental <span>DNA</span> Transport in the Coastal Ocean Using <span>Lagrangian</span> Particle Tracking.”</span> <em>Frontiers in Marine Science</em> 6 (JUL). <a href="https://doi.org/10.3389/fmars.2019.00477">https://doi.org/10.3389/fmars.2019.00477</a>.
+</div>
 <div id="ref-andruszkiewicz_etal17" class="csl-entry" role="listitem">
 Andruszkiewicz, Elizabeth A., Lauren M. Sassoubre, and Alexandria B. Boehm. 2017. <span>“Persistence of Marine Fish Environmental <span>DNA</span> and the Influence of Sunlight.”</span> <em>PLOS ONE</em> 12 (9): e0185043. <a href="https://doi.org/10.1371/journal.pone.0185043">https://doi.org/10.1371/journal.pone.0185043</a>.
 </div>
@@ -761,26 +767,23 @@ Auad, Guillermo, Dean Roemmich, and John Gilson. 2011. <span>“The <span>Califo
 <div id="ref-baird_etal06" class="csl-entry" role="listitem">
 Baird, Robin W., Daniel L. Webster, Daniel J. McSweeney, Allan D. Ligon, Gregory S. Schorr, and Jay Barlow. 2006. <span>“Diving Behaviour of <span>Cuvier</span>’s ( <span><em>Ziphius</em></span><span> <em>Cavirostris</em></span> ) and <span>Blainville</span>’s ( <span><em>Mesoplodon</em></span><span> <em>Densirostris</em></span> ) Beaked Whales in <span>Hawai</span>‘i.”</span> <em>Canadian Journal of Zoology</em> 84 (8): 1120–28. <a href="https://doi.org/10.1139/z06-095">https://doi.org/10.1139/z06-095</a>.
 </div>
-<div id="ref-baker_etal06" class="csl-entry" role="listitem">
-Baker, C. S., V. Lukoschek, S. Lavery, M. L. Dalebout, M. Yong-un, T. Endo, and N. Funahashi. 2006. <span>“Incomplete Reporting of Whale, Dolphin and Porpoise <span>‘Bycatch’</span> Revealed by Molecular Monitoring of <span>Korean</span> Markets.”</span> <em>Animal Conservation</em> 9 (4): 474–82. <a href="https://doi.org/10.1111/j.1469-1795.2006.00062.x">https://doi.org/10.1111/j.1469-1795.2006.00062.x</a>.
+<div id="ref-baker_etal18" class="csl-entry" role="listitem">
+Baker, C. Scott, Debbie Steel, Sharon Nieukirk, and Holger Klinck. 2018. <span>“Environmental <span>DNA</span> (<span class="nocase">eDNA</span>) <span>From</span> the <span>Wake</span> of the <span>Whales</span>: <span>Droplet Digital PCR</span> for <span>Detection</span> and <span>Species Identification</span>.”</span> <em>Frontiers in Marine Science</em> 5 (April). <a href="https://doi.org/10.3389/fmars.2018.00133">https://doi.org/10.3389/fmars.2018.00133</a>.
 </div>
-<div id="ref-becker_etal20a" class="csl-entry" role="listitem">
-Becker, Elizabeth A., James V. Carretta, Karin A. Forney, Jay Barlow, Stephanie Brodie, Ryan Hoopes, Michael G. Jacox, et al. 2020a. <span>“Performance Evaluation of Cetacean Species Distribution Models Developed Using Generalized Additive Models and Boosted Regression Trees.”</span> <em>Ecology and Evolution</em> 10 (12): 5759–84. <a href="https://doi.org/10.1002/ece3.6316">https://doi.org/10.1002/ece3.6316</a>.
+<div id="ref-Barlow2016" class="csl-entry" role="listitem">
+Barlow, J. 2016. <span>“Cetacean Abundance in the <span>California</span> Current Estimated from Ship-Based Line-Transect Surveys in 1991-2014.”</span> Southwest Fisheries Science Center, Administrative Report, LJ-2016-01.
+</div>
+<div id="ref-bar-on_etal18" class="csl-entry" role="listitem">
+Bar-On, Yinon M., Rob Phillips, and Ron Milo. 2018. <span>“The Biomass Distribution on <span>Earth</span>.”</span> <em>Proceedings of the National Academy of Sciences</em> 115 (25): 6506–11. <a href="https://doi.org/10.1073/pnas.1711842115">https://doi.org/10.1073/pnas.1711842115</a>.
 </div>
 <div id="ref-becker_etal22" class="csl-entry" role="listitem">
 Becker, Elizabeth A., Karin A. Forney, David L. Miller, Jay Barlow, Lorenzo Rojas-Bracho, Jorge Urbán R, and Jeff E. Moore. 2022. <span>“Dynamic <span>Habitat Models Reflect Interannual Movement</span> of <span>Cetaceans Within</span> the <span>California Current Ecosystem</span>.”</span> <em>Frontiers in Marine Science</em> 9 (May). <a href="https://doi.org/10.3389/fmars.2022.829523">https://doi.org/10.3389/fmars.2022.829523</a>.
 </div>
-<div id="ref-Becker2016" class="csl-entry" role="listitem">
-Becker, Elizabeth A., Karin A. Forney, Bruce J. Thayre, Amanda Debich, Gregory S. Campbell, Katherine Whitaker, Annie B. Douglas, Anita Gilles, Ryan Hoopes, and John A. Hildebrand. 2016. <span>“Habitat-<span>Based Density Models</span> for <span>Three Cetacean Species</span> Off <span>Southern California Illustrate Pronounced Seasonal Differences</span>”</span> 4 (May): 1–14. <a href="https://doi.org/10.3389/fmars.2017.00121">https://doi.org/10.3389/fmars.2017.00121</a>.
-</div>
 <div id="ref-Becker2020" class="csl-entry" role="listitem">
-Becker, Elizabeth A, Karin A Forney, David L Miller, Paul C Fiedler, Jay Barlow, and Jeff E Moore. 2020b. <span>“Habitat-Based Density Estimates for Cetaceans in the <span>California Current Ecosystem</span> Based on 1991-2018 Survey Data.”</span> December.
-</div>
-<div id="ref-Becker2019" class="csl-entry" role="listitem">
-Becker, Elizabeth A, Karin A Forney, Jessica V Redfern, Jay Barlow, Michael G Jacox, Jason J Roberts, and Daniel M Palacios. 2019. <span>“Predicting Cetacean Abundance and Distribution in a Changing Climate.”</span> <em>Diversity and Distributions</em> 25 (4): 626–43. <a href="https://doi.org/10.1111/ddi.12867">https://doi.org/10.1111/ddi.12867</a>.
+Becker, Elizabeth A, Karin A Forney, David L Miller, Paul C Fiedler, Jay Barlow, and Jeff E Moore. 2020. <span>“Habitat-Based Density Estimates for Cetaceans in the <span>California Current Ecosystem</span> Based on 1991-2018 Survey Data.”</span> December.
 </div>
 <div id="ref-brandao-dias_etal25" class="csl-entry" role="listitem">
-Brandão-Dias, Pedro Fp, Megan Shaffer, Gledis Guri, Kim M. Parsons, Ryan P. Kelly, and Elizabeth Andruszkiewicz Allan. 2025. <span>“Differential Decay of Multiple Environmental Nucleic Acid Components.”</span> <em>Scientific Reports</em> 15 (1): 26791. <a href="https://doi.org/10.1038/s41598-025-12916-5">https://doi.org/10.1038/s41598-025-12916-5</a>.
+Brandão-Dias, Pedro FP, Megan Shaffer, Gledis Guri, Kim M. Parsons, Ryan P. Kelly, and Elizabeth Andruszkiewicz Allan. 2025. <span>“Differential Decay of Multiple Environmental Nucleic Acid Components.”</span> <em>Scientific Reports</em> 15 (1): 26791. <a href="https://doi.org/10.1038/s41598-025-12916-5">https://doi.org/10.1038/s41598-025-12916-5</a>.
 </div>
 <div id="ref-brasseale_etal25" class="csl-entry" role="listitem">
 Brasseale, Elizabeth, Nicolaus Adams, Elizabeth Andruszkiewicz Allan, Eiren K. Jacobson, Ryan P. Kelly, Owen R. Liu, Stephanie Moore, Megan Shaffer, Jilian Xiong, and Kim Parsons. 2025. <span>“Marine <span class="nocase">eDNA Production</span> and <span>Loss Mechanisms</span>.”</span> <em>Journal of Geophysical Research: Oceans</em> 130 (4): e2024JC021643. <a href="https://doi.org/10.1029/2024JC021643">https://doi.org/10.1029/2024JC021643</a>.
@@ -788,11 +791,17 @@ Brasseale, Elizabeth, Nicolaus Adams, Elizabeth Andruszkiewicz Allan, Eiren K. J
 <div id="ref-Callahan2016" class="csl-entry" role="listitem">
 Callahan, Benjamin J, Paul J McMurdie, Michael J Rosen, Andrew W Han, Amy Jo A Johnson, and Susan P Holmes. 2016. <span>“<span>DADA2</span>: <span class="nocase">High-resolution</span> Sample Inference from <span>Illumina</span> Amplicon Data.”</span> <em>Nature Methods</em> 13 (7): 581–83. <a href="https://doi.org/10.1038/nmeth.3869">https://doi.org/10.1038/nmeth.3869</a>.
 </div>
+<div id="ref-canals_etal21" class="csl-entry" role="listitem">
+Canals, Oriol, Iñaki Mendibil, María Santos, Xabier Irigoien, and Naiara Rodríguez-Ezpeleta. 2021. <span>“Vertical Stratification of Environmental <span>DNA</span> in the Open Ocean Captures Ecological Patterns and Behavior of Deep-Sea Fishes.”</span> <em>Limnology and Oceanography Letters</em> 6 (6): 339–47. <a href="https://doi.org/10.1002/lol2.10213">https://doi.org/10.1002/lol2.10213</a>.
+</div>
 <div id="ref-cao_etal01" class="csl-entry" role="listitem">
 Cao, Y., D. P. Larsen, and R. St-J. Thorne. 2001. <span>“Rare Species in Multivariate Analysis for Bioassessment: Some Considerations.”</span> <em>Journal of the North American Benthological Society</em> 20 (1): 144–53. <a href="https://doi.org/10.2307/1468195">https://doi.org/10.2307/1468195</a>.
 </div>
+<div id="ref-carretta_etal24" class="csl-entry" role="listitem">
+Carretta, James V., Erin M. Oleson, and Karin A. Forney. 2024. <span>“U.<span>S</span>. <span>Pacific</span> Marine Mammal Stock Assessments: 2023.”</span> <em>NOAA Technical Memorandum NMFS-SWFSC ; 704</em>. <a href="https://doi.org/10.25923/AQDN-F357">https://doi.org/10.25923/AQDN-F357</a>.
+</div>
 <div id="ref-carretta_etal23" class="csl-entry" role="listitem">
-Carretta, James V., Erin M. Oleson, Karin A. Forney, David W. Weller, Aimee R. Lang, Jason Baker, Anthony J Orr, et al. 2023. <span>“U.<span>S</span>. <span>Pacific</span> Marine Mammal Stock Assessments: 2022.”</span> U.S. Department of Commerce, NOAA Technical Memorandum NMFS-SWFSC-684.
+Carretta, James V., Erin M. Oleson, Karin A. Forney, David W. Weller, Aimee R. Lang, Jason Baker, Anthony J Orr, et al. 2023. <span>“U.<span>S</span>. <span>Pacific</span> Marine Mammal Stock Assessments: 2022.”</span> Southwest Fisheries Science Center (U.S.).
 </div>
 <div id="ref-claver_etal25" class="csl-entry" role="listitem">
 Claver, Cristina, Beatriz Sobradillo, Iñaki Mendibil, Oriol Canals, Guillermo Boyra, Leire Ibaibarriaga, Ryan P. Kelly, and Naiara Rodríguez-Ezpeleta. 2025. <span>“Integrating <span class="nocase">eDNA</span> and Acoustic-Trawl Data to Provide Small Pelagic Biomass Estimates for Fisheries Assessment.”</span> bioRxiv. <a href="https://doi.org/10.1101/2025.06.11.659118">https://doi.org/10.1101/2025.06.11.659118</a>.
@@ -836,8 +845,14 @@ Guélat, Jérôme, and Marc Kéry. 2018. <span>“Effects of Spatial Autocorrela
 <div id="ref-guisan_etal06" class="csl-entry" role="listitem">
 Guisan, Antoine, Olivier Broennimann, Robin Engler, Mathias Vust, Nigel G. Yoccoz, Anthony Lehmann, and Niklaus E. Zimmermann. 2006. <span>“Using <span>Niche-Based Models</span> to <span>Improve</span> the <span>Sampling</span> of <span>Rare Species</span>.”</span> <em>Conservation Biology</em> 20 (2): 501–11. <a href="https://doi.org/10.1111/j.1523-1739.2006.00354.x">https://doi.org/10.1111/j.1523-1739.2006.00354.x</a>.
 </div>
+<div id="ref-guri_etal25" class="csl-entry" role="listitem">
+Guri, Gledis, Owen R. Liu, Ryan P. Kelly, Megan R. Shaffer, Kim M. Parsons, Ana Ramón-Laca, Krista M. Nichols, Pedro F. P. Brandão-Dias, Abigail Wells, and Andrew Olaf Shelton. 2025. <span>“Quantitative, <span>Multispecies Monitoring</span> at a <span>Continental Scale</span>.”</span> bioRxiv. <a href="https://doi.org/10.1101/2025.10.30.685180">https://doi.org/10.1101/2025.10.30.685180</a>.
+</div>
 <div id="ref-hickey79" class="csl-entry" role="listitem">
 Hickey, Barbara M. 1979. <span>“The <span>California</span> Current System—Hypotheses and Facts.”</span> <em>Progress in Oceanography</em> 8 (4): 191–279. <a href="https://doi.org/10.1016/0079-6611(79)90002-8">https://doi.org/10.1016/0079-6611(79)90002-8</a>.
+</div>
+<div id="ref-irigoien_etal14" class="csl-entry" role="listitem">
+Irigoien, Xabier, T. A. Klevjer, A. Røstad, U. Martinez, G. Boyra, J. L. Acuña, A. Bode, et al. 2014. <span>“Large Mesopelagic Fishes Biomass and Trophic Efficiency in the Open Ocean.”</span> <em>Nature Communications</em> 5 (1): 3271. <a href="https://doi.org/10.1038/ncomms4271">https://doi.org/10.1038/ncomms4271</a>.
 </div>
 <div id="ref-iversen_ploug10" class="csl-entry" role="listitem">
 Iversen, M. H., and H. Ploug. 2010. <span>“Ballast Minerals and the Sinking Carbon Flux in the Ocean: Carbon-Specific Respiration Rates and Sinking Velocity of Marine Snow Aggregates.”</span> <em>Biogeosciences</em> 7 (9): 2613–24. <a href="https://doi.org/10.5194/bg-7-2613-2010">https://doi.org/10.5194/bg-7-2613-2010</a>.
@@ -845,8 +860,17 @@ Iversen, M. H., and H. Ploug. 2010. <span>“Ballast Minerals and the Sinking Ca
 <div id="ref-jeliazkov_etal22" class="csl-entry" role="listitem">
 Jeliazkov, Alienor, Yoni Gavish, Charles J. Marsh, Jonas Geschke, Neil Brummitt, Duccio Rocchini, Peter Haase, William E. Kunin, and Klaus Henle. 2022. <span>“Sampling and Modelling Rare Species: <span>Conceptual</span> Guidelines for the Neglected Majority.”</span> <em>Global Change Biology</em> 28 (12): 3754–77. <a href="https://doi.org/10.1111/gcb.16114">https://doi.org/10.1111/gcb.16114</a>.
 </div>
+<div id="ref-jennings_etal08" class="csl-entry" role="listitem">
+Jennings, Simon, Frédéric Mélin, Julia L Blanchard, Rodney M Forster, Nicholas K Dulvy, and Rod W Wilson. 2008. <span>“Global-Scale Predictions of Community and Ecosystem Properties from Simple Ecological Theory.”</span> <em>Proceedings of the Royal Society B: Biological Sciences</em> 275 (1641): 1375–83. <a href="https://doi.org/10.1098/rspb.2008.0192">https://doi.org/10.1098/rspb.2008.0192</a>.
+</div>
+<div id="ref-jo26" class="csl-entry" role="listitem">
+Jo, Toshiaki S. 2026. <span>“<span class="nocase">pH-Dependent Degradation</span> of <span>Macrobial Environmental DNA</span> in <span>Water</span>.”</span> <em>Molecular Ecology Resources</em> 26 (2): e70101. <a href="https://doi.org/10.1111/1755-0998.70101">https://doi.org/10.1111/1755-0998.70101</a>.
+</div>
 <div id="ref-kanaji_miyashita21" class="csl-entry" role="listitem">
 Kanaji, Yu, and Tomio Miyashita. 2021. <span>“Habitat Use and Habitat Overlap of <span>Delphinidae</span> Species Revealed by Mixed-Species Group Occurrence in the <span>North Pacific Ocean</span>.”</span> <em>Marine Mammal Science</em> 37 (3): 1128–38. <a href="https://doi.org/10.1111/mms.12794">https://doi.org/10.1111/mms.12794</a>.
+</div>
+<div id="ref-lamb_etal22" class="csl-entry" role="listitem">
+Lamb, Philip D., Vera G. Fonseca, David L. Maxwell, and Chibuzor C. Nnanatu. 2022. <span>“Systematic Review and Meta-Analysis: <span>Water</span> Type and Temperature Affect Environmental <span>DNA</span> Decay.”</span> <em>Molecular Ecology Resources</em> 22 (7): 2494–2505. <a href="https://doi.org/10.1111/1755-0998.13627">https://doi.org/10.1111/1755-0998.13627</a>.
 </div>
 <div id="ref-lelay_etal10" class="csl-entry" role="listitem">
 Le Lay, Gwenaëlle, Robin Engler, Erika Franc, and Antoine Guisan. 2010. <span>“Prospective Sampling Based on Model Ensembles Improves the Detection of Rare Species.”</span> <em>Ecography</em> 33 (6): 1015–27. <a href="https://doi.org/10.1111/j.1600-0587.2010.06338.x">https://doi.org/10.1111/j.1600-0587.2010.06338.x</a>.
@@ -866,8 +890,17 @@ McDonnell, A. M. P., P. W. Boyd, and K. O. Buesseler. 2015. <span>“Effects of 
 <div id="ref-Miya2015" class="csl-entry" role="listitem">
 Miya, M., Y. Sato, T. Fukunaga, T. Sado, J. Y. Poulsen, K. Sato, T. Minamoto, et al. 2015. <span>“<span>MiFish</span>, a Set of Universal <span>PCR</span> Primers for Metabarcoding Environmental <span>DNA</span> from Fishes: Detection of More Than 230 Subtropical Marine Species.”</span> <em>Royal Society Open Science</em> 2 (7): 150088. <a href="https://doi.org/10.1098/rsos.150088">https://doi.org/10.1098/rsos.150088</a>.
 </div>
+<div id="ref-paiu_etal24" class="csl-entry" role="listitem">
+Paiu, Romulus-Marian, Ana Cañadas, Ayhan Dede, Galina Meshkova, Dumitru Murariu, Ayaka Amaha Ozturk, Dimitar Popov, et al. 2024. <span>“Density and Abundance Estimates of Cetaceans in the <span>Black Sea</span> Through Aerial Surveys (<span>ASI</span>/<span>CeNoBS</span>).”</span> <em>Frontiers in Marine Science</em> 11 (June). <a href="https://doi.org/10.3389/fmars.2024.1248950">https://doi.org/10.3389/fmars.2024.1248950</a>.
+</div>
 <div id="ref-panigada_etal99" class="csl-entry" role="listitem">
 Panigada, S, M Zanardelli, S Canese, and M Jahoda. 1999. <span>“How Deep Can Baleen Whales Dive?”</span> <em>Marine Ecology Progress Series</em> 187: 309–11. <a href="https://doi.org/10.3354/meps187309">https://doi.org/10.3354/meps187309</a>.
+</div>
+<div id="ref-Pedersen2019a" class="csl-entry" role="listitem">
+Pedersen, Eric J., David L. Miller, Gavin L. Simpson, and Noam Ross. 2019. <span>“Hierarchical Generalized Additive Models in Ecology: <span>An</span> Introduction with Mgcv.”</span> <em>PeerJ</em> 2019 (5): e6876. <a href="https://doi.org/10.7717/PEERJ.6876/SUPP-1">https://doi.org/10.7717/PEERJ.6876/SUPP-1</a>.
+</div>
+<div id="ref-percival-alwyn_etal25a" class="csl-entry" role="listitem">
+Percival-Alwyn, Lawrence, Ian Barnes, Matthew D. Clark, James Cockram, Michael P. Coffey, Susan Jones, Paul J. Kersey, et al. 2025. <span>“<span>UKCropDiversity-HPC</span>: <span>A</span> Collaborative High-Performance Computing Resource Approach for Sustainable Agriculture and Biodiversity Conservation.”</span> <em>PLANTS, PEOPLE, PLANET</em> 7 (4): 969–77. <a href="https://doi.org/10.1002/ppp3.10607">https://doi.org/10.1002/ppp3.10607</a>.
 </div>
 <div id="ref-pikitch18" class="csl-entry" role="listitem">
 Pikitch, Ellen K. 2018. <span>“A Tool for Finding Rare Marine Species.”</span> <em>Science</em> 360 (6394): 1180–82. <a href="https://doi.org/10.1126/science.aao3787">https://doi.org/10.1126/science.aao3787</a>.
@@ -881,8 +914,8 @@ Queheillalt, Dianna M., James W. Cain, Denise E. Taylor, Michael L. Morrison, St
 <div id="ref-RCoreTeam2016" class="csl-entry" role="listitem">
 R Core Team. 2016. <span>“R: A Language and Environment for Statistical Computing.”</span> Vienna, Austria: R Foundation for Statistical Computing.
 </div>
-<div id="ref-Rankin2008" class="csl-entry" role="listitem">
-Rankin, Shannon, Jay Barlow, Julie N. Oswald, and Lisa Ballance. 2008. <span>“Acoustic <span>Studies</span> of <span>Marine Mammals During Seven Years</span> of <span>Combined Visual</span> and <span>Acoustic Line-Transect Surveys</span> for <span>Cetaceans</span> in the <span>Eastern</span> and <span>Central Pacific Ocean</span>.”</span> <em>NOAA-TM-NMFS-SWFSC-429</em>.
+<div id="ref-ramon-laca_etal21a" class="csl-entry" role="listitem">
+Ramón-Laca, Ana, Abigail Wells, and Linda Park. 2021. <span>“<span class="nocase">eDNA</span> Extraction: Phenol-Chloroform-Isoamyl Alcohol <span>DNA</span> Purification from Filters Stored in <span>Longmire</span> Buffer V1.”</span> protocols.io. <a href="https://doi.org/10.17504/protocols.io.bx4apqse">https://doi.org/10.17504/protocols.io.bx4apqse</a>.
 </div>
 <div id="ref-robinson_etal24" class="csl-entry" role="listitem">
 Robinson, Chloe V., Karina Dracott, Robin D. Glover, Adam Warner, and Amy Migneault. 2024. <span>“<span>DNA</span> from Dives: <span>Species</span> Detection of Humpback Whales (<span>Megaptera</span> Novaeangliae) from Flukeprint <span class="nocase">eDNA</span>.”</span> <em>Environmental DNA</em> 6 (2): e524. <a href="https://doi.org/10.1002/edn3.524">https://doi.org/10.1002/edn3.524</a>.
@@ -899,11 +932,14 @@ Shelton, Andrew Olaf, Zachary J Gold, Alexander J Jensen, Erin D\primeAgnese, El
 <div id="ref-shelton_etal22" class="csl-entry" role="listitem">
 Shelton, Andrew Olaf, Ana Ramón-Laca, Abigail Wells, Julia Clemons, Dezhang Chu, Blake E. Feist, Ryan P. Kelly, et al. 2022. <span>“Environmental <span>DNA</span> Provides Quantitative Estimates of <span>Pacific</span> Hake Abundance and Distribution in the Open Ocean.”</span> <em>Proceedings of the Royal Society B</em> 289 (1971). <a href="https://doi.org/10.1098/RSPB.2021.2613">https://doi.org/10.1098/RSPB.2021.2613</a>.
 </div>
+<div id="ref-silva_etal25" class="csl-entry" role="listitem">
+Silva, Tiago A. M., Claire P. C. Beraud, Philip D. Lamb, Wayne Rostant, and Hannah J. Tidbury. 2025. <span>“Modelling the Spatial Bound of an <span class="nocase">eDNA</span> Signal in the Marine Environment – the Effect of Local Conditions.”</span> <em>Frontiers in Marine Science</em> 12 (September). <a href="https://doi.org/10.3389/fmars.2025.1613001">https://doi.org/10.3389/fmars.2025.1613001</a>.
+</div>
 <div id="ref-u_s_departmentofthenavy17" class="csl-entry" role="listitem">
 U.S. Department of the Navy. 2017. <span>“Dive&nbsp;Distribution&nbsp;and&nbsp;Group&nbsp;Size&nbsp;Parameters&nbsp;for&nbsp;Marine&nbsp;Species&nbsp;Occurring&nbsp;in&nbsp;the&nbsp;u.s.&nbsp;Navy’s&nbsp;Atlantic&nbsp;and&nbsp;Hawaiisouthern&nbsp;California&nbsp;Training&nbsp;and&nbsp;Testing&nbsp;Study&nbsp;Areas.”</span> Newport, Rhode Island: Naval Undersea Warfare Center Division.
 </div>
 <div id="ref-valdivia-carrillo_etal25" class="csl-entry" role="listitem">
-Valdivia-Carrillo, Tania, Amy Van Cise, Megan Shaffer, Kim Parsons, Ally Im, Andrew Shelton, Eiren K. Jacobson, et al. 2025. <span>“Modeling Cetacean <span class="nocase">eDNA</span> Distribution Along the <span>Washington</span> Coast Using Metabarcoding from Opportunistic Samples and Generalized Additive Models.”</span> bioRxiv. <a href="https://doi.org/10.1101/2025.11.21.689289">https://doi.org/10.1101/2025.11.21.689289</a>.
+Valdivia-Carrillo, Tania, Megan Shaffer, Kim Parsons, Ally Im, Andrew Shelton, Eiren K. Jacobson, Abigail Wells, et al. 2025. <span>“Modeling Cetacean <span class="nocase">eDNA</span> Distribution Along the <span>Washington</span> Coast Using Metabarcoding from Opportunistic Samples and Generalized Additive Models.”</span> bioRxiv. <a href="https://doi.org/10.1101/2025.11.21.689289">https://doi.org/10.1101/2025.11.21.689289</a>.
 </div>
 <div id="ref-valsecchi_etal20" class="csl-entry" role="listitem">
 Valsecchi, Elena, Jonas Bylemans, Simon, J Goodman, Roberto Lombardi, Ian Carr, Laura Castellano, Andrea Galimberti, and Paolo Galli. 2020. <span>“Novel Universal Primers for Metabarcoding Environmental <span>DNA</span> Surveys of Marine Mammals and Other Marine Vertebrates.”</span> <a href="https://doi.org/10.1002/edn3.72">https://doi.org/10.1002/edn3.72</a>.
@@ -913,6 +949,9 @@ Watwood, Stephanie L, and Danielle M Buonantony. 2012. <span>“Dive <span>Distr
 </div>
 <div id="ref-white_etal23" class="csl-entry" role="listitem">
 White, Hannah J., Caroline M. McKeon, Robin J. Pakeman, and Yvonne M. Buckley. 2023. <span>“The Contribution of Geographically Common and Rare Species to the Spatial Distribution of Biodiversity.”</span> <em>Global Ecology and Biogeography</em> 32 (10): 1730–47. <a href="https://doi.org/10.1111/geb.13734">https://doi.org/10.1111/geb.13734</a>.
+</div>
+<div id="ref-whitman_etal98" class="csl-entry" role="listitem">
+Whitman, William B., David C. Coleman, and William J. Wiebe. 1998. <span>“Prokaryotes: <span>The</span> Unseen Majority.”</span> <em>Proceedings of the National Academy of Sciences</em> 95 (12): 6578–83. <a href="https://doi.org/10.1073/pnas.95.12.6578">https://doi.org/10.1073/pnas.95.12.6578</a>.
 </div>
 <div id="ref-Wood2017" class="csl-entry" role="listitem">
 Wood, S N. 2017. <em>Generalized <span>Additive Models</span>: <span>An Introduction</span> with <span>R</span></em>. <span>Chapman and Hall/CRC</span>.

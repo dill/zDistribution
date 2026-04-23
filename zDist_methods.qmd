@@ -6,17 +6,17 @@ bibliography: references.bib
 
 ### Sample Collection
 
-We used eDNA samples collected on the 2019 US-Canada Integrated Ecosystems and Acoustics-Trawl Survey for Pacific hake from 2 July to 19 August 2019. The study area is encompassed by the California Current System, which is 500-800 km wide, extends from 43°N to 23°N, and comprises an equatorward surface current and a subsurface poleward current that is concentrated mainly on the continental shelf [@hickey79]. The system is characterized by strong alongshore advection, inshore upwelling concentrated primarily along the continental shelf break, and multiple terrestrial and oceanic water sources [e.g., @mcclatchie14; @auad_etal11]. These complex oceanographic processes support a highly productive and diverse assemblage of plankton and fishes, and form a rich prey base for at least 25 cetacean species that inhabit the study area [@carretta_etal23].
+We used eDNA samples collected on the 2019 US-Canada Integrated Ecosystems and Acoustics-Trawl Survey for Pacific hake from 2 July to 19 August 2019. The study area is within the California Current System, which is 500-800 km wide, extends from 43°N to 23°N, and comprises an equatorward surface current and a subsurface poleward current that is concentrated mainly on the continental shelf [@hickey79]. The system is characterized by strong alongshore advection, inshore upwelling concentrated primarily along the continental shelf break, and multiple terrestrial and oceanic water sources [e.g., @mcclatchie14; @auad_etal11]. These complex oceanographic processes support a highly productive and diverse assemblage of plankton and fishes, and form a rich prey base for at least 25 cetacean species that inhabit the study area [@carretta_etal23].
 
-A full description of field sampling and DNA extraction methods are provided in Shelton et al. (2022). Briefly, we used water samples that were previously collected from seawater at 175 stations in the study area, spanning south-north from latitudes 37.89499°N to 48.39881°N and west-east from longitudes 126.4298°W to 122.8638°W. We targeted five depths for sample collection, so that our sample set of 516 samples included 148 samples collected at the surface (~3 m), 147 samples collected at 50 m, 74 samples collected at 150 m, 73 samples collected at 300 m, and 74 samples collected at 500 m. Where the bottom was shallow, we did not collect deeper water samples. The field team collected water using Niskin bottles attached to a CTD rosette and filtered 2.5 L of water from each station and depth using a 47-mm diameter mixed cellulose ester (MCE) filter with a 1-µm pore size and a vacuum filtration manifold connected to a vacuum pump, then immediately preserved the filters in Longmire's buffer and stored them at room temperature until extraction.
+A full description of field sampling and DNA extraction methods are provided in Shelton et al. (2022). Briefly, we used seawater samples collected at 175 stations in the study area, spanning south-north from latitudes 37.89499°N to 48.39881°N and west-east from longitudes 126.4298°W to 122.8638°W. We targeted five depths for sample collection, so that our sample set of 516 samples included 148 samples collected at the surface (\~3 m), 147 samples collected at 50 m, 74 samples collected at 150 m, 73 samples collected at 300 m, and 74 samples collected at 500 m. Where the bottom was shallow, we did not collect deeper water samples. The field team collected water using Niskin bottles attached to a CTD rosette and filtered 2.5 L of water from each station and depth using a 47-mm diameter mixed cellulose ester (MCE) filter with a 1-µm pore size and a vacuum filtration manifold connected to a vacuum pump, then immediately preserved the filters in Longmire's buffer and stored them at room temperature until extraction.
 
 ### Sample Processing
 
-DNA was previously extracted using a phase-lock phenol chloroform method as described in Ramón-Laca et al. [-@ramon-laca_etal21a]. Using this extracted DNA, we randomized stations and depths across 96-well working plates, removed one plate at a time from the freezer for PCR amplification and library preparation, and stored samples in a -20°C freezer when not in use. Each time we removed a plate from the freezer, we recorded a freeze/thaw cycle for that plate in order to examine the effect of expected DNA degradation due to freeze/thaw cycles on downstream probability of detecting rare species.
+DNA was extracted using a phase-lock phenol chloroform method as described in Ramón-Laca et al. [-@ramon-laca_etal21a]. We randomized stations and depths across 96-well working plates, removed one plate at a time from the freezer for PCR amplification and library preparation, and stored samples in a -20°C freezer when not in use. Each time we removed a plate from the freezer, we recorded a freeze/thaw cycle for that plate in order to examine the effect of expected DNA degradation due to freeze/thaw cycles on downstream probability of detecting rare species.
 
-We tested all samples for inhibition by spiking an internal positive control (IPC) of known concentration into each sample and quantifying it using a probe assay with quantitative PCR (qPCR). We identified inhibited samples by examining the IPC concentration, as described in Shelton et al. (2022). For each sample, we selected a dilution that was determined from the qPCR data (described above) to be not inhibited, which was either 1x or 0.2x across all samples.
+We tested all samples for inhibition with quantitative PCR (qPCR) using a Taqman probe assay that included an internal positive control (IPC) of known concentration. We identified inhibited samples by examining the IPC concentration, as described in Shelton et al. (2022). For each sample, we selected a dilution that was determined from the qPCR data (described above) to be not inhibited, which was either 1x or 0.2x across all samples.
 
-We then amplified each sample with three different mitochondrial primer sets: MiFish-U (MFU) targeting fishes using the mitochondrial 12S region [@Miya2015], MarVer1 (MV1) targeting all vertebrates using the mitochondrial 12S region, [@valsecchi_etal20], and Dlp1.5/Oordlp4 (DL) targeting only cetaceans using the mitochondrial control region [@baker_etal18]. For all samples, we ran one technical PCR replicate for MFU, one for DL, and three for MV1. We optimized primer, Taq, and cycling conditions using mock communities [@shaffer_etal25].
+We then amplified each sample with three different mitochondrial metabarcode primer sets: MiFish-U (MFU) targeting fishes using the mitochondrial 12S region [@Miya2015], MarVer1 (MV1) targeting all vertebrates using the mitochondrial 12S region, [@valsecchi_etal20], and Dlp1.5/Oordlp4 (DL) targeting only cetaceans using the mitochondrial control region [@baker_etal18]. For all samples, we ran one technical PCR replicate for MFU, one for DL, and three for MV1. We optimized primer, Taq, and cycling conditions using mock communities [@shaffer_etal25].
 
 Our reaction mixture for amplification (PCR1) consisted of 10 μL of Phusion Master Mix (2X), 0.4 μL of the forward primer (10 μM); 0.4 μL of the reverse primer (10 μM), 0.6 μL of 100% DMSO, 0.5 μL of rAlbumin (20 μg/μL), 4.4 μL of nuclease-free water and 2 μL of DNA template. We ran PCR1 with the following cycling conditions: an initial denaturation of 98°C for 30 sec; followed by cycles of: denaturation (98°C for 10 sec), annealing (60°C for 30 sec), and extension (72°C for 3 sec); with a final extension of 72°C for 10 min and hold at 4°C. We ran 35 cycles for MFU and MV1, and 40 cycles for DL.
 
@@ -40,11 +40,11 @@ Following initial QAQC of the raw sequence data, we queried each unique ASV agai
 
 ### Detection Data QAQC
 
-After bioinformatic processing of all samples, we removed any additional dilutions of MFU or MV1 samples that were run to maximize sequencing success, keeping only the iteration with the greatest total read count. We then defined a sample as a station/depth/technical replicate combination. To obtain positive detections for each sample, we kept any species with \> 1 sequencing read. We filtered out any non-target (non-cetacean) species, and also removed detections of bottlenose dolphins, which we considered likely contamination from concurrent labwork on captive animals, and unidentified Balaenopterids or Delphinids. Across all samples, we define non-detection as 0 reads for a given cetacean species in a station/depth location that was positive for non-target species (e.g. fish) in either MFU or MV1 sequence data.
+After bioinformatic processing of all samples, we removed any additional dilutions of MFU or MV1 samples that were run to maximize sequencing success, keeping only the iteration with the greatest total read count. We then defined a sample as a station/depth/technical replicate combination. To obtain positive detections for each sample, we kept any species with \> 1 sequencing read. We filtered out any non-target (non-cetacean) species, and also removed detections of bottlenose dolphins, which we considered likely contamination from concurrent labwork focused on this species, and unidentified Balaenopterids or Delphinids. Across all samples, we define non-detection as 0 reads for a given cetacean species in a station/depth location that was positive for non-target species (e.g. fish) in either MFU or MV1 sequence data.
 
 ### Data Analysis
 
-#### Question 1: How does observation error affect rare DNA detectability?
+#### Question 1: How does observation error affect POD of cetacean DNA?
 
 The decisions made during sample collection, processing, and sequencing can introduce observation error. We therefore used the information contained in multiple technical replicates from individual biological samples to better understand the detection processes for cetacean eDNA. Here we estimate the probability of detection (POD) of cetacean DNA from any species, under the assumption of an equal POD across all cetacean species' DNA if it is present in the sample, which approximates empirical resuls for the primers used in this study [@shaffer_etal25]. We used a Bayesian hierarchical occupancy model to separately estimate the probability of occupancy/capture by depth and POD by primer and number of freeze/thaw cycles, based on the model presented in Patin et al. (*in review*).
 
@@ -52,21 +52,21 @@ We modeled the presence of cetacean eDNA at site $i$ and depth $z$, $w_{i,z}$, a
 
 $$ w_{i,z} \sim \text{Bernoulli}(\Psi_{z}) $$
 
-where probability of presence in a sample at depth $\Psi_z$ given as the logistic transform of  an intercept (\beta_0) plus plua a smooth function, $f$, of sample depth $z$:
+where probability of presence in a sample at depth ($\Psi_z$) is given as the logistic transform of an intercept (\beta\_0) plus a smooth function, $f$, of sample depth $z$:
 
 $$ \text{logit}(\Psi_z) = \beta_0 + f(z). $$ {#eq-1}
 
-We then modeled the observed detection of cetacean eDNA in each technical replicate $x_t$ as a Bernoulli random variable with primer- and freeze/thaw-specific detectability $\Omega_\text{primer*thaw}$ conditional on presence in the biological sample $y_{i,z}$:
+We then modeled the observed detection of cetacean eDNA in each technical replicate $d_r$ as a Bernoulli random variable with primer-specific ($m$) and freeze/thaw-specific ($t$) POD $\Omega_\text{m*t}$ conditional on presence in the biological sample $w_{i,z}$:
 
-$$ x_t \sim \text{Bernoulli}({\Omega_\text{primer*thaw}} \cdot y_{i,z}). $$ {#eq-2}
+$$ d_r \sim \text{Bernoulli}({\Omega_\text{m*t}} \cdot w_{i,z}). $$ {#eq-2}
 
-where detectability $\Omega$ is a logit-linear function of primer type and number of freeze/thaw cycles ($F$) that the sample used in the technical replicate $t$ has been subjected to:
+where POD ($\Omega$) is a logit-linear function of primer type ($m$) and number of freeze/thaw cycles ($T$) that the sample used for the technical replicate $r$ has been subjected to:
 
 $$
-\text{logit}(\Omega_\text{primer*thaw}) = \beta_\text{primer} + \beta_\text{thaw} \cdot F.
+\text{logit}(\Omega_{m*t}) = \gamma_m + \gamma_t \cdot T_r.
 $$ {#eq-3}
 
-Here, $\beta_\text{primer}$ is a primer-specific intercept and $\beta_\text{thaw}$ is a slope parameter that interacts with $F$, the number of freeze/thaw cycles.
+Here, $\gamma_\text{m}$ is a primer-specific intercept and $\gamma_\text{t}$ is a slope parameter that interacts with $T$, the number of freeze/thaw cycles.
 
 We implemented this model using nimble [@devalpine_etal17; zenodo.17954119] in R [@RCoreTeam2016]. We used uninformative or weakly informative prior distributions for model parameters and ran four chains, each with 250,000 iterations, 225,000 of which were burnin, and assessed convergence using the Gelman-Rubin diagnostic [@gelman_rubin92].
 
@@ -76,34 +76,44 @@ We were not able to model species-specific $z$-distribution of eDNA detectabilit
 
 #### Question 2: Does species-specific POD vary with depth?
 
-For all following analyses, we define probability of detection (POD) as the likelihood of detecting cetacean eDNA in a sample without the assumption of its presence in the sample, so that species-specific POD comprises both the probabilility of that species' occurence at a site as well as the probability of capturing and detecting the species' eDNA in a sample. Because cetacean DNA detectabilty varies only minimally across cetacean species for the primer sets used in this study [@shaffer_etal25], we interpret variability in POD here to be driven primarily by variability in the distribution of species-specific eDNA. Similarly, we have exluded primer specificity, technical replication, and number of freeze/thaw cycle from downstream analyses to ensure model convergence, but were applied consistently across biological samples, and samples were randomized across sequencing plates to minimize bias in observation error.
+For all following analyses, we define probability of detection (POD) as the probability of detecting cetacean eDNA in a sample without the assumption of its presence in the sample, so that species-specific POD comprises both the probability of that species' occurrence at a site as well as the probability of capturing and detecting the species' eDNA in a sample. Because cetacean DNA detectability varies only minimally across cetacean species for the primer sets used in this study [@shaffer_etal25], we interpret variability in POD here to be driven primarily by variability in the distribution of species-specific eDNA. Similarly, we have excluded primer specificity, technical replication, and number of freeze/thaw cycle from downstream analyses to ensure model convergence, but were applied consistently across biological samples, and samples were randomized across sequencing plates to minimize bias in observation error.
 
 To determine whether species-specific POD varies in the $z$ dimension, we used generalized additive models [GAMs; @Wood2017] implemented using the mgcv package in R [@RCoreTeam2016]. GAMs have previously been demonstrated to be an appropriate tool for modeling spatial distributions of cetaceans [e.g. @becker_etal22; @abrahms_etal19b]. We fit all GAMs using detection or non-detection for each site, depth, and technical replicate as the response variable. We used a binomial distribution with a logit link function, and estimated model parameters using REML. Models examining the effect of depth were built iteratively, starting by modelling the probability of detection (POD) of any cetacean species as a smooth function of sampling depths (Eq. @eq-4), then allowing the intercept to vary by species (Eq. @eq-5), and finally allowing both intercept and model smooth to vary by species (Eq. @eq-6).
 
 $$
-\text{logit}(\mu_i) = \beta_0 + f(z_i)
+\text{logit}(\mu_z) = \beta_0 + f(z)
 $$ {#eq-4}
 
 $$
-\text{logit}(\mu_{i,s}) = \beta_{s} + f(z_i)
+\text{logit}(\mu_{z,s}) = \beta_{s} + f(z)
 $$ {#eq-5}
 
 $$
-\text{logit}(\mu_{i,s}) = \beta_{s} + f_s(z_i) | f_F(z_i) | f_e(z_i)
+\text{logit}(\mu_{z,s}) = \beta_{s} + f_s(z_i)
 $$ {#eq-6}
 
-In these equations, $\mu_i$ is the probability of detecting any cetacean at depth $z_i$ and $\mu_{i,s}$ is the probability of detecting species $s$ at depth $z$. $\beta_0$ is a shared intercept parameter and $\beta_{s}$ is a species-specific intercept parameter. $f(z_i)$ denotes a smooth on depth across species and $f_s(z_i)$ denotes a species-specific factor-smooth on depth [@Pedersen2019a]. In Equation 6 we compare three factor-smooth stratification schemes: (1) species ($f_s(z_i)$), (2) taxonomic family ($f_F(z_i)$), and (3) preferred prey type ($f_e(z_i)$). 
+$$
+\text{logit}(\mu_{z,s}) = \beta_{s} + f_F(z_i)
+$$ {#eq-7}
 
-We assessed model fit using AIC, and model performance using standard metrics including the percent of deviance explained, the area under the receiver operating characteristic curve [AUC, @fawcett06], the true skill statistic [TSS, @allouche_etal06], and a visual comparison of predicted vs. observed detection rates across sampling depths. We also visually compared our model-based predictions of probability of detection across depth with estimates of species-specific time-at-depth as reported by Watwood and Buonantony [-@watwood_buonantony12] and the U.S. Department of the Navy [-@u_s_departmentofthenavy17].
+$$
+\text{logit}(\mu_{z,s}) = \beta_{s} + f_e(z_i)
+$$ {#eq-8}
+
+In these equations, $\mu_z$ is the detection rate for any cetacean at depth $z$ and $\mu_{z,s}$ is the detection rate for species $s$ at depth $z$. $\beta_0$ is a shared intercept parameter and $\beta_{s}$ is a species-specific intercept parameter. $f(z)$ denotes a smooth on depth across species and $f_s(z)$ denotes a species-specific factor-smooth on depth [@Pedersen2019a]. In Equations 6-8 we compare three factor-smooth stratification schemes: (1) species ($f_s(z)$), (2) taxonomic family ($f_F(z)$), and (3) preferred prey type ($f_e(z_i)$).
+
+We assessed model fit using AIC, and model performance using standard metrics including the percent of deviance explained, the area under the receiver operating characteristic curve [AUC, @fawcett06], the true skill statistic [TSS, @allouche_etal06], and a visual comparison (i.e. via plotting) of predicted vs. observed detection rates across sampling depths. We also visually compared our model-based predictions of probability of detection across depth with estimates of species-specific time-at-depth as reported by Watwood and Buonantony [-@watwood_buonantony12] and the U.S. Department of the Navy [-@u_s_departmentofthenavy17].
 
 #### Question 3: Does depth variability in POD covary with geographic variability?
 
-We also used a GAM to examine covariability in the effects of depth ($z$), latitude ($y$), and longitude ($x$) on species-specific POD. Using the best-fit model from Question 2 as our starting point (Eq 6: species-specific variability in POD with $z$), we tested covariation in $xyz$ on a species-specific basis with the following:
+We also used a GAM to examine covariability in the effects of depth ($z$), latitude ($y$), and longitude ($x$) on species-specific detection rate. Using the best-fit model from Question 2 as our starting point (Eq 6: species-specific variability in detection rate with $z$), we tested covariation in $xyz$ on a species-specific basis with the following:
 
 $$
 \text{logit}(\mu_{s,i}) = \beta_{s} + f_s(x_i,y_i,z_i)
-$$ {#eq-7}
+$$ {#eq-9}
 
-$f_s(x_i,y_i,z_i)$ was constructed as tensor product of marginal smoothers of $x$, $y$, and $z$ and in the case of the species-specific factor-smooth interaction we used the tensor product of $x$, $y$, and $z$, and a random effect on species. We constructed intermediate tensor products on interactions that we were interested in (using the ti() constructor in mgcv; some citation[DLM])..
+$f_s(x_i,y_i,z_i)$ was constructed as tensor product of marginal smoothers of $x$, $y$, and $z$ and in the case of the species-specific factor-smooth interaction we used the tensor product of $x$, $y$, and $z$, and a random effect on species. We constructed intermediate tensor products on interactions among all three spatial variables and species (using the ti() constructor in mgcv; some citation\[DLM\]).
 
-As in Question 2, we assessed model fit using AIC, and model performance using percent deviance explained, AUC, and TSS. We then conducted a visual comparison of the predicted depth of maximum POD across and our observed detection depth within the study area for the most frequently observed baleen whale, dolphin/porpoise, and beaked whale.
+As in Question 2, we assessed model fit using AIC, and model performance using percent deviance explained, AUC, and TSS. We then conducted a visual comparison of the predicted depth of maximum detection rate across and observed detection depths within the study area for the most frequently observed baleen whale, dolphin/porpoise, and beaked whale.
+
+A table of all variables used in both the occupancy model and the GAM framework is included in the Supplementary Materials (Supplemental Table S2).

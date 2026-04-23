@@ -109,7 +109,11 @@ m1.2_sePreds_link <- data.frame(m1.2_predictions,
                               TRUE~time_10m)) %>% 
   filter(BestTaxon %in% (detect_per_species_clean %>% 
                            filter(nDetect >= 10) %>% 
-                           pull(BestTaxon)))
+                           pull(BestTaxon))) %>% 
+  mutate(common_name = case_when(common_name == "mammal eating killer whale"~"killer whale",
+                                 common_name == "Pacific white-sided dolphin"~"Pacific\nwhite-sided dolphin",
+                                 common_name == "northern giant bottlenose whale"~"northern giant\nbottlenose whale",
+                                 TRUE~common_name))
 
 # transform time_10m to plot with POD by depth
 # m1.2_scaled <- m1.2_sePreds_link %>% 
@@ -134,19 +138,27 @@ m1.2POD <- ggplot(m1.2_scaled, aes(x = depth, color = Broad_taxa, fill = Broad_t
                                pnw_palette("Sunset",1, type = "continuous"))) +
   scale_color_manual(values = c(pnw_palette("Cascades",5, type = "continuous")[4:5],
                                 pnw_palette("Sunset",1, type = "continuous"))) +
-  facet_wrap(~abbrev, scales = "free_y") +
+  facet_wrap(~common_name, scales = "free_y") +
   scale_y_continuous(name = "POD",sec.axis = sec_axis(trans = ~ (.-min(m1.2_scaled$mu)) / (max(m1.2_scaled$mu) - min(m1.2_scaled$mu)) * (max(m1.2_scaled$time_scaled) - min(m1.2_scaled$time_scaled)) + min(m1.2_scaled$time_scaled),name = "Time at depth")) +
   geom_rug(data = filter(detect_data_clean, BestTaxon %in% (detect_per_species_clean %>% 
                                                         filter(nDetect >= 10) %>% 
                                                         pull(BestTaxon))) %>%
-             mutate(depth_jittered = depth + runif(n(), -5, 30)),
+             mutate(depth_jittered = depth + runif(n(), -5, 30)) %>% 
+             mutate(common_name = case_when(common_name == "mammal eating killer whale"~"killer whale",
+                                            common_name == "Pacific white-sided dolphin"~"Pacific\nwhite-sided dolphin",
+                                            common_name == "northern giant bottlenose whale"~"northern giant\nbottlenose whale",
+                                            TRUE~common_name)),
                          aes(x=depth_jittered), color = "grey70")+
   geom_rug(data = (detect_data_clean %>% 
                      filter(Detected == 1) %>% 
                      filter(BestTaxon %in% (detect_per_species_clean %>% 
                                               filter(nDetect >= 10) %>% 
                                               pull(BestTaxon))) %>%
-                     mutate(depth_jittered = depth + runif(n(), -5, 30))), 
+                     mutate(depth_jittered = depth + runif(n(), -5, 30)) %>% 
+                     mutate(common_name = case_when(common_name == "mammal eating killer whale"~"killer whale",
+                                                    common_name == "Pacific white-sided dolphin"~"Pacific\nwhite-sided dolphin",
+                                                    common_name == "northern giant bottlenose whale"~"northern giant\nbottlenose whale",
+                                                    TRUE~common_name))), 
            aes(x=depth_jittered),
            sides = "t") +
   theme_minimal() +
@@ -216,8 +228,9 @@ m1.2aPOD <- ggplot(m1.2a_sePreds, aes(x = depth, color = Broad_taxa, fill = Broa
   facet_wrap(~Family, scales = "free_y") +
   geom_rug(data = filter(detect_data_clean, BestTaxon %in% (detect_per_species_clean %>% 
                                                         filter(nDetect >= 10) %>% 
-                                                        pull(BestTaxon))),
-           aes(x=depth), color = "grey30") +
+                                                        pull(BestTaxon)))%>%
+             mutate(depth_jittered = depth + runif(n(), -5, 30)),
+           aes(x=depth_jittered), color = "grey70") +
   geom_rug(data = (detect_data_clean %>% 
                      filter(Detected == 1) %>%
                      filter(Family %in% (detect_per_family_clean %>% 
@@ -254,9 +267,12 @@ m1.2bPOD <- ggplot(m1.2b_sePreds, aes(x = depth, color = Prey.family, fill = Pre
   #guides(color = "none", fill = "none") +
   facet_wrap(~Prey.family, scales = "free_y", ncol = 1,
              labeller = as_labeller(c(fish = "Bony Fishes", invert = "Zooplankton", squid = "Cephalopods"))) +
-  geom_rug(data = detect_data_clean, aes(x=depth), color = "grey30")+
+  geom_rug(data = detect_data_clean %>%
+             mutate(depth_jittered = depth + runif(n(), -5, 30)), 
+              aes(x=depth_jittered), color = "grey70")+
   geom_rug(data = filter(detect_data_clean, Detected == 1) %>%
-             mutate(depth_jittered = depth + runif(n(), -5, 30)), aes(x=depth), sides = "t")+
+             mutate(depth_jittered = depth + runif(n(), -5, 30)), 
+           aes(x=depth_jittered), sides = "t")+
   theme_minimal() +
   theme_minimal() +
   xlab("Depth")+

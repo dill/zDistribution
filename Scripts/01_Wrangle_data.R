@@ -294,9 +294,24 @@ detect_per_primer_species_clean <- detect_data_clean %>%
   summarize(nDetect = sum(Detected)) %>% 
   pivot_wider(names_from = "primer", values_from = "nDetect")
 
+detect_primer_techRep_species_clean <- detect_data_clean %>% 
+  group_by(NWFSCsampleID, primer, BestTaxon) %>% 
+  summarize(nDetect = sum(Detected)) %>% 
+  filter(nDetect > 0) %>% 
+  ungroup() %>% 
+  group_by(primer, BestTaxon, nDetect) %>% 
+  summarize(nnDetect = n()) %>% 
+  mutate(primerN = paste0(primer, nDetect)) %>% 
+  ungroup() %>% 
+  select(-c(nDetect, primer)) %>% 
+  pivot_wider(names_from = primerN, values_from = nnDetect, values_fill = 0) %>% 
+  rename("DL" = DL1, "MFU" = MFU1, "MV1 1/3" = MV11, "MV1 2/3" = MV12, "MV1 3/3" = MV13)
+  
+
 save(detect_data_clean, detect_per_species_clean,
      detect_per_primer_species_clean, mmEcoEvo,
-     detect_per_family_clean, file = "./ProcessedData/detect_data_clean.RData")
+     detect_per_family_clean, maxDepth_species,
+     detect_primer_techRep_species_clean, file = "./ProcessedData/detect_data_clean.RData")
 
 ## collapse data to detection/non-detection across all cetaceans
 ## (this is for the occupancy models where occupancy is 0/1
