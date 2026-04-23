@@ -233,7 +233,7 @@ depth_max_detect_clean <- ggplot(westcoast_land) +
   geom_tile(data = maxPOD_depth_clipped_clean, 
             aes(x = lon_plain, y = lat_plain, fill = depth)) +
   geom_sf(fill = "grey50", colour = NA) +
-  scale_fill_viridis_c(name = "Depth (m)",
+  scale_fill_viridis_c(name = "Maximized detection\ndepth (m)",
                        option = "mako",
                        trans = "reverse",
                        begin = 0.4, end = 0.9, na.value = "grey90") +
@@ -274,7 +274,7 @@ ci95_plot_clean <- ggplot(westcoast_land) +
   theme_minimal() +
   #ggtitle(names(species)[i]) +
   geom_sf(fill = "grey50", colour = NA) +
-  scale_fill_viridis_c(name = "50% CI\ndepth range (m)",
+  scale_fill_viridis_c(name = "Model uncertainty:\n50% CI strip width,\ndepth (m)",
                        option = "magma",
                        trans = "reverse",
                        begin = 0.15, end = 1, na.value = "grey90") +
