@@ -52,7 +52,7 @@ We modeled the presence of cetacean eDNA at site $i$ and depth $z$, $w_{i,z}$, a
 
 $$ w_{i,z} \sim \text{Bernoulli}(\Psi_{z}) $$
 
-where probability of presence in a sample at depth ($\Psi_z$) is given as the logistic transform of an intercept (\beta\_0) plus a smooth function, $f$, of sample depth $z$:
+where probability of presence in a sample at depth ($\Psi_z$) is given as the logistic transform of an intercept ($\beta_0$) plus a smooth function, $f$, of sample depth $z$:
 
 $$ \text{logit}(\Psi_z) = \beta_0 + f(z). $$ {#eq-1}
 
