@@ -8,7 +8,7 @@ bibliography: references.bib
 
 We used eDNA samples collected on the 2019 US-Canada Integrated Ecosystems and Acoustics-Trawl Survey for Pacific hake from 2 July to 19 August 2019. The study area is within the California Current System, which is 500-800 km wide, extends from 43°N to 23°N, and comprises an equatorward surface current and a subsurface poleward current that is concentrated mainly on the continental shelf [@hickey79]. The system is characterized by strong alongshore advection, upwelling concentrated primarily along the continental shelf break, and multiple terrestrial and oceanic water sources [e.g., @mcclatchie14; @auad_etal11]. These complex oceanographic processes support a highly productive and diverse assemblage of plankton and fishes, and form a rich prey base for at least 25 cetacean species that inhabit the study area [@carretta_etal23].
 
-A full description of field sampling and DNA extraction methods are provided in Shelton et al. (2022). Briefly, we used seawater samples collected at 175 stations in the study area, spanning south-north from latitudes 37.89499°N to 48.39881°N and west-east from longitudes 126.4298°W to 122.8638°W. We targeted five depths for sample collection, so that our sample set of 516 samples included 148 samples collected at the surface (\~3 m), 147 samples collected at 50 m, 74 samples collected at 150 m, 73 samples collected at 300 m, and 74 samples collected at 500 m. Where the bottom was shallow, we did not collect deeper water samples. The field team collected water using Niskin bottles attached to a CTD rosette and filtered 2.5 L of water from each station and depth using a 47-mm diameter mixed cellulose ester (MCE) filter with a 1-µm pore size and a vacuum filtration manifold connected to a vacuum pump, then immediately preserved the filters in Longmire's buffer and stored them at room temperature until extraction.
+A full description of field sampling and DNA extraction methods are provided in Shelton et al. (2022). Briefly, we used seawater samples collected at 175 stations in the study area, spanning south-north from latitudes 37.89499°N to 48.39881°N and west-east from longitudes 126.4298°W to 122.8638°W. We targeted five depths for sample collection, so that our sample set of 516 samples included 148 samples collected at the surface (\~3 m), 147 samples collected at 50 m, 74 samples collected at 150 m, 73 samples collected at 300 m, and 74 samples collected at 500 m. Where the bottom was shallower than the target sample depth, we did not collect a water sample. The field team collected water using Niskin bottles attached to a CTD rosette and filtered 2.5 L of water from each station and depth using a 47-mm diameter mixed cellulose ester (MCE) filter with a 1-µm pore size and a vacuum filtration manifold connected to a vacuum pump, then immediately preserved the filters in Longmire's buffer and stored them at room temperature until extraction.
 
 ### Sample Processing
 
@@ -46,7 +46,7 @@ After bioinformatic processing of all samples, we removed any additional dilutio
 
 #### Question 1: How does observation error affect POD of cetacean DNA?
 
-The decisions made during sample collection, processing, and sequencing can introduce observation error. We therefore used the information contained in multiple technical replicates from individual biological samples to better understand the detection processes for cetacean eDNA. Here we estimate the probability of detection (POD) of cetacean DNA from any species, under the assumption of an equal POD across all cetacean species' DNA if it is present in the sample, which approximates empirical resuls for the primers used in this study [@shaffer_etal25]. We used a Bayesian hierarchical occupancy model to separately estimate the probability of occupancy/capture by depth and POD by primer and number of freeze/thaw cycles, based on the model presented in Patin et al. (*in review*).
+The decisions made during sample collection, processing, and sequencing can introduce observation error. We therefore used the information contained in multiple technical replicates from individual biological samples to better understand the detection processes for cetacean eDNA. Here we estimate the probability of detection (POD) of cetacean DNA from any species, under the assumption of an equal POD across all cetacean species' DNA if it is present in the sample, which approximates empirical results for the primers used in this study [@shaffer_etal25]. We used a Bayesian hierarchical occupancy model to separately estimate the probability of occupancy/capture by depth and POD by primer and number of freeze/thaw cycles, based on the model presented in Patin et al. (*in review*).
 
 We modeled the presence of cetacean eDNA at site $i$ and depth $z$, $w_{i,z}$, as a Bernoulli random variable with occurrence probability $\Psi_z$:
 
@@ -56,7 +56,7 @@ where probability of presence in a sample at depth ($\Psi_z$) is given as the lo
 
 $$ \text{logit}(\Psi_z) = \beta_0 + f(z). $$ {#eq-1}
 
-We then modeled the observed detection of cetacean eDNA in each technical replicate $d_r$ as a Bernoulli random variable with primer-specific ($m$) and freeze/thaw-specific ($t$) POD $\Omega_\text{m*t}$ conditional on presence in the biological sample $w_{i,z}$:
+We then modeled the observed detection of cetacean eDNA in each technical replicate $d_r$ as a Bernoulli random variable with primer- ($m$) and freeze/thaw-specific ($t$) POD $\Omega_\text{m*t}$ conditional on presence in the biological sample $w_{i,z}$:
 
 $$ d_r \sim \text{Bernoulli}({\Omega_\text{m*t}} \cdot w_{i,z}). $$ {#eq-2}
 
@@ -106,10 +106,10 @@ We assessed model fit using AIC, and model performance using standard metrics in
 
 #### Question 3: Does depth variability in POD covary with geographic variability?
 
-We also used a GAM to examine covariability in the effects of depth ($z$), latitude ($y$), and longitude ($x$) on species-specific detection rate. Using the best-fit model from Question 2 as our starting point (Eq 6: species-specific variability in detection rate with $z$), we tested covariation in $xyz$ on a species-specific basis with the following:
+We also used a GAM to examine covariability in the effects of depth ($z$), latitude ($y$), and longitude ($x$) on species-specific detection rate. Using the best-fit model from Question 2 as our starting point (Eq 6: species-specific variability in detection rate with $z$), we looked for covariation in $xyz$ on a species-specific basis with the following model formulation:
 
 $$
-\text{logit}(\mu_{s,i}) = \beta_{s} + f_s(x_i,y_i,z_i)
+\text{logit}(\mu_{s,i}) = \beta_{s} + f_s(x_i,y_i,z_i).
 $$ {#eq-9}
 
 $f_s(x_i,y_i,z_i)$ was constructed as tensor product of marginal smoothers of $x$, $y$, and $z$ and in the case of the species-specific factor-smooth interaction we used the tensor product of $x$, $y$, and $z$, and a random effect on species. We constructed intermediate tensor products on interactions among all three spatial variables and species (using the ti() constructor in mgcv; some citation\[DLM\]).
