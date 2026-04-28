@@ -139,7 +139,7 @@ m1.2POD <- ggplot(m1.2_scaled, aes(x = depth, color = Broad_taxa, fill = Broad_t
   scale_color_manual(values = c(pnw_palette("Cascades",5, type = "continuous")[4:5],
                                 pnw_palette("Sunset",1, type = "continuous"))) +
   facet_wrap(~common_name, scales = "free_y") +
-  scale_y_continuous(name = "POD",sec.axis = sec_axis(trans = ~ (.-min(m1.2_scaled$mu)) / (max(m1.2_scaled$mu) - min(m1.2_scaled$mu)) * (max(m1.2_scaled$time_scaled) - min(m1.2_scaled$time_scaled)) + min(m1.2_scaled$time_scaled),name = "Time at depth")) +
+  scale_y_continuous(name = "Predicted detection rate",sec.axis = sec_axis(trans = ~ (.-min(m1.2_scaled$mu)) / (max(m1.2_scaled$mu) - min(m1.2_scaled$mu)) * (max(m1.2_scaled$time_scaled) - min(m1.2_scaled$time_scaled)) + min(m1.2_scaled$time_scaled),name = "Time at depth")) +
   geom_rug(data = filter(detect_data_clean, BestTaxon %in% (detect_per_species_clean %>% 
                                                         filter(nDetect >= 10) %>% 
                                                         pull(BestTaxon))) %>%
@@ -165,7 +165,7 @@ m1.2POD <- ggplot(m1.2_scaled, aes(x = depth, color = Broad_taxa, fill = Broad_t
   theme(legend.position = "bottom", 
         legend.title = element_blank(),
         axis.text.y.right = element_blank()) +
-  xlab("Depth")
+  xlab("Depth (m)")
 
 
 png(file = "./Figures/m1.2POD.png")
@@ -194,11 +194,11 @@ m1.2PODwObs <- ggplot(m1.2_scaled) +
   scale_color_manual(values = c(pnw_palette("Cascades",5, type = "continuous")[4:5],
                                 pnw_palette("Sunset",1, type = "continuous"))) +
   facet_wrap(~abbrev, scales = "free_y") +
-  scale_y_continuous(name = "POD") +
+  scale_y_continuous(name = "Predicted detection rate") +
  
   theme_minimal() +
  
-  xlab("Depth")
+  xlab("Depth (m)")
 
 png(file = "./Figures/m1.2PODwObs.png")
 m1.2PODwObs
@@ -240,8 +240,8 @@ m1.2aPOD <- ggplot(m1.2a_sePreds, aes(x = depth, color = Broad_taxa, fill = Broa
            aes(x=depth_jittered),
            sides = "t") +
   theme_minimal() +
-  ylab("POD") +
-  xlab("Depth") +
+  ylab("Predicted detection rate") +
+  xlab("Depth (m)") +
   theme(legend.position = "bottom", legend.title = element_blank())
 
 png(file = "./Figures/m1.2aPOD.png")
@@ -275,8 +275,8 @@ m1.2bPOD <- ggplot(m1.2b_sePreds, aes(x = depth, color = Prey.family, fill = Pre
            aes(x=depth_jittered), sides = "t")+
   theme_minimal() +
   theme_minimal() +
-  xlab("Depth")+
-  ylab("POD") +
+  xlab("Depth (m)")+
+  ylab("Predicted detection rate") +
   theme(legend.position = "none", legend.title = element_blank())
 
 png(file = "./Figures/m1.2bPOD.png")
