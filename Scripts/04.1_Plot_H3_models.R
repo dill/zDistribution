@@ -16,7 +16,7 @@ library(marmap)
 
 #load("./ProcessedData/m3.0models_preds_0.05degree.Rdata")
 load("ProcessedData/m3.0models_preds_0.05degree_depthmask.Rdata")
-load("./ProcessedData/detect_data.RData")
+load("./ProcessedData/detect_data.Rdata")
 load("./ProcessedData/detect_data_clean.RData")
 mmEcoEvo <- read.csv("./Data/MM_metadata.csv")
 metadata <- read.csv("./Data/Hake_2019_metadata.csv")
@@ -267,6 +267,47 @@ depth_max_detect_clean <- ggplot(westcoast_land) +
   guides(color = guide_legend("Detection\ndepth (m)"))
 
 depth_max_detect_clean
+
+maxPOD_depth_clipped_clean <- maxPOD_depth_clipped_clean %>%
+  mutate(ID = 1:nrow(maxPOD_depth_clipped_clean)) %>%
+  group_by(ID) %>%
+  mutate(x = st_centroid(geometry))
+
+
+maxPOD_depth_clipped_clean %>%
+  filter(BestTaxon=="Berardius bairdii") %>%
+  ggplot() +
+  geom_histogram(aes(depth, fill=depthWidth>300))
+
+
+maxPOD_depth_clipped_clean %>%
+  filter(BestTaxon=="Berardius bairdii") %>%
+  ggplot() +
+  geom_histogram(aes(lat_plain, fill=depthWidth>300))
+
+maxPOD_depth_clipped_clean %>%
+  filter(BestTaxon=="Berardius bairdii") %>%
+  ggplot() +
+  geom_histogram(aes(lon_plain, fill=depthWidth>300))
+
+maxPOD_depth_clipped_clean %>%
+  filter(BestTaxon=="Berardius bairdii" & depthWidth>300) %>%
+  ggplot() +
+  geom_sf(data=westcoast_land, fill = "grey50", colour = NA) +
+    geom_tile(
+              aes(x = lon_plain, y = lat_plain, 
+                  fill = depthWidth)) +
+    theme_minimal() +
+    scale_fill_viridis_c(name = "Model uncertainty:\n50% CI strip width,\ndepth (m)",
+                         option = "magma",
+                         trans = "reverse",
+                         begin = 0.15, end = 1, na.value = "grey90")
+
+maxPOD_depth_clipped_clean %>%
+  filter(BestTaxon=="Berardius bairdii" & depthWidth>300) %>%
+  ggplot() +
+    geom_histogram(aes(depth))
+
 
 ci95_plot_clean <- ggplot(westcoast_land) +
   geom_tile(data = maxPOD_depth_clipped_clean, 

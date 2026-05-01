@@ -22,7 +22,7 @@ bathy <- getNOAA.bathy(lon1 = min(detect_data_clean$lon),
                        lat2 = max(detect_data_clean$lat),
                        resolution = 1)
 
-bathy_raster <- as.raster(bathy)
+bathy_raster <- marmap::as.raster(bathy)
 bathy_r <- rast(bathy_raster)
 
 w <- matrix(1, 5, 5)
@@ -239,15 +239,56 @@ m3.0c_clean_pred_grid_trimmed <- m3.0c_clean_pred_grid[is.na(m3.0c_clean_pred_gr
 #m3.0c_clean_pred_grid[is.na(m3.0c_clean_pred_grid$seafloor),]
 
 # response predictions
-m3.0c_clean_preds <- predict.bam(m3.0c_clean, m3.0c_clean_pred_grid_trimmed,
+ind <- 1:100
+m3.0c_clean_preds <- predict.bam(m3.0c_clean, m3.0c_clean_pred_grid_trimmed[ind,],
                           se.fit = TRUE)
 
-m3.0c_clean_sePreds <- data.frame(m3.0c_clean_pred_grid_trimmed,
+m3.0c_clean_sePreds <- data.frame(m3.0c_clean_pred_grid_trimmed[ind,],
                             mu   = binomial()$linkinv(m3.0c_clean_preds$fit),
                             low  = binomial()$linkinv(m3.0c_clean_preds$fit - 1.96 * m3.0c_clean_preds$se.fit),
                             high = binomial()$linkinv(m3.0c_clean_preds$fit + 1.96 * m3.0c_clean_preds$se.fit),
                             low50  = binomial()$linkinv(m3.0c_clean_preds$fit - 0.674 * m3.0c_clean_preds$se.fit),
                             high50 = binomial()$linkinv(m3.0c_clean_preds$fit + 0.674 * m3.0c_clean_preds$se.fit))
+
+
+# analytical intervals for binomial data are garbage most of the time
+library(gratia)
+
+# AMY: please check that this is the right model!
+mod <- m3.0c_clean
+# M-H sampling is not allowed for bam() models, so cheat by pretending this
+# is a gam object
+class(mod) <- c("gam")
+mh_preds <- gratia::fitted_samples(mod, n=1000, data=m3.0c_clean_pred_grid_trimmed[ind,], scale="response", method="mh")
+
+aa <- mh_preds %>%
+  group_by(.row) %>%
+  summarize(mu = quantile(.fitted, p=0.5),
+         low = quantile(.fitted, p=0.025),
+         high = quantile(.fitted, p=0.975),
+         low50 = quantile(.fitted, p=0.25),
+         high50 = quantile(.fitted, p=0.75)) %>%
+  mutate(diff95 = high-low,
+         diff50 = high50-low50)
+
+m3.0c_clean_sePreds <- m3.0c_clean_sePreds %>%
+  mutate(diff95 = high-low,
+         diff50 = high50-low50)
+
+plot(m3.0c_clean_sePreds$diff95, aa$diff95)
+plot(m3.0c_clean_sePreds$diff50, aa$diff50)
+
+plot(m3.0c_clean_sePreds$mu, aa$mu)
+points(m3.0c_clean_sePreds$low, aa$low, col="red")
+points(m3.0c_clean_sePreds$low50, aa$low50, col="red", pch=19)
+points(m3.0c_clean_sePreds$high, aa$high, col="blue")
+points(m3.0c_clean_sePreds$high50, aa$high50, col="blue", pch=19)
+
+
+# model is BIG so need to do this in a memory efficient way
+# gam.mh will break as will gratia::fitted_samples
+source("../Scripts/XX_binomial_sampler.R")
+aa <- binomial_sampler(mod, m3.0c_clean_pred_grid_trimmed)
 
 
 ### Save -----------------------------------------------------------------------
