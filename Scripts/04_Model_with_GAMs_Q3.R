@@ -9,7 +9,7 @@ library(PNWColors)
 library(marmap)
 library(terra)
 
-load("./ProcessedData/detect_data.RData")
+load("./ProcessedData/detect_data.Rdata")
 load("./ProcessedData/detect_data_clean.RData")
 detect_data <- detect_data %>% mutate(BestTaxon = as.factor(BestTaxon))
 mmEcoEvo <- read.csv("./Data/MM_metadata.csv")
@@ -172,7 +172,7 @@ m3.0c <-
            bs=c("ts","re")),
       family = "binomial",
       method = "fREML",
-      data = detect_data_clean,
+      data = detect_data_dens,
       discrete = TRUE)
 
 summary(m3.0c)
@@ -352,35 +352,27 @@ ggplot(detect_data_dens,
 
 ### m3.1 predictions ----------------------------------------------------------
 
-#########DAVE LOOKIE HERE###########
-m3.1_pred_grid <- expand_grid(detect_data_dens %>% 
-                                select(utm.lat,utm.lon,D, species) %>% 
-                                #interpolate across points?
-                                distinct() %>% 
-                                rename("BestTaxon" = species),
-                              depth = c(0,300,500))
+#########DAVE did a LOOKIE HERE###########
+m3.1_pred_grid <- expand_grid(density_data %>%
+                              rename("BestTaxon" = species) %>%
+                              select(BestTaxon, mlat, mlon, D),
+                              depth = c(0,300,500)) %>%
+                  mutate(lat = mlat, lon=mlon)
 
-
-coords <- m3.1_pred_grid %>%
-  distinct(utm.lon, utm.lat)
-
-coords_sf <- coords %>%
-  st_as_sf(coords = c("utm.lon", "utm.lat"), crs = 32610) %>%
-  st_transform(4326)
-
-coords <- coords %>%
-  mutate(lon = st_coordinates(coords_sf)[,1], 
-         lat = st_coordinates(coords_sf)[,2])
+m3.1_pred_grid <- st_as_sf(m3.1_pred_grid,
+                           coords = c("mlon", "mlat"), crs = 4326) %>%
+  st_transform(32610)
 
 m3.1_pred_grid <- m3.1_pred_grid %>%
-  left_join(coords,
-            by = c("utm.lon", "utm.lat"))
+  mutate(utm.lon = st_coordinates(m3.1_pred_grid)[,1],
+         utm.lat = st_coordinates(m3.1_pred_grid)[,2])
+
 
 # mask depths that aren't real
 m3.1_pred_grid$seafloor <- terra::extract(bathy_r,
                                            m3.1_pred_grid[, c("lon", "lat")])[,2]
 
-m3.1_pred_grid_trimmed <- m3.1_pred_grid[is.na(m3.1_pred_grid$seafloor) | 
+m3.1_pred_grid_trimmed <- m3.1_pred_grid[is.na(m3.1_pred_grid$seafloor) |
                                              m3.1_pred_grid$depth <= pmax(abs(m3.1_pred_grid$seafloor), 0),]
 
 # response predictions
@@ -474,40 +466,53 @@ ggplot(depth_grid, aes(depth, fit)) +
 #Big ole' plot
 
 g <- m3.1_sePreds %>%
-  arrange(BestTaxon, utm.lon, utm.lat, desc(mu)) %>% 
+#  arrange(BestTaxon, utm.lon, utm.lat, desc(mu)) %>%
   mutate(depth = as.factor(depth))
 
+
+
+pp <- ggplot() +
+  geom_tile(aes(x=lon, y=lat, fill=mu), data=g) +
+#  geom_sf(aes(colour = mu), data=st_as_sf(g, coords=c("lon", "lat")), geom="tile") +
+  scale_fill_viridis_c() +
+  facet_grid(BestTaxon~depth) +
+  theme_minimal()
+
+ggsave(pp, file="thing.pdf", width=10, height=10)
+
+
 species <- unique(g$BestTaxon)
-depthLevel <- unique(g$depth)
-
-m3.1plots <- list(Bbar = list(), Lobl = list(), Mnov = list())
-
-for (s in 1:length(species)){
-  
-  plotslot <- m3.1plots[[s]]
-  
-  for (d in 1:length(depthLevel)){
-    
-    df <- g %>% filter(BestTaxon == species[s] & depth == depthLevel[d]) %>% 
-      distinct(BestTaxon, utm.lon, utm.lat, .keep_all = TRUE)
-    
-    plotslot[[d]] <- ggplot(df, aes(utm.lon, utm.lat, color = mu)) +
-      geom_point(size = 2, alpha = 0.7) +
-      scale_color_viridis_c(limits = range(df$mu)) +
-      coord_equal() +
-      theme_minimal() +
-      labs(title = unique(paste(df$BestTaxon, df$depth))) +
-      theme(legend.position = "bottom")
-  }
-  
- m3.1plots[[s]] <- plotslot
-}
-
-m3.1plots <- unlist(m3.1plots, recursive = FALSE)
-m3.1plotwrap <- patchwork::wrap_plots(m3.1plots)
-
-ggsave(m3.1plotwrap, filename = "m3.1_species_depth_heatmaps.pdf",
-       width = 14, height = 20)
+#depthLevel <- unique(g$depth)
+#
+#m3.1plots <- list(Bbar = list(), Lobl = list(), Mnov = list())
+#
+#for (s in 1:length(species)){
+#
+#  plotslot <- m3.1plots[[s]]
+#
+#  for (d in 1:length(depthLevel)){
+#
+#    df <- g %>% filter(BestTaxon == species[s] & depth == depthLevel[d]) %>%
+#      distinct(BestTaxon, utm.lon, utm.lat, .keep_all = TRUE)
+#
+#    plotslot[[d]] <- ggplot(df) +
+#      geom_tile(aes(utm.lon, utm.lat, fill = mu)) +
+#      scale_fill_viridis_c(limits = range(df$mu)) +
+#      coord_equal() +
+#      theme_minimal() +
+#      labs(title = unique(paste(df$BestTaxon, df$depth))) +
+#      theme(legend.position = "bottom")
+#  }
+#  
+# m3.1plots[[s]] <- plotslot
+#}
+#
+#m3.1plots <- unlist(m3.1plots, recursive = FALSE)
+#m3.1plotwrap <- patchwork::wrap_plots(m3.1plots)
+#m3.1plotwrap
+#
+#ggsave(m3.1plotwrap, filename = "m3.1_species_depth_heatmaps.pdf",
+#       width = 14, height = 20)
 
 ###m3.0c
 g2 <- m3.0c_sePreds %>%
