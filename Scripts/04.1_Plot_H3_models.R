@@ -28,7 +28,7 @@ det_colors <- c("500" = "#03051AFF", "300" = "#611F53FF", "150" = "#CB1B4FFF","5
 
 # pull depth of max POD
 maxPOD_depth <- m3.0c_sePreds %>% 
-  group_by(BestTaxon, lat,lon) %>% #3816 groups
+  group_by(BestTaxon, utm.lat,utm.lon) %>% #3816 groups
   arrange(desc(mu), .by_group = TRUE) %>% 
   mutate(max_mu = first(mu), max_low50 = first(low50), 
          max_high50 = first(high50), max_depth = first(depth)) %>%
@@ -41,14 +41,14 @@ maxPOD_depth <- m3.0c_sePreds %>%
   ungroup()
   
 # create convex hull study area
-study_area <- st_as_sf(metadata, coords = c("lon", "lat"), crs = 4326) %>%
+study_area <- st_as_sf(metadata, coords = c("utm.lon", "utm.lat"), crs = 32610) %>%
   summarise(geometry = st_union(geometry)) %>%
   st_convex_hull() 
 
 # convert POD to sf
 maxPOD_depth_sf <- maxPOD_depth %>% 
-  mutate(lon_plain = lon, lat_plain = lat) %>% 
-  st_as_sf(coords = c("lon", "lat"), crs = 4326) 
+  mutate(lon_plain = utm.lon, lat_plain = utm.lat) %>% 
+  st_as_sf(coords = c("utm.lon", "utm.lat"), crs = 32610) 
 
 maxPOD_depth_clipped <- st_join(study_area, maxPOD_depth_sf, left = TRUE) %>% 
   mutate(depth = case_when(max_mu < 0.005~NA,
@@ -69,10 +69,12 @@ pos_detect <- detect_data %>%
 
 ### Create coastline shapefile -------------------------------------------------
 world <- st_read("Data/ne_10m_land/ne_10m_land.shp")
+#world_utm <- st_transform(world, 32610)
 
-data_bbox <- st_as_sf(maxPOD_depth, coords = c("lon", "lat"), crs = 4326) %>%
+data_bbox <- st_as_sf(metadata, coords = c("lon", "lat"), 
+                      crs = 4326) %>%
   st_bbox() %>%
-  st_as_sfc()  %>%
+  st_as_sfc() %>% 
   st_buffer(dist = 70000)
 
 westcoast_land <- st_crop(world, data_bbox)
@@ -80,8 +82,8 @@ westcoast_land <- st_crop(world, data_bbox)
 ### Get bathymetry data --------------------------------------------------------
 
 # lon‐range and lat‐range:
-lon1 <- min(maxPOD_depth_clipped$lon_plain); lon2 <- max(maxPOD_depth_clipped$lon_plain) 
-lat1 <- min(maxPOD_depth_clipped$lat_plain); lat2 <- max(maxPOD_depth_clipped$lat_plain)
+lon1 <- min(metadata$lon); lon2 <- max(metadata$lon) 
+lat1 <- min(metadata$lat); lat2 <- max(metadata$lat)
 
 # Download bathymetry
 bath <- getNOAA.bathy(lon1 = lon1, lon2 = lon2,
@@ -96,9 +98,10 @@ save(maxPOD_depth, pos_detect, maxPOD_depth_clipped, file = "./ProcessedData/H3.
 #### Max POD plot with matching color scale ------------------------------------
 
 depth_max_detect <- ggplot(westcoast_land) +
+  geom_sf(fill = "grey50", colour = NA) +
   geom_tile(data = maxPOD_depth_clipped, 
             aes(x = lon_plain, y = lat_plain, fill = depth)) +
-  geom_sf(fill = "grey50", colour = NA) +
+  
   scale_fill_viridis_c(name = "Depth (m)",
                        option = "mako",
                        trans = "reverse",
